@@ -1,7 +1,7 @@
 "use client";
 
 import Canvas from "@/components/3D/Canvas";
-import GradientBGPlane from "../GradientBGPlane";
+import GradientBGPlane from "./GradientBGPlane";
 
 const GradientBG = () => (
   <Canvas>
