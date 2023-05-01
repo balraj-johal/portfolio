@@ -6,7 +6,6 @@ import GradientBGPlane from "./GradientBGPlane";
 
 const GradientBG = () => (
   <Canvas>
-    <OrbitControls />
     <GradientBGPlane />
   </Canvas>
 );

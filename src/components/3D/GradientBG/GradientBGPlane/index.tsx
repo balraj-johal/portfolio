@@ -4,6 +4,7 @@ import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import { ShaderMaterial, Vector3 } from "three";
+import { useStore } from "../../Canvas";
 
 const vertexShader = `
 varying vec2 vUv;
@@ -120,14 +121,17 @@ void main() {
 
 const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
+const LIGHT_Z = 2;
 
 const GradientBGPlane = () => {
   const { viewport } = useThree();
   const material = useRef<ShaderMaterial>(null);
 
+  const mousePos = useStore((state) => state.mousePos);
+
   const uniforms = {
     lightPosition: {
-      value: new Vector3(Math.random(), Math.random(), Math.random()),
+      value: new Vector3(mousePos.x, mousePos.y, LIGHT_Z),
     },
     time: { value: 0.0 },
   };
@@ -135,6 +139,10 @@ const GradientBGPlane = () => {
   useFrame((state) => {
     if (!material.current) return;
     material.current.uniforms.time.value = state.clock.getElapsedTime();
+    const lightPos = material.current.uniforms.lightPosition.value;
+    lightPos.x = mousePos.x;
+    lightPos.y = mousePos.y;
+    console.log("mousePos", mousePos);
   });
 
   return (
