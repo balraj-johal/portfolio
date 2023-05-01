@@ -1,5 +1,6 @@
 "use client";
 
+import { CurlNoise } from "@/utils/shaders";
 import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
@@ -15,6 +16,8 @@ varying vec3 vNormal;
 uniform float time;
 
 #define PI 3.1415926538;
+
+${CurlNoise}
 
 // from https://gist.github.com/yiwenl/3f804e80d0930e34a0b33359259b556c
 vec2 rotate(vec2 v, float a) {
@@ -64,15 +67,20 @@ void main() {
   vUv = uv;
   vec3 newPosition = position;
   
-  float horizontalScale = 1.0 / 10.0;
+  float horizontalScale = 1.0 / 15.0;
   float scaledTime = time / 15.0;
 
   vec2 scrollVector = vec2(0.05 * scaledTime, scaledTime);
   vec2 stretchVector = vec2(horizontalScale, 1.0);
+
   vec2 newUV = vec2(uv.x * stretchVector.x, uv.y * stretchVector.y) + scrollVector;
+  // melt this mf towards the right hand side of the screen
+  newUV.x = newUV.x * pow(uv.x * 2.0, 1.5);
+  newUV.y = newUV.y * pow(uv.y, 1.5);
 
   float noiseScale = 3.0;
-  vNoise = snoise(newUV * noiseScale);
+  vNoise = snoise(curl(newUV * noiseScale));
+  vNoise = pow(vNoise, 3.0);
 
   float displacementAmount = 0.25;
   newPosition.z += vNoise * displacementAmount;
@@ -115,8 +123,7 @@ void main() {
 
   vec3 result = (ambient + diffuse + specular) * objectColor;
   gl_FragColor = vec4(result, 1.0);
-
-  // gl_FragColor = vec4(vec3(vNoise), 1.0);
+  gl_FragColor = vec4(vec3(vNoise), 1.0);
 }
 `;
 

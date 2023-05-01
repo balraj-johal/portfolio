@@ -40,9 +40,9 @@ const Canvas = ({ children }: Props) => {
 
   return (
     <CanvasWrapper
-      onMouseMove={(e: React.MouseEvent) =>
-        updateMousePos(getRelativeMousePos(e))
-      }
+    // onMouseMove={(e: React.MouseEvent) =>
+    //   updateMousePos(getRelativeMousePos(e))
+    // }
     >
       <CanvasElement>{children}</CanvasElement>
     </CanvasWrapper>
