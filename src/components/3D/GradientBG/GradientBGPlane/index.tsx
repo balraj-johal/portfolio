@@ -3,7 +3,7 @@
 import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
-import { ShaderMaterial, Vector3 } from "three";
+import { ShaderMaterial, Vector3, DoubleSide } from "three";
 import { useStore } from "../../Canvas";
 
 const vertexShader = `
@@ -99,15 +99,16 @@ void main() {
   vec3 halfwayDirection = normalize(lightDirection + viewDirection);
 
   vec3 lightColor = vec3(0.9);
-  vec3 objectColor = vec3(0.9, 0.5, 0.2);
+  vec3 objectColor = vec3(0.9, 0.0, 0.2);
 
-  float ambientStrength = 0.1;
-  vec3 ambient = ambientStrength * lightColor;
+  float ambientStrength = 0.0;
+  vec3 ambient = lightColor * ambientStrength;
 
+  float diffuseStrength = 0.25;
   float diff = max(dot(vNormal, lightDirection), 0.0);
-  vec3 diffuse = diff * lightColor;
+  vec3 diffuse = diff * lightColor * diffuseStrength;
 
-  float specularStrength = 1.0;
+  float specularStrength = 0.0;
   float shininess = 0.5;
   float spec = pow(max(dot(vNormal, halfwayDirection), 0.0), shininess);
   vec3 specular = lightColor * spec * specularStrength;
@@ -142,7 +143,7 @@ const GradientBGPlane = () => {
     const lightPos = material.current.uniforms.lightPosition.value;
     lightPos.x = mousePos.x;
     lightPos.y = mousePos.y;
-    console.log("mousePos", mousePos);
+    console.log("mousePos", lightPos);
   });
 
   return (
@@ -161,6 +162,7 @@ const GradientBGPlane = () => {
         fragmentShader={fragmentShader}
         uniforms={uniforms}
         uniformsNeedUpdate
+        side={DoubleSide}
       />
     </Plane>
   );
