@@ -143,7 +143,6 @@ const GradientBGPlane = () => {
     const lightPos = material.current.uniforms.lightPosition.value;
     lightPos.x = mousePos.x;
     lightPos.y = mousePos.y;
-    console.log("mousePos", lightPos);
   });
 
   return (
