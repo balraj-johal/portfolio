@@ -11,6 +11,16 @@ varying float vNoise;
 
 uniform float time;
 
+#define PI 3.1415926538;
+
+// from https://gist.github.com/yiwenl/3f804e80d0930e34a0b33359259b556c
+vec2 rotate(vec2 v, float a) {
+	float s = sin(a);
+	float c = cos(a);
+	mat2 m = mat2(c, -s, s, c);
+	return m * v;
+}
+
 // from https://iquilezles.org/articles/functions/
 float pcurve( float x, float a, float b ){
     float k = pow(a+b,a+b) / (pow(a,a)*pow(b,b));
@@ -19,9 +29,7 @@ float pcurve( float x, float a, float b ){
 
 // Simplex 2D noise
 // https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
-
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
-
 float snoise(vec2 v) {
   const vec4 C = vec4(0.211324865405187, 0.366025403784439,
            -0.577350269189626, 0.024390243902439);
@@ -53,12 +61,17 @@ void main() {
   vUv = uv;
   vec3 newPosition = position;
   
-  float horizontalScale = 1.0 / 5.0;
-  float scaledTime = time / 10.0;
-  vec2 newUV = vec2(uv.x * horizontalScale, uv.y + scaledTime);
-  vNoise = snoise(newUV * 1.0);
+  float horizontalScale = 1.0 / 10.0;
+  float scaledTime = time / 15.0;
 
-  float displacementAmount = 0.5;
+  vec2 scrollVector = vec2(0.05 * scaledTime, scaledTime);
+  vec2 stretchVector = vec2(horizontalScale, 1.0);
+  vec2 newUV = vec2(uv.x * stretchVector.x, uv.y * stretchVector.y) + scrollVector;
+
+  float noiseScale = 3.0;
+  vNoise = snoise(newUV * noiseScale);
+
+  float displacementAmount = 0.25;
   newPosition.z += vNoise * displacementAmount;
 
   vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
@@ -77,7 +90,7 @@ void main() {
 }
 `;
 
-const PLANE_SCALE = 1.1;
+const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
 
 const GradientBGPlane = () => {
@@ -104,6 +117,7 @@ const GradientBGPlane = () => {
         SEGMENTS,
         SEGMENTS,
       ]}
+      rotation={[0, 0, -0.25]}
     >
       <shaderMaterial
         ref={material}
