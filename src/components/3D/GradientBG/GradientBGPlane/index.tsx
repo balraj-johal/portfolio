@@ -8,6 +8,8 @@ import { ShaderMaterial, Vector3 } from "three";
 const vertexShader = `
 varying vec2 vUv;
 varying float vNoise;
+varying vec3 vPosition;
+varying vec3 vNormal;
 
 uniform float time;
 
@@ -75,6 +77,9 @@ void main() {
   newPosition.z += vNoise * displacementAmount;
 
   vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
+  vPosition = modelViewPosition.xyz;
+  vNormal = normal;
+
   gl_Position = projectionMatrix * modelViewPosition; 
 }
 `;
@@ -82,11 +87,34 @@ void main() {
 const fragmentShader = `
 varying vec2 vUv;
 varying float vNoise;
+varying vec3 vPosition;
+varying vec3 vNormal;
 
 uniform vec3 lightPosition;
 
 void main() {
-  gl_FragColor = vec4(vec3(vNoise), 1.0);
+  vec3 lightDirection = normalize(lightPosition - vPosition);
+  vec3 viewDirection = normalize(cameraPosition - vPosition);
+  vec3 halfwayDirection = normalize(lightDirection + viewDirection);
+
+  vec3 lightColor = vec3(0.9);
+  vec3 objectColor = vec3(0.9, 0.5, 0.2);
+
+  float ambientStrength = 0.1;
+  vec3 ambient = ambientStrength * lightColor;
+
+  float diff = max(dot(vNormal, lightDirection), 0.0);
+  vec3 diffuse = diff * lightColor;
+
+  float specularStrength = 1.0;
+  float shininess = 0.5;
+  float spec = pow(max(dot(vNormal, halfwayDirection), 0.0), shininess);
+  vec3 specular = lightColor * spec * specularStrength;
+
+  vec3 result = (ambient + diffuse + specular) * objectColor;
+  gl_FragColor = vec4(result, 1.0);
+
+  // gl_FragColor = vec4(vec3(vNoise), 1.0);
 }
 `;
 
