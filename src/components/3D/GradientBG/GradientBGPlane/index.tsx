@@ -96,7 +96,7 @@ void main() {
   vPosition = modelViewPosition.xyz;
 
   // calculate normals
-  float sampleOffset = 0.025;
+  float sampleOffset = 0.035;
   float neighbour1Displacement = getNoise(vec2(uv.x + sampleOffset, uv.y), stretchVector, scrollVector);
   vec3 neighbour1 = position;
   neighbour1.z += neighbour1Displacement * displacementAmount;
@@ -105,8 +105,9 @@ void main() {
   neighbour2.z += neighbour2Displacement * displacementAmount;
   vec3 tangent = neighbour1 - position;
   vec3 bitangent = neighbour2 - position;
-  vec3 normal = normalize(cross(tangent, bitangent));
-  vNormal = normal;
+  vec3 newNormal = cross(tangent, bitangent);
+  // vNormal = normalize(newNormal);
+  // vNormal = normalize(normal);
 
   gl_Position = projectionMatrix * modelViewPosition; 
 }
@@ -143,7 +144,7 @@ void main() {
   vec3 result = (ambient + diffuse + specular) * objectColor;
   gl_FragColor = vec4(result, 1.0);
   gl_FragColor = vec4(vec3(vNoise), 1.0);
-  gl_FragColor = vec4(vNormal, 1.0);
+  // gl_FragColor = vec4(vNormal, 1.0);
 }
 `;
 
