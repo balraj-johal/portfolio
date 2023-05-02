@@ -63,6 +63,20 @@ float snoise(vec2 v) {
   return 130.0 * dot(m, g);
 }
 
+float getNoise(vec2 uv, vec2 stretchVector, vec2 scrollVector) {
+  vec2 newUV = vec2(uv.x * stretchVector.x, uv.y * stretchVector.y) + scrollVector;
+  // melt this mf towards the right hand side of the screen
+  newUV.x = newUV.x * pow(uv.x * 2.0, 1.5);
+  newUV.y = newUV.y * pow(uv.y, 1.5);
+
+  float noiseScale = 3.0;
+  float noise1 = snoise(curl(newUV * noiseScale));
+  noise1 = pow(noise1, 3.0);
+  float noise2 = snoise(curl(newUV * noiseScale * 0.5));
+  noise2 = pow(noise2, 3.0);
+  return mix(noise1, noise2, uv.y);
+}
+
 void main() {
   vUv = uv;
   vec3 newPosition = position;
@@ -70,23 +84,28 @@ void main() {
   float horizontalScale = 1.0 / 15.0;
   float scaledTime = time / 15.0;
 
-  vec2 scrollVector = vec2(0.05 * scaledTime, scaledTime);
   vec2 stretchVector = vec2(horizontalScale, 1.0);
+  vec2 scrollVector = vec2(0.05 * scaledTime, scaledTime);
 
-  vec2 newUV = vec2(uv.x * stretchVector.x, uv.y * stretchVector.y) + scrollVector;
-  // melt this mf towards the right hand side of the screen
-  newUV.x = newUV.x * pow(uv.x * 2.0, 1.5);
-  newUV.y = newUV.y * pow(uv.y, 1.5);
-
-  float noiseScale = 3.0;
-  vNoise = snoise(curl(newUV * noiseScale));
-  vNoise = pow(vNoise, 3.0);
+  vNoise = getNoise(uv, stretchVector, scrollVector);
 
   float displacementAmount = 0.25;
   newPosition.z += vNoise * displacementAmount;
 
   vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
   vPosition = modelViewPosition.xyz;
+
+  // calculate normals
+  float sampleOffset = 0.025;
+  float neighbour1Displacement = getNoise(vec2(uv.x + sampleOffset, uv.y), stretchVector, scrollVector);
+  vec3 neighbour1 = position;
+  neighbour1.z += neighbour1Displacement * displacementAmount;
+  float neighbour2Displacement = getNoise(vec2(uv.x, uv.y + sampleOffset), stretchVector, scrollVector);
+  vec3 neighbour2 = position;
+  neighbour2.z += neighbour2Displacement * displacementAmount;
+  vec3 tangent = neighbour1 - position;
+  vec3 bitangent = neighbour2 - position;
+  vec3 normal = normalize(cross(tangent, bitangent));
   vNormal = normal;
 
   gl_Position = projectionMatrix * modelViewPosition; 
@@ -124,6 +143,7 @@ void main() {
   vec3 result = (ambient + diffuse + specular) * objectColor;
   gl_FragColor = vec4(result, 1.0);
   gl_FragColor = vec4(vec3(vNoise), 1.0);
+  gl_FragColor = vec4(vNormal, 1.0);
 }
 `;
 
