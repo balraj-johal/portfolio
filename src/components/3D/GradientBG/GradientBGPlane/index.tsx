@@ -3,9 +3,9 @@
 import { CurlNoise } from "@/utils/shaders";
 import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import { ShaderMaterial, Vector3, DoubleSide } from "three";
-import { useStore } from "../../Canvas";
+import { MousePos } from "..";
 
 const vertexShader = `
 varying vec2 vUv;
@@ -77,9 +77,15 @@ float getNoise(vec2 uv, vec2 stretchVector, vec2 scrollVector) {
   return mix(noise1, noise2, uv.y);
 }
 
+vec3 getPosition(float noise, vec3 position) {
+  vec3 newPosition = position;
+  float displacementAmount = 0.25;
+  newPosition.z += noise * displacementAmount;
+  return newPosition;
+}
+
 void main() {
   vUv = uv;
-  vec3 newPosition = position;
   
   float horizontalScale = 1.0 / 15.0;
   float scaledTime = time / 15.0;
@@ -88,26 +94,28 @@ void main() {
   vec2 scrollVector = vec2(0.05 * scaledTime, scaledTime);
 
   vNoise = getNoise(uv, stretchVector, scrollVector);
-
-  float displacementAmount = 0.25;
-  newPosition.z += vNoise * displacementAmount;
+  vec3 newPosition = getPosition(vNoise, position);
 
   vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
   vPosition = modelViewPosition.xyz;
 
   // calculate normals
-  float sampleOffset = 0.035;
-  float neighbour1Displacement = getNoise(vec2(uv.x + sampleOffset, uv.y), stretchVector, scrollVector);
-  vec3 neighbour1 = position;
-  neighbour1.z += neighbour1Displacement * displacementAmount;
-  float neighbour2Displacement = getNoise(vec2(uv.x, uv.y + sampleOffset), stretchVector, scrollVector);
-  vec3 neighbour2 = position;
-  neighbour2.z += neighbour2Displacement * displacementAmount;
-  vec3 tangent = neighbour1 - position;
-  vec3 bitangent = neighbour2 - position;
+  float sampleOffset = 0.005;
+
+  float xSample = clamp(uv.x + sampleOffset, 0.0, 1.0);
+  float neighbourOneNoise = getNoise(vec2(xSample, uv.y), stretchVector, scrollVector);
+  vec3 neighbourOne = getPosition(neighbourOneNoise, position);
+
+  float ySample = clamp(uv.y + sampleOffset, 0.0, 1.0);
+  float neighbourTwoNoise = getNoise(vec2(uv.x, ySample), stretchVector, scrollVector);
+  vec3 neighbourTwo = getPosition(neighbourTwoNoise, position);
+
+  vec3 tangent = neighbourOne - position;
+  vec3 bitangent = neighbourTwo - position;
+
   vec3 newNormal = cross(tangent, bitangent);
-  // vNormal = normalize(newNormal);
-  // vNormal = normalize(normal);
+  newNormal = normalize(newNormal);
+  vNormal = newNormal;
 
   gl_Position = projectionMatrix * modelViewPosition; 
 }
@@ -144,7 +152,7 @@ void main() {
   vec3 result = (ambient + diffuse + specular) * objectColor;
   gl_FragColor = vec4(result, 1.0);
   gl_FragColor = vec4(vec3(vNoise), 1.0);
-  // gl_FragColor = vec4(vNormal, 1.0);
+  gl_FragColor = vec4(vec3(lightPosition.x, lightPosition.y, 0.5), 1.0);
 }
 `;
 
@@ -152,15 +160,17 @@ const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
 const LIGHT_Z = 2;
 
-const GradientBGPlane = () => {
+interface Props {
+  mousePos: MutableRefObject<MousePos>;
+}
+
+const GradientBGPlane = ({ mousePos }: Props) => {
   const { viewport } = useThree();
   const material = useRef<ShaderMaterial>(null);
 
-  const mousePos = useStore((state) => state.mousePos);
-
   const uniforms = {
     lightPosition: {
-      value: new Vector3(mousePos.x, mousePos.y, LIGHT_Z),
+      value: new Vector3(mousePos.current.x, mousePos.current.y, LIGHT_Z),
     },
     time: { value: 0.0 },
   };
@@ -168,9 +178,12 @@ const GradientBGPlane = () => {
   useFrame((state) => {
     if (!material.current) return;
     material.current.uniforms.time.value = state.clock.getElapsedTime();
-    const lightPos = material.current.uniforms.lightPosition.value;
-    lightPos.x = mousePos.x;
-    lightPos.y = mousePos.y;
+    material.current.uniforms.lightPosition.value = new Vector3(
+      mousePos.current.x,
+      mousePos.current.y,
+      LIGHT_Z
+    );
+    console.log(material.current.uniforms.lightPosition.value);
   });
 
   return (
@@ -188,7 +201,7 @@ const GradientBGPlane = () => {
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniforms}
-        uniformsNeedUpdate
+        uniformsNeedUpdate={true}
         side={DoubleSide}
       />
     </Plane>
