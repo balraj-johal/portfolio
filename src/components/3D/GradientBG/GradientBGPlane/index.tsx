@@ -1,7 +1,7 @@
 "use client";
 
 import { CurlNoise } from "@/utils/shaders";
-import { Plane } from "@react-three/drei";
+import { Box, Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useRef } from "react";
 import { ShaderMaterial, Vector3, DoubleSide } from "three";
@@ -79,7 +79,7 @@ float getNoise(vec2 uv, vec2 stretchVector, vec2 scrollVector) {
 
 vec3 getPosition(float noise, vec3 position) {
   vec3 newPosition = position;
-  float displacementAmount = 0.25;
+  float displacementAmount = 0.5;
   newPosition.z += noise * displacementAmount;
   return newPosition;
 }
@@ -96,11 +96,8 @@ void main() {
   vNoise = getNoise(uv, stretchVector, scrollVector);
   vec3 newPosition = getPosition(vNoise, position);
 
-  vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
-  vPosition = modelViewPosition.xyz;
-
   // calculate normals
-  float sampleOffset = 0.005;
+  float sampleOffset = 0.1;
 
   float xSample = clamp(uv.x + sampleOffset, 0.0, 1.0);
   float neighbourOneNoise = getNoise(vec2(xSample, uv.y), stretchVector, scrollVector);
@@ -110,12 +107,15 @@ void main() {
   float neighbourTwoNoise = getNoise(vec2(uv.x, ySample), stretchVector, scrollVector);
   vec3 neighbourTwo = getPosition(neighbourTwoNoise, position);
 
-  vec3 tangent = neighbourOne - position;
-  vec3 bitangent = neighbourTwo - position;
+  vec3 tangent = normalize(neighbourOne - newPosition);
+  vec3 biTangent = normalize(neighbourTwo - newPosition);
 
-  vec3 newNormal = cross(tangent, bitangent);
+  vec3 newNormal = cross(newPosition, biTangent);
   newNormal = normalize(newNormal);
   vNormal = newNormal;
+
+  vec4 modelViewPosition = modelViewMatrix * vec4(newPosition, 1.0);
+  vPosition = modelViewPosition.xyz;
 
   gl_Position = projectionMatrix * modelViewPosition; 
 }
@@ -137,28 +137,30 @@ void main() {
   vec3 lightColor = vec3(0.9);
   vec3 objectColor = vec3(0.9, 0.0, 0.2);
 
-  float ambientStrength = 0.0;
+  float ambientStrength = 0.02;
   vec3 ambient = lightColor * ambientStrength;
 
-  float diffuseStrength = 0.25;
+  float diffuseStrength = 0.05;
   float diff = max(dot(vNormal, lightDirection), 0.0);
   vec3 diffuse = diff * lightColor * diffuseStrength;
 
-  float specularStrength = 0.0;
+  float specularStrength = 0.5;
   float shininess = 0.5;
   float spec = pow(max(dot(vNormal, halfwayDirection), 0.0), shininess);
   vec3 specular = lightColor * spec * specularStrength;
 
-  vec3 result = (ambient + diffuse + specular) * objectColor;
+  vec3 totalLightingValue = (ambient + diffuse + specular);
+  vec3 result = totalLightingValue * objectColor;
+
   gl_FragColor = vec4(result, 1.0);
-  gl_FragColor = vec4(vec3(vNoise), 1.0);
-  gl_FragColor = vec4(vec3(lightPosition.x, lightPosition.y, 0.5), 1.0);
+  // gl_FragColor = vec4(vec3(vNoise), 1.0);
+  // gl_FragColor = vec4(vec3(vNormal), 1.0);
 }
 `;
 
 const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
-const LIGHT_Z = 2;
+const LIGHT_Z = 5;
 
 interface Props {
   mousePos: MutableRefObject<MousePos>;
@@ -183,7 +185,6 @@ const GradientBGPlane = ({ mousePos }: Props) => {
       mousePos.current.y,
       LIGHT_Z
     );
-    console.log(material.current.uniforms.lightPosition.value);
   });
 
   return (
@@ -194,7 +195,7 @@ const GradientBGPlane = ({ mousePos }: Props) => {
         SEGMENTS,
         SEGMENTS,
       ]}
-      rotation={[0, 0, -0.25]}
+      rotation={[0, -0.95, -0.25]}
     >
       <shaderMaterial
         ref={material}
