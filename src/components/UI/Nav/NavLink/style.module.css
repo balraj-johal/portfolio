@@ -1,0 +1,13 @@
+a.NavLinkElement {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: 0.5;
+  transition: all 400ms ease;
+}
+
+a.NavLinkElement:first-of-type {
+  opacity: 1;
+  transform: scale(1.25);
+  transform-origin: left;
+}

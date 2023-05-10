@@ -1,14 +1,18 @@
+import NavLink from "./NavLink";
 import { NavWrapper } from "./styles";
 
 interface Props {
   children?: React.ReactNode;
 }
 
+const NAV_LINKS = ["work", "personal", "skills", "contact"];
+
 const Nav = ({ children, ...rest }: Props) => {
   return (
     <NavWrapper {...rest}>
-      <span>boo</span>
-      <span>boop</span>
+      {NAV_LINKS.map((link) => (
+        <NavLink id={link} key={link} />
+      ))}
       {children}
     </NavWrapper>
   );

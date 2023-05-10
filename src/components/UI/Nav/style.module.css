@@ -1,11 +1,10 @@
 nav.NavWrapper {
-  width: 300px;
-  background: rgba(255, 91, 91, 0.3);
-
+  width: 200px;
   display: flex;
   flex-direction: column;
   position: sticky;
   top: 2rem;
-
   margin: 2rem;
+
+  font-family: var(--font-anton);
 }
