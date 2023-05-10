@@ -1,10 +1,10 @@
 "use client";
 
 import { CurlNoise } from "@/utils/shaders";
-import { Box, Plane } from "@react-three/drei";
+import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useRef } from "react";
-import { ShaderMaterial, Vector3, DoubleSide } from "three";
+import { ShaderMaterial, Vector3, FrontSide } from "three";
 import { MousePos } from "..";
 
 const vertexShader = `
@@ -195,7 +195,6 @@ const GradientBGPlane = ({ mousePos }: Props) => {
         SEGMENTS,
         SEGMENTS,
       ]}
-      rotation={[0, -0.95, -0.25]}
     >
       <shaderMaterial
         ref={material}
@@ -203,7 +202,7 @@ const GradientBGPlane = ({ mousePos }: Props) => {
         fragmentShader={fragmentShader}
         uniforms={uniforms}
         uniformsNeedUpdate={true}
-        side={DoubleSide}
+        side={FrontSide}
       />
     </Plane>
   );
