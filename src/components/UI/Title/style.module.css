@@ -1,16 +1,18 @@
 h1.StyledH1 {
+  font-family: var(--font-anton);
   font-size: 5.5rem;
-  text-transform: uppercase;
+  line-height: 1.05em;
   letter-spacing: 2px;
+  text-transform: uppercase;
   color: white;
 
   margin: 0;
-
   overflow: hidden;
 }
 
 span.Text {
   display: block;
+  margin-bottom: 1rem;
 
   transition: transform 600ms ease;
   transform: translateY(100%);
