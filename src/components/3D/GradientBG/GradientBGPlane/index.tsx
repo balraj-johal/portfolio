@@ -153,7 +153,7 @@ void main() {
   vec3 result = totalLightingValue * objectColor;
 
   gl_FragColor = vec4(result, 1.0);
-  // gl_FragColor = vec4(vec3(vNoise), 1.0);
+  gl_FragColor = vec4(vec3(vNoise), 1.0);
   // gl_FragColor = vec4(vec3(vNormal), 1.0);
 }
 `;
