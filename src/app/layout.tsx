@@ -1,3 +1,4 @@
+import GradientBG from "@/components/3D/GradientBG";
 import RootBody from "@/components/UI/RootBody";
 import "./globals.css";
 
@@ -13,6 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <GradientBG />
       <RootBody>{children}</RootBody>
     </html>
   );
