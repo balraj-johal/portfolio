@@ -163,7 +163,7 @@ void main() {
 `;
 
 const PLANE_SCALE = 1.5;
-const SEGMENTS = 200;
+const SEGMENTS = 100;
 const LIGHT_Z = 5;
 const SCROLL_TIME_INFLUENCE = 0.0025;
 

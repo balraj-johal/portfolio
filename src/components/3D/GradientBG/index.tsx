@@ -1,11 +1,10 @@
 "use client";
 
-import { OrbitControls } from "@react-three/drei";
 import { useRef } from "react";
 import { CanvasElement } from "../Canvas/styles";
+import { Perf } from "r3f-perf";
 import css from "../Canvas/style.module.css";
 import GradientBGPlane from "./GradientBGPlane";
-import { useGradientConfig } from "@/contexts/gradient";
 
 export type MousePos = {
   x: number;
@@ -30,6 +29,7 @@ const GradientBG = () => {
       }
     >
       <CanvasElement>
+        <Perf />
         <GradientBGPlane mousePos={mousePos} />
       </CanvasElement>
     </div>
