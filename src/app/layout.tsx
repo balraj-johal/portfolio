@@ -14,8 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GradientBG />
-      <RootBody>{children}</RootBody>
+      <RootBody>
+        <GradientBG />
+        {children}
+      </RootBody>
     </html>
   );
 }

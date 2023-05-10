@@ -8,7 +8,7 @@ html, body {
 }
 
 html {
-  background-color: aliceblue;
+  background: linear-gradient(red, yellow);
 }
 
 body {

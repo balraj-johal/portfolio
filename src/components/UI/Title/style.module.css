@@ -1,7 +1,7 @@
 .StyledH1 {
   font-size: 5.5rem;
-  font-weight: 900;
-  letter-spacing: -0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   color: white;
 
   margin: 0;
