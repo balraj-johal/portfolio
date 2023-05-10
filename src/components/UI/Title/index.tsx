@@ -1,11 +1,17 @@
-import { StyledH1 } from "./styles";
+import { StyledH1, Text } from "./styles";
 
 interface Props {
   children: React.ReactNode;
 }
 
 const Title = ({ children }: Props) => {
-  return <StyledH1>{children}</StyledH1>;
+  return (
+    <div>
+      <StyledH1>
+        <Text animate>{children}</Text>
+      </StyledH1>
+    </div>
+  );
 };
 
 export default Title;

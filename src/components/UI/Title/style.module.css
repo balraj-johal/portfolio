@@ -1,8 +1,25 @@
-.StyledH1 {
+h1.StyledH1 {
   font-size: 5.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: white;
 
   margin: 0;
+
+  overflow: hidden;
+}
+
+span.Text {
+  display: block;
+
+  transition: transform 600ms ease;
+  transform: translateY(100%);
+}
+
+span.Text_Animate {
+  transform: translate(0);
+}
+
+.Text_Red {
+  color: red;
 }
