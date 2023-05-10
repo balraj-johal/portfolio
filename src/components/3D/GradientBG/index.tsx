@@ -29,7 +29,7 @@ const GradientBG = () => {
       }
     >
       <CanvasElement>
-        <OrbitControls />
+        {/* <OrbitControls /> */}
         <GradientBGPlane mousePos={mousePos} />
       </CanvasElement>
     </div>

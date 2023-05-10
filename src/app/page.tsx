@@ -1,9 +1,12 @@
+import MyWork from "@/components/UI/MyWork";
 import Title from "@/components/UI/Title";
+import { MainElement } from "./styles";
 
 export default function Home() {
   return (
-    <main>
+    <MainElement>
       <Title>Balraj Johal</Title>
-    </main>
+      <MyWork />
+    </MainElement>
   );
 }
