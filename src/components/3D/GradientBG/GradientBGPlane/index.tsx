@@ -162,7 +162,7 @@ void main() {
 const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
 const LIGHT_Z = 5;
-const SCROLL_TIME_INFLUENCE = 0.25;
+const SCROLL_TIME_INFLUENCE = 0.0025;
 
 interface Props {
   mousePos: MutableRefObject<MousePos>;
