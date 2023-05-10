@@ -168,6 +168,8 @@ interface Props {
   mousePos: MutableRefObject<MousePos>;
 }
 
+const Z_ROTATION = -0.25;
+
 const GradientBGPlane = ({ mousePos }: Props) => {
   const { scrollDiff } = useGradientConfig();
   const { viewport } = useThree();
@@ -201,6 +203,7 @@ const GradientBGPlane = ({ mousePos }: Props) => {
         SEGMENTS,
         SEGMENTS,
       ]}
+      rotation={[0, 0, Z_ROTATION]}
     >
       <shaderMaterial
         ref={material}
