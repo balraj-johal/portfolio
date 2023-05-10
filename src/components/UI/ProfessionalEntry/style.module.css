@@ -3,8 +3,12 @@ div.ProfessionalEntryWrapper {
   padding: 14vh 2vw 14vh 8vw;
   color: white;
 
-  position: sticky;
-  top: 0;
+  /* these rules make the entries stick on top of each other... interesting 
+     TODO: consider having them stack and fade out with GSAP ScrollTrigger
+  */
+  /* position: sticky;
+  top: 0; */
+
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -17,11 +21,6 @@ h2.ProfessionalEntryTitle {
 p.ProfessionalEntryOneLiner {
   margin-top: 0;
   margin-bottom: 2rem;
-}
-
-div.StickyWrapper {
-  height: 180vh;
-  position: relative;
 }
 
 div.ProfessionalEntryImageWrapper {

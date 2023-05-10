@@ -10,14 +10,21 @@ h1.StyledH1 {
   overflow: hidden;
 }
 
+@keyframes reveal {
+  from {
+    transform: translateY(120%);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+
 span.Text {
   display: block;
   margin-bottom: 1rem;
+  line-height: 1em;
 
-  transition: transform 600ms ease;
-  transform: translateY(100%);
-}
-
-span.Text_Animate {
-  transform: translate(0);
+  animation: reveal 700ms ease forwards;
+  animation-delay: 400ms;
+  transform: translateY(120%);
 }

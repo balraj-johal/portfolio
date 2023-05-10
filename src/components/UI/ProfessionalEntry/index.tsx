@@ -20,20 +20,16 @@ interface Props {
 
 const ProfessionalEntry = ({ content }: Props) => {
   return (
-    <StickyWrapper>
-      <ProfessionalEntryWrapper>
-        <ProfessionalEntryTitle>{content.title}</ProfessionalEntryTitle>
-        <ProfessionalEntryOneLiner>
-          {content.oneLiner}
-        </ProfessionalEntryOneLiner>
-        <ProfessionalEntryImageWrapper
-          style={{
-            background: `url("/images/${content.imageID}.png")`,
-            backgroundSize: "cover",
-          }}
-        />
-      </ProfessionalEntryWrapper>
-    </StickyWrapper>
+    <ProfessionalEntryWrapper>
+      <ProfessionalEntryTitle>{content.title}</ProfessionalEntryTitle>
+      <ProfessionalEntryOneLiner>{content.oneLiner}</ProfessionalEntryOneLiner>
+      <ProfessionalEntryImageWrapper
+        style={{
+          background: `url("/images/${content.imageID}.png")`,
+          backgroundSize: "cover",
+        }}
+      />
+    </ProfessionalEntryWrapper>
   );
 };
 

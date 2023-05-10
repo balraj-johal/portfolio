@@ -1,10 +1,6 @@
 import { styled } from "@phntms/css-components";
 import css from "./style.module.css";
 
-export const StickyWrapper = styled('div', {
-  css: css.StickyWrapper,
-})
-
 export const ProfessionalEntryWrapper = styled('div', {
   css: css.ProfessionalEntryWrapper,
 })

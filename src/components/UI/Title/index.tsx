@@ -6,11 +6,9 @@ interface Props {
 
 const Title = ({ children }: Props) => {
   return (
-    <div>
-      <StyledH1>
-        <Text animate>{children}</Text>
-      </StyledH1>
-    </div>
+    <StyledH1>
+      <Text>{children}</Text>
+    </StyledH1>
   );
 };
 
