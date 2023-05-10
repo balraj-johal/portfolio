@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@phntms/css-components": "^0.4.0",
     "@react-three/drei": "^9.66.1",
     "@react-three/fiber": "^8.13.0",
     "@studio-freight/lenis": "^1.0.12",
