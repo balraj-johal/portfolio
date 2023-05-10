@@ -67,8 +67,8 @@ float snoise(vec2 v) {
 float getNoise(vec2 uv, vec2 stretchVector, vec2 scrollVector) {
   vec2 newUV = vec2(uv.x * stretchVector.x, uv.y * stretchVector.y) + scrollVector;
   // melt this mf towards the right hand side of the screen
-  newUV.x = newUV.x * pow(uv.x * 2.0, 1.5);
-  newUV.y = newUV.y * pow(uv.y, 1.5);
+  // newUV.x = newUV.x * pow(uv.x * 2.0, 1.5);
+  // newUV.y = newUV.y * pow(uv.y, 1.5);
 
   float noiseScale = 3.0;
   float noise1 = snoise(curl(newUV * noiseScale));
@@ -162,12 +162,11 @@ void main() {
 const PLANE_SCALE = 1.5;
 const SEGMENTS = 120;
 const LIGHT_Z = 5;
+const SCROLL_TIME_INFLUENCE = 0.25;
 
 interface Props {
   mousePos: MutableRefObject<MousePos>;
 }
-
-const SCROLL_TIME_INFLUENCE = 0.00025;
 
 const GradientBGPlane = ({ mousePos }: Props) => {
   const { scrollDiff } = useGradientConfig();
