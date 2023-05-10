@@ -5,3 +5,7 @@ import css from "./style.module.css";
 export const HeroWrapper = styled(FullHeight, {
   css: css.HeroWrapper,
 })
+
+export const Subtitle = styled("span", {
+  css: css.Subtitle,
+})
