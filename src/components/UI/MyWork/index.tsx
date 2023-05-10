@@ -1,3 +1,4 @@
+import Nav from "../Nav";
 import { MyWorkWrapper } from "./styles";
 
 interface Props {
@@ -5,7 +6,12 @@ interface Props {
 }
 
 const MyWork = ({ children }: Props) => {
-  return <MyWorkWrapper>{children}</MyWorkWrapper>;
+  return (
+    <MyWorkWrapper>
+      <Nav />
+      {children}
+    </MyWorkWrapper>
+  );
 };
 
 export default MyWork;
