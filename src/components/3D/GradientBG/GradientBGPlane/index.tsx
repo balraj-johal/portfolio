@@ -1,5 +1,6 @@
 "use client";
 
+import { useGradientConfig } from "@/contexts/gradient";
 import { CurlNoise } from "@/utils/shaders";
 import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -166,7 +167,10 @@ interface Props {
   mousePos: MutableRefObject<MousePos>;
 }
 
+const SCROLL_TIME_INFLUENCE = 0.00025;
+
 const GradientBGPlane = ({ mousePos }: Props) => {
+  const { scrollDiff } = useGradientConfig();
   const { viewport } = useThree();
   const material = useRef<ShaderMaterial>(null);
 
@@ -177,9 +181,12 @@ const GradientBGPlane = ({ mousePos }: Props) => {
     time: { value: 0.0 },
   };
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!material.current) return;
-    material.current.uniforms.time.value = state.clock.getElapsedTime();
+    const currentTime = material.current.uniforms.time.value;
+    const newTime =
+      currentTime + delta + scrollDiff.current * SCROLL_TIME_INFLUENCE;
+    material.current.uniforms.time.value = newTime;
     material.current.uniforms.lightPosition.value = new Vector3(
       mousePos.current.x,
       mousePos.current.y,
