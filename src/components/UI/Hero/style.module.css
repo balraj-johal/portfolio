@@ -1,0 +1,6 @@
+div.HeroWrapper {
+  display: flex;
+  align-items: center;
+
+  padding-bottom: 8rem;
+}
