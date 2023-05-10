@@ -23,9 +23,9 @@ p.ProfessionalEntryOneLiner {
   margin-bottom: 2rem;
 }
 
-div.ProfessionalEntryImageWrapper {
+a.ProfessionalEntryImageLink {
   width: 100%;
-  max-width: 900px;
+  max-width: 70%;
   flex-grow: 1;
   background-size: cover;
 }

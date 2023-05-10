@@ -13,8 +13,8 @@ export const ProfessionalEntryOneLiner = styled('p', {
   css: css.ProfessionalEntryOneLiner,
 })
 
-export const ProfessionalEntryImageWrapper = styled('div', {
-  css: css.ProfessionalEntryImageWrapper,
+export const ProfessionalEntryImageLink = styled('a', {
+  css: css.ProfessionalEntryImageLink,
 })
 
 export const ProfessionalEntryImage = styled('img', {
