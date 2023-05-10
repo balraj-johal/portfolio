@@ -153,7 +153,7 @@ void main() {
   vec3 totalLightingValue = (ambient + diffuse + specular);
   vec3 result = totalLightingValue * objectColor;
 
-  vec3 color1 = vec3(1.,0.486,0.302);
+  vec3 color1 = vec3(0.788,0.431,0.302);
   vec3 color2 = vec3(0.518,0.671,0.643);
 
   gl_FragColor = vec4(result, 1.0);

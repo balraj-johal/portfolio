@@ -21,7 +21,3 @@ span.Text {
 span.Text_Animate {
   transform: translate(0);
 }
-
-.Text_Red {
-  color: red;
-}

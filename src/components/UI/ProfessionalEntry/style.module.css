@@ -1,0 +1,32 @@
+div.ProfessionalEntryWrapper {
+  height: 100vh;
+  padding: 14vh 2vw 14vh 8vw;
+  color: white;
+
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+h2.ProfessionalEntryTitle {
+  margin: 0;
+}
+
+p.ProfessionalEntryOneLiner {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+div.StickyWrapper {
+  height: 180vh;
+  position: relative;
+}
+
+div.ProfessionalEntryImageWrapper {
+  width: 100%;
+  max-width: 900px;
+  flex-grow: 1;
+  background-size: cover;
+}
