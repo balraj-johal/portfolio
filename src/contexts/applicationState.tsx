@@ -7,7 +7,6 @@ import {
   useState,
   useEffect,
 } from "react";
-export type Theme = "inverted" | "default";
 
 interface ContextProps {
   loading: boolean;
