@@ -1,4 +1,4 @@
-h1.StyledH1 {
+h1.HeadingOne {
   font-size: 5.5rem;
 
   margin: 0;
@@ -19,7 +19,10 @@ span.Text {
   margin-bottom: 1rem;
   line-height: 1em;
 
+  transform: translateY(120%);
+}
+
+span.Text_Animate {
   animation: reveal 700ms ease forwards;
   animation-delay: 400ms;
-  transform: translateY(120%);
 }

@@ -1,14 +1,19 @@
-import { StyledH1, Text } from "./styles";
+"use client";
+
+import { useApplicationState } from "@/contexts/applicationState";
+import { HeadingOne, Text } from "./styles";
 
 interface Props {
   children: React.ReactNode;
 }
 
 const Title = ({ children }: Props) => {
+  const { loading } = useApplicationState();
+
   return (
-    <StyledH1>
-      <Text>{children}</Text>
-    </StyledH1>
+    <HeadingOne>
+      <Text animate={!loading}>{children}</Text>
+    </HeadingOne>
   );
 };
 

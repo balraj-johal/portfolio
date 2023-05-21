@@ -1,0 +1,23 @@
+div.LoadingSplashWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  transition: opacity 200ms ease;
+  opacity: 0;
+  pointer-events: none;
+
+  background-color: #00000033;
+}
+
+div.LoadingSplashWrapper_Loading {
+  opacity: 1;
+  pointer-events: all;
+}

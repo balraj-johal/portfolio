@@ -1,5 +1,4 @@
-"use client";
-
+import useRouterURL from "@/hooks/useRouterURL";
 import {
   createContext,
   useContext,
@@ -14,7 +13,7 @@ export type Theme = "inverted" | "default";
 
 interface ContextProps {
   loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
+  startLoading: () => void;
 }
 
 interface ProviderProps {
@@ -23,18 +22,29 @@ interface ProviderProps {
 
 const ApplicationStateContext = createContext<ContextProps>({} as ContextProps);
 
-const ApplicationStateProvider = ({ children }: ProviderProps) => {
-  const [loading, setLoading] = useState(true);
-  const path = window.location.pathname;
+const TRANSITION_DURATION = 1000; // ms
 
+const ApplicationStateProvider = ({ children }: ProviderProps) => {
+  const url = useRouterURL();
+  const [loading, setLoading] = useState(true);
+
+  const startLoading = () => setLoading(true);
+
+  // watch URL for changes, and begin timer for finishing load
   useEffect(() => {
-    console.log(path);
-  }, [path]);
+    const loadedTimeout = setTimeout(() => {
+      if (loading) setLoading(false);
+    }, TRANSITION_DURATION);
+
+    return () => {
+      clearTimeout(loadedTimeout);
+    };
+  }, [url, loading]);
 
   const contextProps: ContextProps = useMemo(
     () => ({
       loading,
-      setLoading,
+      startLoading,
     }),
     [loading]
   );

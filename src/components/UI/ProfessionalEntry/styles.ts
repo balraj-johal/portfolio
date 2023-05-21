@@ -1,5 +1,6 @@
 import { styled } from "@phntms/css-components";
 import Link from "next/link";
+import TransitionLink from "../TransitionLink";
 import css from "./style.module.css";
 
 export const ProfessionalEntryWrapper = styled('div', {
@@ -14,7 +15,7 @@ export const ProfessionalEntryOneLiner = styled('p', {
   css: css.ProfessionalEntryOneLiner,
 })
 
-export const ProfessionalEntryImageLink = styled(Link, {
+export const ProfessionalEntryImageLink = styled(TransitionLink, {
   css: css.ProfessionalEntryImageLink,
 })
 

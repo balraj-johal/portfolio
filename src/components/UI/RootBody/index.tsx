@@ -1,8 +1,9 @@
 "use client";
 
 import { useGradientConfig } from "@/contexts/gradient";
+import useRouterURL from "@/hooks/useRouterURL";
 import { useLenis, Lenis as ReactLenis } from "@studio-freight/react-lenis";
-import React from "react";
+import React, { useEffect } from "react";
 import { RootBodyElement } from "./styles";
 
 interface Props {

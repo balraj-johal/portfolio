@@ -1,3 +1,5 @@
+"use client";
+
 import { ApplicationStateProvider } from "@/contexts/applicationState";
 import { GradientConfigProvider } from "@/contexts/gradient";
 

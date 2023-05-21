@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import "@/theme/type.css";
+import LoadingSplash from "@/components/UI/LoadingSplash";
 
 export const metadata = {
   title: "Balraj Johal",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <RootBody>
+          <LoadingSplash />
           <GradientBG />
           {children}
         </RootBody>
