@@ -1,4 +1,4 @@
-import { PROFRESSIONAL_ENTRIES } from "@/content/profressional";
+import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/profressional";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -14,11 +14,13 @@ export async function generateStaticParams() {
 }
 
 const isRouteValid = (slug: string) => {
-  for (const entry of PROFRESSIONAL_ENTRIES) {
-    if (entry.slug === slug) return true;
-  }
-  return false;
+  return !!getEntry(slug);
 };
+
+export async function generateMetadata({ params }: Props) {
+  const entry = getEntry(params.slug);
+  return { title: entry?.title };
+}
 
 export default function Work({ params }: Props) {
   const { slug } = params;

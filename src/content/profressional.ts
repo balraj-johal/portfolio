@@ -1,6 +1,5 @@
 import { ContentEntry } from "@/types/content";
 
-
 export const PROFRESSIONAL_ENTRIES: ContentEntry[] = [
   {
     slug: "festive-fiends",
@@ -38,3 +37,10 @@ export const PROFRESSIONAL_ENTRIES: ContentEntry[] = [
     href: "https://it.trustpilot.com/memes",
   },
 ];
+
+export const getEntry = (slug: string) => {
+  for (const entry of PROFRESSIONAL_ENTRIES) {
+    if (entry.slug === slug) return entry;
+  }
+  return undefined;
+}
