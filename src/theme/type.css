@@ -1,0 +1,9 @@
+.type-h1 {
+  font-family: var(--font-anton);
+  
+  line-height: 1.05em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  color: white;
+}

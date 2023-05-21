@@ -1,3 +1,4 @@
+import Title from "@/components/UI/Title";
 import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/profressional";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,10 +15,6 @@ export async function generateStaticParams() {
   }));
 }
 
-const isRouteValid = (slug: string) => {
-  return !!getEntry(slug);
-};
-
 export async function generateMetadata({ params }: Props) {
   const entry = getEntry(params.slug);
   return { title: entry?.title };
@@ -25,12 +22,13 @@ export async function generateMetadata({ params }: Props) {
 
 export default function Work({ params }: Props) {
   const { slug } = params;
-  if (!isRouteValid(slug)) notFound();
+  const entry = getEntry(slug);
+  if (!entry) notFound();
 
   return (
     <div>
       <Link href="/">Back</Link>
-      <h1>{slug}</h1>
+      <Title>{entry.title}</Title>
     </div>
   );
 }

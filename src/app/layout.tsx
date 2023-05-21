@@ -4,6 +4,7 @@ import RootBody from "@/components/UI/RootBody";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
+import "@/theme/type.css";
 
 export const metadata = {
   title: "Balraj Johal",

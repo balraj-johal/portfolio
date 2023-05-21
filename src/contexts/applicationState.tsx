@@ -8,6 +8,7 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 export type Theme = "inverted" | "default";
 
@@ -24,6 +25,11 @@ const ApplicationStateContext = createContext<ContextProps>({} as ContextProps);
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const [loading, setLoading] = useState(true);
+  const path = window.location.pathname;
+
+  useEffect(() => {
+    console.log(path);
+  }, [path]);
 
   const contextProps: ContextProps = useMemo(
     () => ({
