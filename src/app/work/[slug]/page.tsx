@@ -1,6 +1,6 @@
 import Title from "@/components/UI/Title";
 import TransitionLink from "@/components/UI/TransitionLink";
-import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/profressional";
+import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/professional";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
