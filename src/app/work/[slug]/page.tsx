@@ -1,7 +1,8 @@
-import Title from "@/components/UI/Title";
-import TransitionLink from "@/components/UI/TransitionLink";
-import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/professional";
 import { notFound } from "next/navigation";
+
+import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/professional";
+import TransitionLink from "@/components/UI/TransitionLink";
+import Title from "@/components/UI/Title";
 
 interface Props {
   params: {

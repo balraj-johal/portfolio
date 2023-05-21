@@ -1,11 +1,12 @@
 import { styled } from "@phntms/css-components";
+
 import css from "./style.module.css";
 
-export const MainElement = styled('main', {
+export const MainElement = styled("main", {
   css: css.MainElement,
   variants: {
     loading: {
       false: css.MainElement_Loaded,
-    }
-  }
-})
+    },
+  },
+});

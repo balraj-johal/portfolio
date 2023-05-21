@@ -1,5 +1,5 @@
-import NavLink from "./NavLink";
 import { NavWrapper } from "./styles";
+import NavLink from "./NavLink";
 
 interface Props {
   children?: React.ReactNode;

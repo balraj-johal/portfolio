@@ -43,4 +43,4 @@ export const getEntry = (slug: string) => {
     if (entry.slug === slug) return entry;
   }
   return undefined;
-}
+};

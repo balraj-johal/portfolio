@@ -1,10 +1,10 @@
-import GradientBG from "@/components/3D/GradientBG";
-import Providers from "@/components/Providers";
-import RootBody from "@/components/UI/RootBody";
-import LoadingSplash from "@/components/UI/LoadingSplash";
-import Main from "@/components/UI/Main";
-
 import { Analytics } from "@vercel/analytics/react";
+
+import RootBody from "@/components/UI/RootBody";
+import Main from "@/components/UI/Main";
+import LoadingSplash from "@/components/UI/LoadingSplash";
+import Providers from "@/components/Providers";
+import GradientBG from "@/components/3D/GradientBG";
 
 import "./globals.css";
 import "@/theme/animation.css";

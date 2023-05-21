@@ -1,12 +1,14 @@
 "use client";
 
-import { useGradientConfig } from "@/contexts/gradient";
-import { MousePos } from "@/types/events";
-import { CurlNoise } from "@/utils/shaders";
-import { Plane } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useRef } from "react";
+
 import { ShaderMaterial, Vector3, FrontSide } from "three";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Plane } from "@react-three/drei";
+
+import { CurlNoise } from "@/utils/shaders";
+import { MousePos } from "@/types/events";
+import { useGradientConfig } from "@/contexts/gradient";
 
 const vertexShader = `
 varying vec2 vUv;

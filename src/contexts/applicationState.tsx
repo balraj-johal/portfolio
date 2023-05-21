@@ -1,4 +1,3 @@
-import useRouterURL from "@/hooks/useRouterURL";
 import {
   createContext,
   useContext,
@@ -7,6 +6,8 @@ import {
   useState,
   useEffect,
 } from "react";
+
+import useRouterURL from "@/hooks/useRouterURL";
 
 interface ContextProps {
   loading: boolean;

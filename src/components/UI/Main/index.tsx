@@ -1,6 +1,7 @@
 "use client";
 
 import { useApplicationState } from "@/contexts/applicationState";
+
 import { MainElement } from "./styles";
 
 interface Props {

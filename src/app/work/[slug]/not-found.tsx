@@ -1,5 +1,5 @@
-import FullHeight from "@/components/UI/FullHeight";
 import TransitionLink from "@/components/UI/TransitionLink";
+import FullHeight from "@/components/UI/FullHeight";
 
 export default function NotFound() {
   return (

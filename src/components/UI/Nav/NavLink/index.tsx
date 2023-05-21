@@ -1,6 +1,7 @@
 "use client";
 
 import { useLenis } from "@studio-freight/react-lenis";
+
 import { NavLinkElement } from "./styles";
 
 interface Props {

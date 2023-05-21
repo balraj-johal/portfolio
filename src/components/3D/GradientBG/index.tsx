@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import GradientBGPlane from "../GradientBGPlane";
+
 import { MousePos } from "@/types/events";
+
+import GradientBGPlane from "../GradientBGPlane";
 import { CanvasElement, CanvasWrapper } from "./styles";
 
 const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };

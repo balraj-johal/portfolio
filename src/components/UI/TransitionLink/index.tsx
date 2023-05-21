@@ -1,8 +1,10 @@
 "use client";
 
-import { useApplicationState } from "@/contexts/applicationState";
-import Link from "next/link";
 import { CSSProperties } from "react";
+
+import Link from "next/link";
+
+import { useApplicationState } from "@/contexts/applicationState";
 
 interface Props {
   children: React.ReactNode;

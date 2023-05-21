@@ -1,4 +1,5 @@
 import { ContentEntry } from "@/types/content";
+
 import {
   ProfessionalEntryImage,
   ProfessionalEntryLink,

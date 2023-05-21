@@ -1,7 +1,7 @@
 "use client";
 
-import { ApplicationStateProvider } from "@/contexts/applicationState";
 import { GradientConfigProvider } from "@/contexts/gradient";
+import { ApplicationStateProvider } from "@/contexts/applicationState";
 
 interface Props {
   children: React.ReactNode;
