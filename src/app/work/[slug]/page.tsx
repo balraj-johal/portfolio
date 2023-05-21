@@ -1,4 +1,5 @@
 import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/profressional";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -26,5 +27,10 @@ export default function Work({ params }: Props) {
   const { slug } = params;
   if (!isRouteValid(slug)) notFound();
 
-  return <h1>{slug}</h1>;
+  return (
+    <div>
+      <Link href="/">Back</Link>
+      <h1>{slug}</h1>
+    </div>
+  );
 }
