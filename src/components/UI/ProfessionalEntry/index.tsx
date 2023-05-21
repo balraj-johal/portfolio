@@ -24,7 +24,7 @@ const ProfessionalEntry = ({ content }: Props) => {
       <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
       <ProfessionalEntryLink href={linkHref}>
-        <ProfessionalEntryImage src={imageSRC} alt={imageAlt} />
+        <ProfessionalEntryImage src={imageSRC} alt={imageAlt} fill />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
   );

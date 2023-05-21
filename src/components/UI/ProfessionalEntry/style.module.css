@@ -24,10 +24,11 @@ p.ProfessionalEntryOneLiner {
 }
 
 a.ProfessionalEntryLink {
+  position: relative;
+
   width: 100%;
   max-width: 70%;
   flex-grow: 1;
-  background-size: cover;
 }
 
 img.ProfessionalEntryImage {
