@@ -8,7 +8,6 @@ import {
   MutableRefObject,
   useMemo,
 } from "react";
-export type Theme = "inverted" | "default";
 
 interface ContextProps {
   scrollDiff: MutableRefObject<number>;
