@@ -53,6 +53,8 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
   );
 };
 
+/** Provides details about the overall website state
+ * @returns loading: boolean */
 const useApplicationState = () => useContext(ApplicationStateContext);
 
 export { ApplicationStateProvider, useApplicationState };
