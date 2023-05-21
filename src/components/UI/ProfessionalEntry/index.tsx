@@ -1,3 +1,4 @@
+import { ContentEntry } from "@/types/content";
 import {
   ProfessionalEntryImageLink,
   ProfessionalEntryOneLiner,
@@ -5,16 +6,9 @@ import {
   ProfessionalEntryWrapper,
 } from "./styles";
 
-export type Entry = {
-  title: string;
-  oneLiner: string;
-  imageID: string;
-  href: string;
-};
-
 interface Props {
   children?: React.ReactNode;
-  content: Entry;
+  content: ContentEntry;
 }
 
 const ProfessionalEntry = ({ content }: Props) => {
