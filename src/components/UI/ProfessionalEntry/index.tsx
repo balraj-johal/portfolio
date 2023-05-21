@@ -18,7 +18,7 @@ const ProfessionalEntry = ({ content }: Props) => {
       <ProfessionalEntryOneLiner>{content.oneLiner}</ProfessionalEntryOneLiner>
       <ProfessionalEntryImageLink
         aria-label={`link to ${content.title}`}
-        href={content.href}
+        href={`/work/${content.slug}`}
         style={{
           background: `url("/images/${content.imageID}.png")`,
           backgroundSize: "cover",
