@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { CanvasElement } from "../Canvas/styles";
-import { Perf } from "r3f-perf";
 import css from "../Canvas/style.module.css";
 import GradientBGPlane from "./GradientBGPlane";
 
@@ -29,7 +28,6 @@ const GradientBG = () => {
       }
     >
       <CanvasElement>
-        <Perf />
         <GradientBGPlane mousePos={mousePos} />
       </CanvasElement>
     </div>
