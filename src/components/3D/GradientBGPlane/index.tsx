@@ -165,13 +165,13 @@ void main() {
 const PLANE_SCALE = 1.5;
 const SEGMENTS = 100;
 const LIGHT_Z = 5;
+
+const Z_ROTATION = -0.3;
 const SCROLL_TIME_INFLUENCE = 0.0025;
 
 interface Props {
   mousePos: MutableRefObject<MousePos>;
 }
-
-const Z_ROTATION = -0.25;
 
 const GradientBGPlane = ({ mousePos }: Props) => {
   const { scrollDiff } = useGradientConfig();
