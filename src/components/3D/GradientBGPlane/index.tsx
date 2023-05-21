@@ -162,7 +162,7 @@ void main() {
 }
 `;
 
-const PLANE_SCALE = 1.5;
+const PLANE_SCALE = 1.65;
 const SEGMENTS = 100;
 const LIGHT_Z = 5;
 

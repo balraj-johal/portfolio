@@ -5,8 +5,6 @@ import {
   ReactNode,
   useMemo,
   useState,
-  Dispatch,
-  SetStateAction,
   useEffect,
 } from "react";
 export type Theme = "inverted" | "default";

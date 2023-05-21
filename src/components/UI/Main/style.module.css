@@ -1,0 +1,10 @@
+main.MainElement {
+  height: 100%;
+
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+main.MainElement_Loaded {
+  opacity: 1;
+}
