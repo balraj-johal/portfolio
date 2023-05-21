@@ -23,9 +23,15 @@ p.ProfessionalEntryOneLiner {
   margin-bottom: 2rem;
 }
 
-a.ProfessionalEntryImageLink {
+a.ProfessionalEntryLink {
   width: 100%;
   max-width: 70%;
   flex-grow: 1;
   background-size: cover;
+}
+
+img.ProfessionalEntryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

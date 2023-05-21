@@ -1,6 +1,7 @@
 import { ContentEntry } from "@/types/content";
 import {
-  ProfessionalEntryImageLink,
+  ProfessionalEntryImage,
+  ProfessionalEntryLink,
   ProfessionalEntryOneLiner,
   ProfessionalEntryTitle,
   ProfessionalEntryWrapper,
@@ -12,18 +13,17 @@ interface Props {
 }
 
 const ProfessionalEntry = ({ content }: Props) => {
+  const imageSRC = `/images/${content.imageID}.png`;
+  const entryLinkHref = `/work/${content.slug}`;
+  const entryLinkLabel = `link to ${content.title}`;
+
   return (
     <ProfessionalEntryWrapper>
       <ProfessionalEntryTitle>{content.title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{content.oneLiner}</ProfessionalEntryOneLiner>
-      <ProfessionalEntryImageLink
-        aria-label={`link to ${content.title}`}
-        href={`/work/${content.slug}`}
-        style={{
-          background: `url("/images/${content.imageID}.png")`,
-          backgroundSize: "cover",
-        }}
-      ></ProfessionalEntryImageLink>
+      <ProfessionalEntryLink aria-label={entryLinkLabel} href={entryLinkHref}>
+        <ProfessionalEntryImage src={imageSRC} />
+      </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
   );
 };
