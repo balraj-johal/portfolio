@@ -1,6 +1,6 @@
 "use client";
 
-import Lenis from "@studio-freight/lenis";
+import { useLenis } from "@studio-freight/react-lenis";
 import { NavLinkElement } from "./styles";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const NavLink = ({ id }: Props) => {
-  const lenis = new Lenis();
+  const lenis = useLenis();
   const href = `#${id}`;
 
   return (
