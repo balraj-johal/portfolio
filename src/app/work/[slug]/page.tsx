@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default function Work({ params }: Props) {
   const { slug } = params;
+
   const entry = getEntry(slug);
   if (!entry) notFound();
 
