@@ -8,6 +8,6 @@ div.HeroWrapper {
 }
 
 span.Subtitle {
-  color: white;
+  color: var(--color-white);
   font-style: italic;
 }

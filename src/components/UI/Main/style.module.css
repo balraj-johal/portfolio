@@ -2,7 +2,7 @@ main.MainElement {
   height: 100%;
 
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--speed-regular) ease;
 }
 
 main.MainElement_Loaded {

@@ -5,5 +5,5 @@
   letter-spacing: 2px;
   text-transform: uppercase;
 
-  color: white;
+  color: var(--color-white);
 }

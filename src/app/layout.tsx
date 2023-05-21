@@ -2,12 +2,13 @@ import GradientBG from "@/components/3D/GradientBG";
 import Providers from "@/components/Providers";
 import RootBody from "@/components/UI/RootBody";
 import LoadingSplash from "@/components/UI/LoadingSplash";
+import Main from "@/components/UI/Main";
 
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import "@/theme/type.css";
-import Main from "@/components/UI/Main";
+import "@/theme/colors.css";
 
 export const metadata = {
   title: "Balraj Johal",

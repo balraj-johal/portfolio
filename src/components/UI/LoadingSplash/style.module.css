@@ -10,7 +10,7 @@ div.LoadingSplashWrapper {
   left: 0;
   z-index: 100;
 
-  transition: opacity 400ms ease;
+  transition: opacity var(--speed-very-slow) ease;
   opacity: 0;
   pointer-events: none;
 
