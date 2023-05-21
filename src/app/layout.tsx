@@ -1,6 +1,7 @@
 import GradientBG from "@/components/3D/GradientBG";
 import Providers from "@/components/Providers";
 import RootBody from "@/components/UI/RootBody";
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
@@ -21,6 +22,7 @@ export default function RootLayout({
           <GradientBG />
           {children}
         </RootBody>
+        <Analytics />
       </Providers>
     </html>
   );
