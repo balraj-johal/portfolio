@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import GradientBGPlane from "./GradientBGPlane";
+import GradientBGPlane from "../GradientBGPlane";
 import { MousePos } from "@/types/events";
 import { CanvasElement, CanvasWrapper } from "./styles";
 
