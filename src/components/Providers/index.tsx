@@ -7,6 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
+/** This component wraps all application providers for cleaner TSX tree */
 const Providers = ({ children }: Props) => {
   return (
     <ApplicationStateProvider>
