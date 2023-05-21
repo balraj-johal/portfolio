@@ -1,6 +1,7 @@
 import GradientBG from "@/components/3D/GradientBG";
+import Providers from "@/components/Providers";
 import RootBody from "@/components/UI/RootBody";
-import { GradientConfigProvider } from "@/contexts/gradient";
+
 import "./globals.css";
 
 export const metadata = {
@@ -15,12 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GradientConfigProvider>
+      <Providers>
         <RootBody>
           <GradientBG />
           {children}
         </RootBody>
-      </GradientConfigProvider>
+      </Providers>
     </html>
   );
 }
