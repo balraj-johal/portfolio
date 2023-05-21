@@ -7,8 +7,9 @@ import Main from "@/components/UI/Main";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
-import "@/theme/type.css";
+import "@/theme/animation.css";
 import "@/theme/colors.css";
+import "@/theme/type.css";
 
 export const metadata = {
   title: "Balraj Johal",
