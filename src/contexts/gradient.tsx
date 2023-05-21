@@ -6,6 +6,7 @@ import {
   ReactNode,
   useRef,
   MutableRefObject,
+  useMemo,
 } from "react";
 export type Theme = "inverted" | "default";
 
@@ -27,13 +28,16 @@ const GradientConfigProvider = ({ children }: ProviderProps) => {
     scrollDiff.current = Math.abs(delta);
   };
 
+  const contextProps: ContextProps = useMemo(
+    () => ({
+      scrollDiff,
+      setScrollDiff,
+    }),
+    []
+  );
+
   return (
-    <GradientConfigContext.Provider
-      value={{
-        scrollDiff,
-        setScrollDiff,
-      }}
-    >
+    <GradientConfigContext.Provider value={contextProps}>
       {children}
     </GradientConfigContext.Provider>
   );
