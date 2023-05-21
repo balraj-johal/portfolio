@@ -11,7 +11,7 @@ import {
 
 interface ContextProps {
   scrollDiff: MutableRefObject<number>;
-  setScrollDiff: (delta: number) => void;
+  setScrollDiff: (velocity: number) => void;
 }
 
 interface ProviderProps {
@@ -23,8 +23,8 @@ const GradientConfigContext = createContext<ContextProps>({} as ContextProps);
 const GradientConfigProvider = ({ children }: ProviderProps) => {
   const scrollDiff = useRef<number>(0);
 
-  const setScrollDiff = (delta: number) => {
-    scrollDiff.current = Math.abs(delta);
+  const setScrollDiff = (velocity: number) => {
+    scrollDiff.current = Math.abs(velocity);
   };
 
   const contextProps: ContextProps = useMemo(
