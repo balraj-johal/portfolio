@@ -13,16 +13,18 @@ interface Props {
 }
 
 const ProfessionalEntry = ({ content }: Props) => {
-  const imageSRC = `/images/${content.imageID}.png`;
-  const entryLinkHref = `/work/${content.slug}`;
-  const entryLinkLabel = `link to ${content.title}`;
+  const { imageID, title, slug, oneLiner } = content;
+
+  const imageSRC = `/images/${imageID}.png`;
+  const imageAlt = `link to ${title}`;
+  const linkHref = `/work/${slug}`;
 
   return (
     <ProfessionalEntryWrapper>
-      <ProfessionalEntryTitle>{content.title}</ProfessionalEntryTitle>
-      <ProfessionalEntryOneLiner>{content.oneLiner}</ProfessionalEntryOneLiner>
-      <ProfessionalEntryLink aria-label={entryLinkLabel} href={entryLinkHref}>
-        <ProfessionalEntryImage src={imageSRC} />
+      <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
+      <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
+      <ProfessionalEntryLink href={linkHref}>
+        <ProfessionalEntryImage src={imageSRC} alt={imageAlt} />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
   );

@@ -1,4 +1,5 @@
 import { styled } from "@phntms/css-components";
+import Image from "next/image";
 import TransitionLink from "../TransitionLink";
 import css from "./style.module.css";
 
@@ -18,6 +19,6 @@ export const ProfessionalEntryLink = styled(TransitionLink, {
   css: css.ProfessionalEntryLink,
 })
 
-export const ProfessionalEntryImage = styled('img', {
+export const ProfessionalEntryImage = styled(Image, {
   css: css.ProfessionalEntryImage,
 })
