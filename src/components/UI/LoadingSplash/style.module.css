@@ -13,8 +13,6 @@ div.LoadingSplashWrapper {
   transition: opacity var(--speed-very-slow) ease;
   opacity: 0;
   pointer-events: none;
-
-  background-color: #00000033;
 }
 
 div.LoadingSplashWrapper_Loading {

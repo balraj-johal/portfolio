@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getEntry, PROFRESSIONAL_ENTRIES } from "@/content/professional";
 import TransitionLink from "@/components/UI/TransitionLink";
 import Title from "@/components/UI/Title";
+import Main from "@/components/UI/Main";
 
 interface Props {
   params: {
@@ -28,9 +29,9 @@ export default function Work({ params }: Props) {
   if (!entry) notFound();
 
   return (
-    <div>
+    <Main>
       <TransitionLink href="/">Back</TransitionLink>
       <Title>{entry.title}</Title>
-    </div>
+    </Main>
   );
 }

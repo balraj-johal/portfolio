@@ -23,6 +23,6 @@ span.Text {
 }
 
 span.Text_Animate {
-  animation: reveal var(--speed-slowest) ease forwards;
+  animation: reveal var(--speed-slow) ease forwards;
   animation-delay: var(--speed-very-slow);
 }
