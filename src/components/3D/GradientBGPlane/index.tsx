@@ -1,6 +1,6 @@
 "use client";
 
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 
 import { ShaderMaterial, Vector3, FrontSide } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -9,6 +9,7 @@ import { Plane } from "@react-three/drei";
 import { CurlNoise } from "@/utils/shaders";
 import { MousePos } from "@/types/events";
 import { useGradientConfig } from "@/contexts/gradient";
+import { useApplicationState } from "@/contexts/applicationState";
 
 const vertexShader = `
 varying vec2 vUv;
@@ -176,6 +177,7 @@ interface Props {
 }
 
 const GradientBGPlane = ({ mousePos }: Props) => {
+  const { finishLoading } = useApplicationState();
   const { scrollDiff } = useGradientConfig();
   const { viewport } = useThree();
   const material = useRef<ShaderMaterial>(null);
@@ -199,6 +201,12 @@ const GradientBGPlane = ({ mousePos }: Props) => {
       LIGHT_Z
     );
   });
+
+  const state = useThree((state) => state);
+  useEffect(() => {
+    if (state) finishLoading();
+    console.log(state);
+  }, [finishLoading, state]);
 
   return (
     <Plane

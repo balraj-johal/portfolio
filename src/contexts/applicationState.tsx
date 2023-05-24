@@ -12,6 +12,8 @@ import useRouterURL from "@/hooks/useRouterURL";
 interface ContextProps {
   transitioning: boolean;
   startTransitioning: () => void;
+  loading: boolean;
+  finishLoading: () => void;
 }
 
 interface ProviderProps {
@@ -24,8 +26,10 @@ const TRANSITION_DURATION = 1000; // ms
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const url = useRouterURL();
-  const [transitioning, setTransitioning] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [transitioning, setTransitioning] = useState(false);
 
+  const finishLoading = () => setLoading(false);
   const startTransitioning = () => setTransitioning(true);
 
   // watch URL for changes, and begin timer for finishing load
@@ -43,8 +47,10 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
     () => ({
       transitioning,
       startTransitioning,
+      loading,
+      finishLoading,
     }),
-    [transitioning]
+    [loading, transitioning]
   );
 
   return (
