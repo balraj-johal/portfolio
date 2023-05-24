@@ -9,10 +9,10 @@ interface Props {
 }
 
 const Main = ({ children, ...rest }: Props) => {
-  const { loading } = useApplicationState();
+  const { transitioning } = useApplicationState();
 
   return (
-    <MainElement loading={loading} {...rest}>
+    <MainElement transitioning={transitioning} {...rest}>
       {children}
     </MainElement>
   );

@@ -19,7 +19,7 @@ type LenisScrollEvent = {
 
 const RootBody = ({ children }: Props) => {
   const { setScrollDiff } = useGradientConfig();
-  const { loading } = useApplicationState();
+  const { transitioning } = useApplicationState();
   const lenis = useLenis();
 
   useLenis(({ velocity }: LenisScrollEvent) => {
@@ -28,9 +28,9 @@ const RootBody = ({ children }: Props) => {
 
   // reset scroll progress on any route change
   useEffect(() => {
-    if (!lenis || !loading) return;
+    if (!lenis || !transitioning) return;
     lenis.scrollTo(0, { immediate: true });
-  }, [lenis, loading]);
+  }, [lenis, transitioning]);
 
   return (
     <ReactLenis root>

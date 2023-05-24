@@ -23,11 +23,13 @@ const GradientBG = () => {
     (mousePos.current = getRelativeMousePos(e));
 
   return (
-    <CanvasWrapper onMouseMove={updateMousePos}>
-      <CanvasElement>
-        <GradientBGPlane mousePos={mousePos} />
-      </CanvasElement>
-    </CanvasWrapper>
+    <>
+      <CanvasWrapper onMouseMove={updateMousePos}>
+        <CanvasElement>
+          <GradientBGPlane mousePos={mousePos} />
+        </CanvasElement>
+      </CanvasWrapper>
+    </>
   );
 };
 

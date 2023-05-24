@@ -10,8 +10,8 @@ import {
 import useRouterURL from "@/hooks/useRouterURL";
 
 interface ContextProps {
-  loading: boolean;
-  startLoading: () => void;
+  transitioning: boolean;
+  startTransitioning: () => void;
 }
 
 interface ProviderProps {
@@ -24,27 +24,27 @@ const TRANSITION_DURATION = 1000; // ms
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const url = useRouterURL();
-  const [loading, setLoading] = useState(true);
+  const [transitioning, setTransitioning] = useState(true);
 
-  const startLoading = () => setLoading(true);
+  const startTransitioning = () => setTransitioning(true);
 
   // watch URL for changes, and begin timer for finishing load
   useEffect(() => {
     const loadedTimeout = setTimeout(() => {
-      if (loading) setLoading(false);
+      if (transitioning) setTransitioning(false);
     }, TRANSITION_DURATION);
 
     return () => {
       clearTimeout(loadedTimeout);
     };
-  }, [url, loading]);
+  }, [url, transitioning]);
 
   const contextProps: ContextProps = useMemo(
     () => ({
-      loading,
-      startLoading,
+      transitioning,
+      startTransitioning,
     }),
-    [loading]
+    [transitioning]
   );
 
   return (
@@ -55,7 +55,7 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
 };
 
 /** Provides details about the overall website state
- * @returns loading: boolean */
+ * @returns transitioning: boolean */
 const useApplicationState = () => useContext(ApplicationStateContext);
 
 export { ApplicationStateProvider, useApplicationState };

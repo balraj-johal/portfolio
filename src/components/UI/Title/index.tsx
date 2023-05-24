@@ -9,11 +9,11 @@ interface Props {
 }
 
 const Title = ({ children, ...rest }: Props) => {
-  const { loading } = useApplicationState();
+  const { transitioning } = useApplicationState();
 
   return (
     <HeadingOne>
-      <Text animate={!loading} {...rest}>
+      <Text animate={!transitioning} {...rest}>
         {children}
       </Text>
     </HeadingOne>

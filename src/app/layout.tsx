@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/UI/RootBody";
-import LoadingSplash from "@/components/UI/LoadingSplash";
+import TransitionSplash from "@/components/UI/TransitionSplash";
 import Providers from "@/components/Providers";
 import GradientBG from "@/components/3D/GradientBG";
 
@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <RootBody>
-          <LoadingSplash />
+          <TransitionSplash />
           <GradientBG />
           {children}
         </RootBody>

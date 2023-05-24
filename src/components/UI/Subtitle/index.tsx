@@ -9,10 +9,10 @@ interface Props {
 }
 
 const Subtitle = ({ children, ...rest }: Props) => {
-  const { loading } = useApplicationState();
+  const { transitioning } = useApplicationState();
 
   return (
-    <SubtitleElement animate={!loading} {...rest}>
+    <SubtitleElement animate={!transitioning} {...rest}>
       {children}
     </SubtitleElement>
   );

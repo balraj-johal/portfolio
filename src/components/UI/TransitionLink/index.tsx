@@ -14,10 +14,15 @@ interface Props {
 }
 
 const TransitionLink = ({ href, children, className, ...rest }: Props) => {
-  const { startLoading } = useApplicationState();
+  const { startTransitioning } = useApplicationState();
 
   return (
-    <Link href={href} onClick={startLoading} className={className} {...rest}>
+    <Link
+      href={href}
+      onClick={startTransitioning}
+      className={className}
+      {...rest}
+    >
       {children}
     </Link>
   );

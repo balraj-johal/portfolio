@@ -1,4 +1,4 @@
-div.LoadingSplashWrapper {
+div.TransitionSplashWrapper {
   height: 100%;
   width: 100%;
   display: flex;
@@ -10,12 +10,14 @@ div.LoadingSplashWrapper {
   left: 0;
   z-index: 100;
 
+  color: var(--color-white);
+
   transition: opacity var(--speed-very-slow) ease;
   opacity: 0;
   pointer-events: none;
 }
 
-div.LoadingSplashWrapper_Loading {
+div.TransitionSplashWrapper_Transitioning {
   opacity: 1;
   pointer-events: all;
 }
