@@ -8,12 +8,14 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Title = ({ children }: Props) => {
+const Title = ({ children, ...rest }: Props) => {
   const { loading } = useApplicationState();
 
   return (
     <HeadingOne>
-      <Text animate={!loading}>{children}</Text>
+      <Text animate={!loading} {...rest}>
+        {children}
+      </Text>
     </HeadingOne>
   );
 };

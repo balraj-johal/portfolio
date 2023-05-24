@@ -6,8 +6,3 @@ div.HeroWrapper {
   padding: 2rem;
   padding-bottom: 8rem;
 }
-
-span.Subtitle {
-  color: var(--color-white);
-  font-style: italic;
-}

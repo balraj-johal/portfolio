@@ -1,16 +1,11 @@
-import { HeroWrapper, Subtitle } from "./styles";
+import { HeroWrapper } from "./styles";
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const Hero = ({ children, ...rest }: Props) => {
-  return (
-    <HeroWrapper {...rest}>
-      {children}
-      <Subtitle>I do some things on the internet</Subtitle>
-    </HeroWrapper>
-  );
+  return <HeroWrapper {...rest}>{children}</HeroWrapper>;
 };
 
 export default Hero;
