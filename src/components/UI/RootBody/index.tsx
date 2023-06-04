@@ -29,7 +29,14 @@ const RootBody = ({ children }: Props) => {
   // reset scroll progress on any route change
   useEffect(() => {
     if (!lenis || !transitioning) return;
-    lenis.scrollTo(0, { immediate: true });
+
+    const scrollToTopTimeout = setTimeout(() => {
+      lenis.scrollTo(0, { immediate: true });
+    }, 200);
+
+    return () => {
+      clearTimeout(scrollToTopTimeout);
+    };
   }, [lenis, transitioning]);
 
   return (
