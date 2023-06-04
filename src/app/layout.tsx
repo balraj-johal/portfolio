@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { Analytics } from "@vercel/analytics/react";
 
 import TransitionSplash from "@/components/UI/TransitionSplash";
@@ -23,15 +25,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Providers>
-        <RootBody>
-          <TransitionSplash />
-          <LoadingSplash />
-          <GradientBG />
-          {children}
-        </RootBody>
-        <Analytics />
-      </Providers>
+      <Suspense fallback={null}>
+        <Providers>
+          <RootBody>
+            <TransitionSplash />
+            <LoadingSplash />
+            <GradientBG />
+            {children}
+          </RootBody>
+          <Analytics />
+        </Providers>
+      </Suspense>
     </html>
   );
 }
