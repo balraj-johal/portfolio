@@ -205,7 +205,6 @@ const GradientBGPlane = ({ mousePos }: Props) => {
   const state = useThree((state) => state);
   useEffect(() => {
     if (state) finishLoading();
-    console.log(state);
   }, [finishLoading, state]);
 
   return (
