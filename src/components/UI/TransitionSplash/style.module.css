@@ -12,7 +12,8 @@ div.TransitionSplashWrapper {
 
   color: var(--color-white);
 
-  transition: opacity var(--speed-very-slow) ease;
+  transition: opacity calc(var(--speed-route-transition) * 2) ease;
+  transition-delay: calc(var(--speed-route-transition) * 1.25);
   opacity: 0;
   pointer-events: none;
 }

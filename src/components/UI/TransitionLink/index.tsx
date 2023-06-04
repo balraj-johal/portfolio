@@ -1,13 +1,14 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode, SyntheticEvent } from "react";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { useApplicationState } from "@/contexts/applicationState";
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   href: string;
   styles?: CSSProperties;
   className?: string;
@@ -15,11 +16,20 @@ interface Props {
 
 const TransitionLink = ({ href, children, className, ...rest }: Props) => {
   const { startTransitioning } = useApplicationState();
+  const router = useRouter();
+
+  const handleNavigation = (e: SyntheticEvent) => {
+    e.preventDefault();
+    startTransitioning();
+    setTimeout(() => {
+      router.push(href);
+    }, 1500);
+  };
 
   return (
     <Link
       href={href}
-      onClick={startTransitioning}
+      onClick={handleNavigation}
       className={className}
       {...rest}
     >

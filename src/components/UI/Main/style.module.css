@@ -4,7 +4,7 @@ main.MainElement {
   z-index: 1;
 
   opacity: 0;
-  transition: opacity var(--speed-regular) ease;
+  transition: opacity var(--speed-route-transition) ease;
 }
 
 main.MainElement_Loaded {
