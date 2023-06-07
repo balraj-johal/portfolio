@@ -1,10 +1,11 @@
-import { Suspense } from "react";
+import { Suspense, ReactNode } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
 
 import TransitionSplash from "@/components/UI/TransitionSplash";
 import RootBody from "@/components/UI/RootBody";
 import LoadingSplash from "@/components/UI/LoadingSplash";
+import CustomCursorWindow from "@/components/UI/CustomCursorWindow";
 import Providers from "@/components/Providers";
 import GradientBG from "@/components/3D/GradientBG";
 
@@ -18,16 +19,13 @@ export const metadata = {
   description: ":)",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <Suspense fallback={null}>
         <Providers>
           <RootBody>
+            <CustomCursorWindow />
             <TransitionSplash />
             <LoadingSplash />
             <GradientBG />
