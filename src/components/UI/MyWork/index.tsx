@@ -1,13 +1,19 @@
-import { PROFRESSIONAL_ENTRIES } from "@/content/professional";
+import { ContentEntry } from "@/types/content";
+import { getContent } from "@/content/contentful";
 
 import ProfessionalEntry from "../ProfessionalEntry";
 import { MyWorkWrapper } from "./styles";
 
-const MyWork = () => {
+const MyWork = async () => {
+  const content = await getContent("professionalWork");
+
   return (
     <MyWorkWrapper>
-      {PROFRESSIONAL_ENTRIES.map((entry) => (
-        <ProfessionalEntry content={entry} key={entry.slug} />
+      {content.map((entry) => (
+        <ProfessionalEntry
+          content={entry.fields as ContentEntry}
+          key={entry.sys.id}
+        />
       ))}
     </MyWorkWrapper>
   );
