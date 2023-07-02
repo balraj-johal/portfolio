@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { styled } from "@phntms/css-components";
 
-import TransitionLink from "../TransitionLink";
 import css from "./style.module.css";
+import TransitionLink from "../TransitionLink";
 
 export const ProfessionalEntryWrapper = styled("div", {
   css: css.ProfessionalEntryWrapper,
