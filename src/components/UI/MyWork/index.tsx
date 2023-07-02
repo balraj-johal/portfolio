@@ -1,8 +1,7 @@
 import { ContentEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
-
-import ProfessionalEntry from "../ProfessionalEntry";
 import { MyWorkWrapper } from "./styles";
+import ProfessionalEntry from "../ProfessionalEntry";
 
 const MyWork = async () => {
   const content = await getContent("professionalWork");
