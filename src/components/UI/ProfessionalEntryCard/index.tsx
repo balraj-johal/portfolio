@@ -1,4 +1,5 @@
 import { ContentEntry } from "@/types/content";
+import { getImageURL } from "@/content/contentful";
 
 import {
   ProfessionalEntryImage,
@@ -13,10 +14,10 @@ interface Props {
   content: ContentEntry;
 }
 
-const ProfessionalEntry = ({ content }: Props) => {
-  const { imageID, title, slug, oneLiner } = content;
+const ProfessionalEntryCard = ({ content }: Props) => {
+  const { image, title, slug, oneLiner } = content;
 
-  const imageSRC = `/images/${imageID}.png`;
+  const imageURL = getImageURL(image);
   const imageAlt = `link to ${title}`;
   const linkHref = `/work/${slug}`;
 
@@ -25,10 +26,10 @@ const ProfessionalEntry = ({ content }: Props) => {
       <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
       <ProfessionalEntryLink href={linkHref}>
-        <ProfessionalEntryImage src={imageSRC} alt={imageAlt} fill />
+        <ProfessionalEntryImage src={imageURL} alt={imageAlt} fill />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
   );
 };
 
-export default ProfessionalEntry;
+export default ProfessionalEntryCard;

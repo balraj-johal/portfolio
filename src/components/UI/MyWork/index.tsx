@@ -2,7 +2,7 @@ import { ContentEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
 
 import { MyWorkWrapper } from "./styles";
-import ProfessionalEntry from "../ProfessionalEntry";
+import ProfessionalEntryCard from "../ProfessionalEntryCard";
 
 const MyWork = async () => {
   const content = await getContent("professionalWork");
@@ -10,7 +10,7 @@ const MyWork = async () => {
   return (
     <MyWorkWrapper>
       {content.map((entry) => (
-        <ProfessionalEntry
+        <ProfessionalEntryCard
           content={entry.fields as ContentEntry}
           key={entry.sys.id}
         />

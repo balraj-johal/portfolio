@@ -1,6 +1,6 @@
 import { Entry, EntrySkeletonType, createClient } from "contentful";
 
-import { ContentType } from "@/types/content";
+import { ContentType, ContentfulImage } from "@/types/content";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -23,4 +23,8 @@ export const findEntry = (
     if (entry.fields.slug === slug) return entry;
   }
   return undefined;
+};
+
+export const getImageURL = (image: ContentfulImage) => {
+  return `https:${image.fields.file.url}`;
 };
