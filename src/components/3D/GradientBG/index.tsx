@@ -1,6 +1,7 @@
 "use client";
 
 import { useApplicationState } from "@/contexts/applicationState";
+
 import { CanvasElement, CanvasWrapper } from "./styles";
 import GradientBGPlane from "../GradientBGPlane";
 
