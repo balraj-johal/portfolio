@@ -1,4 +1,4 @@
-import { createClient } from "contentful";
+import { Entry, EntrySkeletonType, createClient } from "contentful";
 
 import { ContentType } from "@/types/content";
 
@@ -13,4 +13,14 @@ export const getContent = async (type: ContentType) => {
   });
 
   return response.items;
+};
+
+export const findEntry = (
+  items: Entry<EntrySkeletonType, undefined, string>[],
+  slug: string
+) => {
+  for (const entry of items) {
+    if (entry.fields.slug === slug) return entry;
+  }
+  return undefined;
 };
