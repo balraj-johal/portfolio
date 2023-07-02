@@ -7,7 +7,7 @@ import Hero from "@/components/UI/Hero";
 
 export default async function Home() {
   const content = await getContent("professionalWork");
-  // console.log(content);
+  console.log(content);
 
   return (
     <Main>
