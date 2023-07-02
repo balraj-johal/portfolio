@@ -5,3 +5,5 @@ export type ContentEntry = {
   imageID: string;
   href: string;
 };
+
+export type ContentType = "professionalWork";
