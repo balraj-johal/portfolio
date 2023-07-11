@@ -12,7 +12,7 @@ div.CustomCursorWindowWrapper {
 }
 
 div.CustomCursorWrapper {
-  height: 36px;
+  height: 64px;
   aspect-ratio: 1;
 
   position: fixed;
@@ -27,5 +27,10 @@ div.CustomCursorElement {
   border-radius: 10em;
   background-color: rgba(255, 255, 255, 0.8);
 
-  transform: translate(-50%, -50%);
+  transition: transform var(--speed-slow) ease;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+div.CustomCursorElement_Hidden {
+  transform: translate(-50%, -50%) scale(0);
 }

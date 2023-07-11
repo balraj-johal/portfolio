@@ -15,6 +15,8 @@ const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
 
 const CustomCursorWindow = () => {
   const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
+  const animFrameRef = useRef<number>(0);
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
 
   const getRelativeMousePos = (e: MouseEvent): MousePos => {
@@ -50,9 +52,6 @@ const CustomCursorWindow = () => {
     };
   }, [updateMousePos]);
 
-  const rafRef = useRef<number>(0);
-  const cursorRef = useRef<HTMLDivElement>(null);
-
   const buildTransform = (pos: MousePos) => {
     const xPosInPX = window.innerWidth * pos.x;
     const yPosInPX = window.innerHeight * (1 - pos.y);
@@ -60,20 +59,20 @@ const CustomCursorWindow = () => {
   };
 
   const animateCursor = useCallback(() => {
-    rafRef.current = requestAnimationFrame(animateCursor);
+    animFrameRef.current = requestAnimationFrame(animateCursor);
     if (!cursorRef.current) return;
     cursorRef.current.style.transform = buildTransform(mousePos.current);
   }, [mousePos]);
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(animateCursor);
-    return () => cancelAnimationFrame(rafRef.current);
+    animFrameRef.current = requestAnimationFrame(animateCursor);
+    return () => cancelAnimationFrame(animFrameRef.current);
   }, [animateCursor]);
 
   return (
     <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursorElement>{cursorType}</CustomCursorElement>
+        <CustomCursorElement type={cursorType} />
       </CustomCursorWrapper>
     </CustomCursorWindowWrapper>
   );

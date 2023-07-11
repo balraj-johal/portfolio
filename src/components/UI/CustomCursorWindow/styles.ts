@@ -12,4 +12,10 @@ export const CustomCursorWrapper = styled("div", {
 
 export const CustomCursorElement = styled("div", {
   css: css.CustomCursorElement,
+  variants: {
+    type: {
+      text: css.CustomCursorElement_Text,
+      hidden: css.CustomCursorElement_Hidden,
+    },
+  },
 });
