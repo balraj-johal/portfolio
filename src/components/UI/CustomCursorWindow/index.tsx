@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useMediaQuery } from "usehooks-ts";
+
 import { MousePos } from "@/types/events";
 import { CursorType } from "@/types/cursor";
 
@@ -15,6 +17,7 @@ import CustomCursorContent from "./CustomCursorContent";
 const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
 
 const CustomCursorWindow = () => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
   const animFrameRef = useRef<number>(0);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -59,12 +62,12 @@ const CustomCursorWindow = () => {
   );
 
   useEffect(() => {
-    window.addEventListener("mousemove", updateMousePos);
+    if (isDesktop) window.addEventListener("mousemove", updateMousePos);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePos);
     };
-  }, [updateMousePos]);
+  }, [updateMousePos, isDesktop]);
 
   const buildTransform = (pos: MousePos) => {
     const xPosInPX = window.innerWidth * pos.x;
@@ -79,9 +82,9 @@ const CustomCursorWindow = () => {
   }, [mousePos]);
 
   useEffect(() => {
-    animFrameRef.current = requestAnimationFrame(animateCursor);
+    if (isDesktop) animFrameRef.current = requestAnimationFrame(animateCursor);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [animateCursor]);
+  }, [animateCursor, isDesktop]);
 
   return (
     <CustomCursorWindowWrapper>
