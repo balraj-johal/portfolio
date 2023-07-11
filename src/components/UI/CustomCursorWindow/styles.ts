@@ -10,6 +10,6 @@ export const CustomCursorWrapper = styled("div", {
   css: css.CustomCursorWrapper,
 });
 
-export const CustomCursor = styled("div", {
-  css: css.CustomCursor,
+export const CustomCursorElement = styled("div", {
+  css: css.CustomCursorElement,
 });

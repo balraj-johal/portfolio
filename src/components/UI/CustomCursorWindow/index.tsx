@@ -1,20 +1,56 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { MousePos } from "@/types/events";
-import { useApplicationState } from "@/contexts/applicationState";
+import { CursorType } from "@/types/cursor";
 
 import {
-  CustomCursor,
+  CustomCursorElement,
   CustomCursorWrapper,
   CustomCursorWindowWrapper,
 } from "./styles";
 
-const CustomCursorWindow = () => {
-  const { mousePos, updateMousePos } = useApplicationState();
+const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
 
-  const requestRef = useRef<number>(0);
+const CustomCursorWindow = () => {
+  const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
+  const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
+
+  const getRelativeMousePos = (e: MouseEvent): MousePos => {
+    return {
+      x: e.clientX / window.innerWidth,
+      y: 1 - e.clientY / window.innerHeight,
+    };
+  };
+
+  const updateMousePos = useCallback(
+    (e: MouseEvent) => {
+      mousePos.current = getRelativeMousePos(e);
+      if (!(e.target instanceof HTMLElement)) return;
+      const targetCursorType = e.target.dataset.cursorType;
+      let newCursorType = CursorType.Hidden;
+      switch (targetCursorType) {
+        case CursorType.Text:
+          newCursorType = CursorType.Text;
+          break;
+        default:
+          break;
+      }
+      if (cursorType !== newCursorType) setCursorType(newCursorType);
+    },
+    [cursorType]
+  );
+
+  useEffect(() => {
+    window.addEventListener("mousemove", updateMousePos);
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePos);
+    };
+  }, [updateMousePos]);
+
+  const rafRef = useRef<number>(0);
   const cursorRef = useRef<HTMLDivElement>(null);
 
   const buildTransform = (pos: MousePos) => {
@@ -24,20 +60,20 @@ const CustomCursorWindow = () => {
   };
 
   const animateCursor = useCallback(() => {
-    requestRef.current = requestAnimationFrame(animateCursor);
+    rafRef.current = requestAnimationFrame(animateCursor);
     if (!cursorRef.current) return;
     cursorRef.current.style.transform = buildTransform(mousePos.current);
   }, [mousePos]);
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animateCursor);
-    return () => cancelAnimationFrame(requestRef.current);
+    rafRef.current = requestAnimationFrame(animateCursor);
+    return () => cancelAnimationFrame(rafRef.current);
   }, [animateCursor]);
 
   return (
-    <CustomCursorWindowWrapper onMouseMove={updateMousePos}>
+    <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursor />
+        <CustomCursorElement>{cursorType}</CustomCursorElement>
       </CustomCursorWrapper>
     </CustomCursorWindowWrapper>
   );
