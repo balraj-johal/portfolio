@@ -15,6 +15,7 @@ export const CustomCursorElement = styled("div", {
   variants: {
     type: {
       text: css.CustomCursorElement_Text,
+      link: css.CustomCursorElement_Link,
       hidden: css.CustomCursorElement_Hidden,
     },
   },

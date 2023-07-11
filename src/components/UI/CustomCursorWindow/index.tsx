@@ -10,6 +10,7 @@ import {
   CustomCursorWrapper,
   CustomCursorWindowWrapper,
 } from "./styles";
+import CustomCursorContent from "./CustomCursorContent";
 
 const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
 
@@ -26,22 +27,35 @@ const CustomCursorWindow = () => {
     };
   };
 
+  const checkParentsForCursorType = useCallback(
+    (
+      target: HTMLElement,
+      remainingParentsToCheck = 3
+    ): CursorType | undefined => {
+      if (remainingParentsToCheck <= 0) return;
+      const targetCursorType = target.dataset.cursorType as CursorType;
+      if (targetCursorType) {
+        return targetCursorType;
+      }
+      if (!target.offsetParent || !(target.offsetParent instanceof HTMLElement))
+        return;
+      return checkParentsForCursorType(
+        target.offsetParent,
+        remainingParentsToCheck - 1
+      );
+    },
+    []
+  );
+
   const updateMousePos = useCallback(
     (e: MouseEvent) => {
       mousePos.current = getRelativeMousePos(e);
       if (!(e.target instanceof HTMLElement)) return;
-      const targetCursorType = e.target.dataset.cursorType;
-      let newCursorType = CursorType.Hidden;
-      switch (targetCursorType) {
-        case CursorType.Text:
-          newCursorType = CursorType.Text;
-          break;
-        default:
-          break;
-      }
-      if (cursorType !== newCursorType) setCursorType(newCursorType);
+      const targetCursorType = checkParentsForCursorType(e.target);
+      if (!targetCursorType) return setCursorType(CursorType.Hidden);
+      if (cursorType !== targetCursorType) setCursorType(targetCursorType);
     },
-    [cursorType]
+    [checkParentsForCursorType, cursorType]
   );
 
   useEffect(() => {
@@ -72,10 +86,11 @@ const CustomCursorWindow = () => {
   return (
     <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursorElement type={cursorType} />
+        <CustomCursorElement type={cursorType}>
+          <CustomCursorContent cursorType={cursorType} />
+        </CustomCursorElement>
       </CustomCursorWrapper>
     </CustomCursorWindowWrapper>
   );
 };
-
 export default CustomCursorWindow;
