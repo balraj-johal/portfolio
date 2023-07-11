@@ -16,6 +16,7 @@ h1.HeadingOne {
 
 span.Text {
   display: block;
+  width: fit-content;
   margin-bottom: 1rem;
   line-height: 1em;
 
