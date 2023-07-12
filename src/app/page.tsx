@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Title from "@/components/UI/Title";
 import Subtitle from "@/components/UI/Subtitle";
 import MyWork from "@/components/UI/MyWork";
@@ -11,7 +13,9 @@ export default function Home() {
         <Title>Balraj Johal</Title>
         <Subtitle>I do some things on the internet</Subtitle>
       </Hero>
-      <MyWork />
+      <Suspense fallback={<p>Loading</p>}>
+        <MyWork />
+      </Suspense>
     </Main>
   );
 }

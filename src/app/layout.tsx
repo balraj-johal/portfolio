@@ -1,5 +1,3 @@
-import { Suspense, ReactNode } from "react";
-
 import { Analytics } from "@vercel/analytics/react";
 
 import TransitionSplash from "@/components/UI/TransitionSplash";
@@ -18,20 +16,22 @@ export const metadata = {
   description: ":)",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <Suspense fallback={null}>
-        <Providers>
-          <RootBody>
-            {children}
-            <CustomCursorWindow />
-            <TransitionSplash />
-            <LoadingSplash />
-          </RootBody>
-          <Analytics />
-        </Providers>
-      </Suspense>
+      <Providers>
+        <RootBody>
+          {children}
+          <CustomCursorWindow />
+          <TransitionSplash />
+          <LoadingSplash />
+        </RootBody>
+        <Analytics />
+      </Providers>
     </html>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { GradientConfigProvider } from "@/contexts/gradient";
 import { ApplicationStateProvider } from "@/contexts/applicationState";
 
@@ -10,9 +12,11 @@ interface Props {
 /** This component wraps all application providers for cleaner TSX tree */
 const Providers = ({ children }: Props) => {
   return (
-    <ApplicationStateProvider>
-      <GradientConfigProvider>{children}</GradientConfigProvider>
-    </ApplicationStateProvider>
+    <Suspense fallback={null}>
+      <ApplicationStateProvider>
+        <GradientConfigProvider>{children}</GradientConfigProvider>
+      </ApplicationStateProvider>
+    </Suspense>
   );
 };
 

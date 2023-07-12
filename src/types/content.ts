@@ -4,4 +4,15 @@ export type ContentEntry = {
   oneLiner: string;
   imageID: string;
   href: string;
+  image: ContentfulImage;
+};
+
+export type ContentType = "professionalWork";
+
+export type ContentfulImage = {
+  fields: {
+    file: {
+      url: string;
+    };
+  };
 };
