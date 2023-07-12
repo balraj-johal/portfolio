@@ -9,7 +9,9 @@ const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
 
 /** Handles states for a contextual custom cursor following the
  * mouse pointer on desktop views
- * @returns
+ *
+ * NOTE: mouse position is normalised to range 0 - 1 for potential
+ * use in WebGL scene
  */
 const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   const isDesktop = useMediaQuery("(pointer: fine) and (min-width: 768px)");
@@ -17,6 +19,9 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   const animFrameRef = useRef<number>(0);
   const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
 
+  /** Normalises mouse position in range 0 - 1
+   * @param e MouseEvent
+   */
   const getRelativeMousePos = (e: MouseEvent): MousePos => {
     return {
       x: e.clientX / window.innerWidth,
@@ -24,6 +29,13 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
     };
   };
 
+  /**
+   * Recursively checks a HTML element and its parents (up to a certain depth)
+   * for the presence of the data-cursor-type atrribute
+   * @param target target element to check
+   * @param remainingParentsToCheck number of parent elements left to check
+   * @returns the first value of data-cursor-type / undefined
+   */
   const checkParentsForCursorType = useCallback(
     (
       target: HTMLElement,
@@ -44,7 +56,7 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
     []
   );
 
-  const updateMousePos = useCallback(
+  const updateCursor = useCallback(
     (e: MouseEvent) => {
       mousePos.current = getRelativeMousePos(e);
       if (!(e.target instanceof HTMLElement)) return;
@@ -56,13 +68,18 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   );
 
   useEffect(() => {
-    if (isDesktop) window.addEventListener("mousemove", updateMousePos);
+    if (isDesktop) window.addEventListener("mousemove", updateCursor);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePos);
+      window.removeEventListener("mousemove", updateCursor);
     };
-  }, [updateMousePos, isDesktop]);
+  }, [updateCursor, isDesktop]);
 
+  /**
+   *
+   * @param pos Takes normalised mouse position and maps it to a css transform
+   * @returns css transform
+   */
   const buildTransform = (pos: MousePos) => {
     const xPosInPX = window.innerWidth * pos.x;
     const yPosInPX = window.innerHeight * (1 - pos.y);
