@@ -1,5 +1,6 @@
 import { CursorType } from "@/types/cursor";
 import { ContentEntry } from "@/types/content";
+import { getImageURL } from "@/content/contentful";
 
 import {
   ProfessionalEntryImage,
@@ -15,9 +16,9 @@ interface Props {
 }
 
 const ProfessionalEntry = ({ content }: Props) => {
-  const { imageID, title, slug, oneLiner } = content;
+  const { image, title, slug, oneLiner } = content;
 
-  const imageSRC = `/images/${imageID}.png`;
+  const imageURL = getImageURL(image);
   const imageAlt = `link to ${title}`;
   const linkHref = `/work/${slug}`;
 
@@ -26,7 +27,7 @@ const ProfessionalEntry = ({ content }: Props) => {
       <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
       <ProfessionalEntryLink href={linkHref} data-cursor-type={CursorType.Link}>
-        <ProfessionalEntryImage src={imageSRC} alt={imageAlt} fill />
+        <ProfessionalEntryImage src={imageURL} alt={imageAlt} fill />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
   );
