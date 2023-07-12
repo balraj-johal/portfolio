@@ -30,9 +30,7 @@ export default async function Work({ params }: Props) {
   const entry = findEntry(entries, params.slug);
   if (!entry) notFound();
 
-  const { title, oneLiner, image } = entry.fields as ContentEntry;
-
-  console.log(image);
+  const { title, oneLiner } = entry.fields as ContentEntry;
 
   return (
     <Main>

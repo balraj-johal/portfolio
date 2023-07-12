@@ -26,5 +26,6 @@ export const findEntry = (
 };
 
 export const getImageURL = (image: ContentfulImage) => {
+  if (!image) return "";
   return `https:${image.fields.file.url}`;
 };
