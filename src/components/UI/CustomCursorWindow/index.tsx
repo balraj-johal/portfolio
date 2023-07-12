@@ -25,4 +25,5 @@ const CustomCursorWindow = () => {
     </CustomCursorWindowWrapper>
   );
 };
+
 export default CustomCursorWindow;
