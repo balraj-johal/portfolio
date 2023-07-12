@@ -14,7 +14,7 @@ import "@/theme/colors.css";
 import "@/theme/type.css";
 
 export const metadata = {
-  title: "Balraj Johal",
+  title: "Balraj Johal - TEST",
   description: ":)",
 };
 
