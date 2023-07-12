@@ -1,4 +1,4 @@
-import { Suspense, ReactNode } from "react";
+import { ReactNode } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
 
@@ -21,17 +21,15 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <Suspense fallback={null}>
-        <Providers>
-          <RootBody>
-            {children}
-            <CustomCursorWindow />
-            <TransitionSplash />
-            <LoadingSplash />
-          </RootBody>
-          <Analytics />
-        </Providers>
-      </Suspense>
+      <Providers>
+        <RootBody>
+          {children}
+          <CustomCursorWindow />
+          <TransitionSplash />
+          <LoadingSplash />
+        </RootBody>
+        <Analytics />
+      </Providers>
     </html>
   );
 }
