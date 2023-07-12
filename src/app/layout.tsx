@@ -25,11 +25,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <Suspense fallback={null}>
         <Providers>
           <RootBody>
+            {children}
             <CustomCursorWindow />
             <TransitionSplash />
             <LoadingSplash />
             <GradientBG />
-            {children}
           </RootBody>
           <Analytics />
         </Providers>
