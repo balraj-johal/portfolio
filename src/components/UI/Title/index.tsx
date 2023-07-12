@@ -1,5 +1,6 @@
 "use client";
 
+import { CursorType } from "@/types/cursor";
 import { useApplicationState } from "@/contexts/applicationState";
 
 import { HeadingOne, Text } from "./styles";
@@ -13,7 +14,11 @@ const Title = ({ children, ...rest }: Props) => {
 
   return (
     <HeadingOne>
-      <Text animate={!transitioning} {...rest}>
+      <Text
+        animate={!transitioning}
+        {...rest}
+        data-cursor-type={CursorType.Text}
+      >
         {children}
       </Text>
     </HeadingOne>

@@ -1,3 +1,4 @@
+import { CursorType } from "@/types/cursor";
 import { ContentEntry } from "@/types/content";
 
 import {
@@ -24,7 +25,7 @@ const ProfessionalEntry = ({ content }: Props) => {
     <ProfessionalEntryWrapper>
       <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
-      <ProfessionalEntryLink href={linkHref}>
+      <ProfessionalEntryLink href={linkHref} data-cursor-type={CursorType.Link}>
         <ProfessionalEntryImage src={imageSRC} alt={imageAlt} fill />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
