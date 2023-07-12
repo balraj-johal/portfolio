@@ -12,7 +12,7 @@ const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
  * @returns
  */
 const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery("(pointer: fine) and (min-width: 768px)");
   const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
   const animFrameRef = useRef<number>(0);
   const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
@@ -79,6 +79,18 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
     if (isDesktop) animFrameRef.current = requestAnimationFrame(animateCursor);
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [animateCursor, isDesktop]);
+
+  useEffect(() => {
+    if (cursorType === CursorType.Hidden) {
+      document.body.style.removeProperty("cursor");
+    } else {
+      document.body.style.cursor = "none";
+    }
+
+    return () => {
+      document.body.style.removeProperty("cursor");
+    };
+  }, [cursorType]);
 
   return {
     cursorType,
