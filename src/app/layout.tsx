@@ -24,10 +24,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <Suspense fallback={null}>
         <Providers>
           <RootBody>
+            {children}
             <CustomCursorWindow />
             <TransitionSplash />
             <LoadingSplash />
-            {children}
           </RootBody>
           <Analytics />
         </Providers>
