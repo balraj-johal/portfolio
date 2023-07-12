@@ -7,10 +7,12 @@ div.CustomCursorWindowWrapper {
   top: 0;
   left: 0;
   z-index: 1;
+
+  pointer-events: none;
 }
 
 div.CustomCursorWrapper {
-  height: 36px;
+  height: 64px;
   aspect-ratio: 1;
 
   position: fixed;
@@ -20,10 +22,19 @@ div.CustomCursorWrapper {
   transition: all var(--speed-very-fast) ease;
 }
 
-div.CustomCursor {
-  height: inherit;
+div.CustomCursorElement {
+  height: inherit;  
   border-radius: 10em;
   background-color: rgba(255, 255, 255, 0.8);
 
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform var(--speed-slow) ease;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+div.CustomCursorElement_Hidden {
+  transform: translate(-50%, -50%) scale(0);
 }

@@ -7,7 +7,6 @@ import RootBody from "@/components/UI/RootBody";
 import LoadingSplash from "@/components/UI/LoadingSplash";
 import CustomCursorWindow from "@/components/UI/CustomCursorWindow";
 import Providers from "@/components/Providers";
-import GradientBG from "@/components/3D/GradientBG";
 
 import "./globals.css";
 import "@/theme/animation.css";
@@ -24,11 +23,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <Providers>
         <RootBody>
+          {children}
           <CustomCursorWindow />
           <TransitionSplash />
           <LoadingSplash />
-          <GradientBG />
-          {children}
         </RootBody>
         <Analytics />
       </Providers>

@@ -1,43 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
 
-import { MousePos } from "@/types/events";
-import { useApplicationState } from "@/contexts/applicationState";
+import useCustomCursor from "@/hooks/useCustomCursor";
 
 import {
-  CustomCursor,
+  CustomCursorElement,
   CustomCursorWrapper,
   CustomCursorWindowWrapper,
 } from "./styles";
+import CustomCursorContent from "./CustomCursorContent";
 
 const CustomCursorWindow = () => {
-  const { mousePos, updateMousePos } = useApplicationState();
-
-  const requestRef = useRef<number>(0);
   const cursorRef = useRef<HTMLDivElement>(null);
-
-  const buildTransform = (pos: MousePos) => {
-    const xPosInPX = window.innerWidth * pos.x;
-    const yPosInPX = window.innerHeight * (1 - pos.y);
-    return `translate(${xPosInPX}px, ${yPosInPX}px)`;
-  };
-
-  const animateCursor = useCallback(() => {
-    requestRef.current = requestAnimationFrame(animateCursor);
-    if (!cursorRef.current) return;
-    cursorRef.current.style.transform = buildTransform(mousePos.current);
-  }, [mousePos]);
-
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animateCursor);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [animateCursor]);
+  const { cursorType } = useCustomCursor(cursorRef);
 
   return (
-    <CustomCursorWindowWrapper onMouseMove={updateMousePos}>
+    <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursor />
+        <CustomCursorElement type={cursorType}>
+          <CustomCursorContent cursorType={cursorType} />
+        </CustomCursorElement>
       </CustomCursorWrapper>
     </CustomCursorWindowWrapper>
   );

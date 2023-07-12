@@ -1,3 +1,4 @@
+import { CursorType } from "@/types/cursor";
 import { ContentEntry } from "@/types/content";
 import { getImageURL } from "@/content/contentful";
 
@@ -25,7 +26,7 @@ const ProfessionalEntryCard = ({ content }: Props) => {
     <ProfessionalEntryWrapper>
       <ProfessionalEntryTitle>{title}</ProfessionalEntryTitle>
       <ProfessionalEntryOneLiner>{oneLiner}</ProfessionalEntryOneLiner>
-      <ProfessionalEntryLink href={linkHref}>
+      <ProfessionalEntryLink href={linkHref} data-cursor-type={CursorType.Link}>
         <ProfessionalEntryImage src={imageURL} alt={imageAlt} fill />
       </ProfessionalEntryLink>
     </ProfessionalEntryWrapper>
