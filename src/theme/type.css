@@ -1,8 +1,8 @@
 .type-h1 {
-  font-family: var(--font-anton);
+  font-family: var(--font-supply-mono);
   
   line-height: 1.05em;
-  letter-spacing: 2px;
+  letter-spacing: -1.6px;
   text-transform: uppercase;
 
   color: var(--color-black);
