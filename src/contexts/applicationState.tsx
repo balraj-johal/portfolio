@@ -50,7 +50,7 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
       loading,
       finishLoading,
     }),
-    [loading, transitioning]
+    [loading, transitioning],
   );
 
   return (
