@@ -39,7 +39,7 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   const checkParentsForCursorType = useCallback(
     (
       target: HTMLElement,
-      remainingParentsToCheck = 3
+      remainingParentsToCheck = 3,
     ): CursorType | undefined => {
       if (remainingParentsToCheck <= 0) return;
       const targetCursorType = target.dataset.cursorType as CursorType;
@@ -50,10 +50,10 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
         return;
       return checkParentsForCursorType(
         target.offsetParent,
-        remainingParentsToCheck - 1
+        remainingParentsToCheck - 1,
       );
     },
-    []
+    [],
   );
 
   const updateCursor = useCallback(
@@ -64,7 +64,7 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
       if (!targetCursorType) return setCursorType(CursorType.Hidden);
       if (cursorType !== targetCursorType) setCursorType(targetCursorType);
     },
-    [checkParentsForCursorType, cursorType]
+    [checkParentsForCursorType, cursorType],
   );
 
   useEffect(() => {

@@ -3,8 +3,8 @@ import { Entry, EntrySkeletonType, createClient } from "contentful";
 import { ContentType, ContentfulImage } from "@/types/content";
 
 const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID || "",
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || "",
+  space: process.env.CONTENTFUL_SPACE_ID ?? "",
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN ?? "",
 });
 
 export const getContent = async (type: ContentType) => {
@@ -17,7 +17,7 @@ export const getContent = async (type: ContentType) => {
 
 export const findEntry = (
   items: Entry<EntrySkeletonType, undefined, string>[],
-  slug: string
+  slug: string,
 ) => {
   for (const entry of items) {
     if (entry.fields.slug === slug) return entry;

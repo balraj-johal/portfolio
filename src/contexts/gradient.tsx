@@ -32,7 +32,7 @@ const GradientConfigProvider = ({ children }: ProviderProps) => {
       scrollDiff,
       setScrollDiff,
     }),
-    []
+    [],
   );
 
   return (
