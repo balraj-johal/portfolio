@@ -12,7 +12,7 @@
 span.Subtitle {
   font-style: italic;
 
-  color: var(--color-white);
+  color: var(--color-black);
   opacity: 0;
 }
 
