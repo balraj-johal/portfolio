@@ -25,13 +25,13 @@ div.CustomCursorWrapper {
 div.CustomCursorElement {
   height: inherit;  
   border-radius: 10em;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--color-neon-green);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transition: transform var(--speed-slow) ease;
+  transition: transform var(--speed-regular) ease;
   transform: translate(-50%, -50%) scale(1);
 }
 
