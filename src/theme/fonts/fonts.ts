@@ -4,7 +4,7 @@ const supplySans = localFont({
   src: [
     {
       path: "./PPSupplySans-Regular.otf",
-      weight: "200 400",
+      weight: "400",
       style: "normal",
     },
     {
@@ -33,5 +33,5 @@ const supplyMono = localFont({
 });
 
 export const FONT_CLASSES = [supplySans.variable, supplyMono.variable].join(
-  " "
+  " ",
 );

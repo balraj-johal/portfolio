@@ -17,7 +17,7 @@ export const getContent = async (type: ContentType) => {
 
 export const findEntry = (
   items: Entry<EntrySkeletonType, undefined, string>[],
-  slug: string
+  slug: string,
 ) => {
   for (const entry of items) {
     if (entry.fields.slug === slug) return entry;
