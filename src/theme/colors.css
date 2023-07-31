@@ -1,5 +1,7 @@
 :root {
  --color-white: white;
+ --color-black: black;
+ --color-blackish: #212121;
 
- --color-pale-salmon: #C6775A;
+ --color-neon-green: #60FF42;
 }

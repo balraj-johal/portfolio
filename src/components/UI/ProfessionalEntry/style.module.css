@@ -1,7 +1,7 @@
 div.ProfessionalEntryWrapper {
   height: 100vh;
   padding: 14vh 2vw 14vh 8vw;
-  color: var(--color-white);
+  color: var(--color-black);
 
   /* these rules make the entries stick on top of each other... interesting 
      TODO: consider having them stack and fade out with GSAP ScrollTrigger

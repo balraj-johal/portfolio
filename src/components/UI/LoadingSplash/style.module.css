@@ -9,8 +9,8 @@ div.LoadingSplashWrapper {
   top: 0;
   left: 0;
 
-  color: var(--color-white);
-  background-color: var(--color-pale-salmon);
+  color: var(--color-black);
+  background-color: var(--color-white);
 
   transition: opacity var(--speed-very-slow) ease;
   opacity: 0;
