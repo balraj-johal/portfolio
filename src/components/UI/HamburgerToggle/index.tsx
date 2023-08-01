@@ -1,6 +1,6 @@
 "use client";
 
-import { defaultAnim } from "@/theme/franer-configs";
+import { defaultTransition } from "@/theme/franer-configs";
 import { useApplicationState } from "@/contexts/applicationState";
 
 import { HamburgerToggleLine, HamburgerToggleWrapper } from "./styles";
@@ -12,18 +12,16 @@ interface Props {
 const HamburgerToggle = ({ ...rest }: Props) => {
   const { menuOpen, setMenuOpen } = useApplicationState();
 
-  const transition = { ease: defaultAnim.ease, duration: defaultAnim.duration };
-
   return (
     <HamburgerToggleWrapper
       onClick={() => setMenuOpen(!menuOpen)}
       viewBox="0 0 31 27"
-      transition={transition}
+      transition={defaultTransition}
       animate={{ scale: menuOpen ? 1.2 : 1 }}
       {...rest}
     >
       <HamburgerToggleLine
-        transition={transition}
+        transition={defaultTransition}
         animate={
           menuOpen
             ? {
@@ -43,7 +41,7 @@ const HamburgerToggle = ({ ...rest }: Props) => {
         y2="1.5"
       />
       <HamburgerToggleLine
-        transition={transition}
+        transition={defaultTransition}
         style={{ originX: "50%", originY: "50%" }}
         animate={
           menuOpen
@@ -62,7 +60,7 @@ const HamburgerToggle = ({ ...rest }: Props) => {
         y2="13.4998"
       />
       <HamburgerToggleLine
-        transition={transition}
+        transition={defaultTransition}
         style={{ originX: "50%", originY: "50%" }}
         animate={
           menuOpen
@@ -79,7 +77,7 @@ const HamburgerToggle = ({ ...rest }: Props) => {
         y2="13.4998"
       />
       <HamburgerToggleLine
-        transition={transition}
+        transition={defaultTransition}
         animate={
           menuOpen
             ? {
