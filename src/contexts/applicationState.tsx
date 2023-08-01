@@ -5,6 +5,9 @@ import {
   useMemo,
   useState,
   useEffect,
+  useCallback,
+  SetStateAction,
+  Dispatch,
 } from "react";
 
 import useRouterURL from "@/hooks/useRouterURL";
@@ -14,6 +17,8 @@ interface ContextProps {
   startTransitioning: () => void;
   loading: boolean;
   finishLoading: () => void;
+  menuOpen: boolean;
+  setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface ProviderProps {
@@ -27,10 +32,11 @@ const TRANSITION_DURATION = 1000; // ms
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const url = useRouterURL();
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
-  const finishLoading = () => setLoading(false);
-  const startTransitioning = () => setTransitioning(true);
+  const finishLoading = useCallback(() => setLoading(false), [setLoading]);
+  const startTransitioning = useCallback(() => setTransitioning(true), []);
 
   // watch URL for changes, and begin timer for finishing load
   useEffect(() => {
@@ -49,8 +55,10 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
       startTransitioning,
       loading,
       finishLoading,
+      menuOpen,
+      setMenuOpen,
     }),
-    [loading, transitioning],
+    [finishLoading, loading, menuOpen, startTransitioning, transitioning],
   );
 
   return (

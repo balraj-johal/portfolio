@@ -1,0 +1,11 @@
+svg.HamburgerToggleWrapper {
+  height: 36px;
+  width: 41px;
+}
+
+svg.HamburgerToggleWrapper line.HamburgerToggleLine {
+  stroke: var(--color-black);
+  stroke-width: 3px;
+
+  transform-origin: center;
+}
