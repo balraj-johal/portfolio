@@ -1,5 +1,5 @@
 import { CursorType } from "@/types/cursor";
-import { ContentEntry } from "@/types/content";
+import { ProfessionalContentEntry } from "@/types/content";
 import { getImageURL } from "@/content/contentful";
 
 import {
@@ -12,7 +12,7 @@ import {
 
 interface Props {
   children?: React.ReactNode;
-  content: ContentEntry;
+  content: ProfessionalContentEntry;
 }
 
 const ProfessionalEntry = ({ content }: Props) => {

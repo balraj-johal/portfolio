@@ -6,15 +6,16 @@ import { NavLinkElement } from "./styles";
 
 interface Props {
   id: string;
+  children: React.ReactNode;
 }
 
-const NavLink = ({ id }: Props) => {
+const NavLink = ({ id, children }: Props) => {
   const lenis = useLenis();
   const href = `#${id}`;
 
   return (
     <NavLinkElement href={href} onClick={() => lenis.scrollTo(href)}>
-      {id}
+      {children}
     </NavLinkElement>
   );
 };

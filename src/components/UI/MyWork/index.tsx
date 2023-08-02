@@ -1,4 +1,4 @@
-import { ContentEntry } from "@/types/content";
+import { ProfessionalContentEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
 
 import ProfessionalEntry from "../ProfessionalEntry";
@@ -9,9 +9,10 @@ const MyWork = async () => {
 
   return (
     <MyWorkWrapper>
+      <Nav />
       {content.map((entry) => (
         <ProfessionalEntry
-          content={entry.fields as ContentEntry}
+          content={entry.fields as ProfessionalContentEntry}
           key={entry.sys.id}
         />
       ))}

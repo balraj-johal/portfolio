@@ -1,19 +1,23 @@
+import { ProfessionalContentEntry, ContentfulResponse } from "@/types/content";
+
 import { NavWrapper } from "./styles";
 import NavLink from "./NavLink";
 
 interface Props {
-  children?: React.ReactNode;
+  content: ContentfulResponse;
 }
 
-const NAV_LINKS = ["work", "personal", "skills", "contact"];
-
-const Nav = ({ children, ...rest }: Props) => {
+const Nav = ({ content, ...rest }: Props) => {
   return (
     <NavWrapper {...rest}>
-      {NAV_LINKS.map((link) => (
-        <NavLink id={link} key={link} />
-      ))}
-      {children}
+      {content.map((entry) => {
+        const fields = entry.fields as ProfessionalContentEntry;
+        return (
+          <NavLink id={fields.slug} key={entry.sys.id}>
+            {fields.title}
+          </NavLink>
+        );
+      })}
     </NavWrapper>
   );
 };

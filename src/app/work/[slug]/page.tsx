@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { ContentEntry } from "@/types/content";
+import { ProfessionalContentEntry } from "@/types/content";
 import { findEntry, getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
 import Title from "@/components/UI/Title";
@@ -30,7 +30,7 @@ export default async function Work({ params }: Props) {
   const entry = findEntry(entries, params.slug);
   if (!entry) notFound();
 
-  const { title, oneLiner } = entry.fields as ContentEntry;
+  const { title, oneLiner } = entry.fields as ProfessionalContentEntry;
 
   return (
     <Main>
