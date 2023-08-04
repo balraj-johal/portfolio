@@ -1,14 +1,17 @@
 div.ProfessionalEntriesWrapper {
   height: 100vh;
   height: 100dvh;
-  color: var(--color-black);
-
-  position: sticky;
+  width: 50%;
+  
+  float: right;
+  /* // position: sticky;  */
   top: 0;
-
+  
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  color: var(--color-black);
 }
 
 h2.ProfessionalEntriesTitle {

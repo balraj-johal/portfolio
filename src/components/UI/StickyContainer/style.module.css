@@ -1,4 +1,4 @@
 div.StickyContainerElement {
-  height: calc(var(--number-of-panels) * 100vh);
-  height: calc(var(--number-of-panels) * 100dvh);
+  height: calc(var(--number-of-children) * var(--child-height) * 1vh);
+  height: calc(var(--number-of-children) * var(--child-height) * 1dvh);
 }

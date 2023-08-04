@@ -1,12 +1,8 @@
 "use client";
 
-import { useState } from "react";
-
-import { useLenis } from "@studio-freight/react-lenis";
-
+import { getImageURL } from "@/utils/contentful";
 import { CursorType } from "@/types/cursor";
 import { ContentfulResponse, ProfessionalContentEntry } from "@/types/content";
-import { getImageURL } from "@/content/contentful";
 
 import {
   ProfessionalEntriesImage,
@@ -17,20 +13,17 @@ import {
 } from "./styles";
 
 interface Props {
-  children?: React.ReactNode;
+  activeIndex: number;
   content: ContentfulResponse;
 }
 
-const ProfessionalEntries = ({ content }: Props) => {
-  const [index, setIndex] = useState(0);
-  const visibleEntry = content[index].fields as ProfessionalContentEntry;
+const ProfessionalEntries = ({ activeIndex, content }: Props) => {
+  const visibleEntry = content[activeIndex].fields as ProfessionalContentEntry;
   const { image, title, slug, oneLiner } = visibleEntry;
 
   const imageURL = getImageURL(image);
   const imageAlt = `link to ${title}`;
   const linkHref = `/work/${slug}`;
-
-  useLenis();
 
   return (
     <ProfessionalEntriesWrapper>

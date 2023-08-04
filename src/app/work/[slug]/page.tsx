@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
+import { findEntry } from "@/utils/contentful";
 import { ProfessionalContentEntry } from "@/types/content";
-import { findEntry, getContent } from "@/content/contentful";
+import { getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
 import Title from "@/components/UI/Title";
 import Main from "@/components/UI/Main";

@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { Analytics } from "@vercel/analytics/react";
 
 import WebsitePendingSplash from "@/components/UI/WebsitePendingSplash";
@@ -27,7 +29,7 @@ export default function RootLayout({
       <Providers>
         <RootBody>
           <WebsitePendingSplash />
-          {children}
+          <Suspense>{children}</Suspense>
           <CustomCursorWindow />
           <TransitionSplash />
           <LoadingSplash />
