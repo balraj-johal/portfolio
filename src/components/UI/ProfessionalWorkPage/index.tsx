@@ -33,19 +33,15 @@ const ProfessionalWorkPage = ({ content }: Props) => {
   const containerDataRef = useRef<ContainerData | undefined>();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const scrollFraction = 1 / content.length;
-
   useEffect(() => {
     const updateContainerData = () => {
-      console.log("now");
       if (!containerRef.current) return;
-      const containerData = {
-        height: containerRef.current.clientHeight,
-        start: containerRef.current.offsetTop,
-        end: containerRef.current.clientHeight,
+      const { clientHeight, offsetTop } = containerRef.current;
+      containerDataRef.current = {
+        height: clientHeight,
+        start: offsetTop,
+        end: clientHeight,
       };
-      containerDataRef.current = containerData;
-      console.log(containerData);
     };
     updateContainerData();
 
@@ -56,37 +52,16 @@ const ProfessionalWorkPage = ({ content }: Props) => {
 
   const lenis = useLenis(({ scroll }: { scroll: number }) => {
     if (!containerDataRef.current) return;
-    // const containerData = {
-    //   height: containerRef.current.clientHeight,
-    //   start: containerRef.current.offsetTop,
-    //   end: containerRef.current.clientHeight,
-    // };
-    // containerDataRef.current = containerData;
-
     const { start, end } = containerDataRef.current;
     let progress = gsap.utils.mapRange(start, end, 0, 1, scroll);
     progress = gsap.utils.clamp(0, 1, progress);
-    setActiveIndex(Math.floor(progress / scrollFraction));
+    setActiveIndex(Math.floor(progress * content.length));
   });
-
-  // /** Setting panel height via css variables to allow for two height property values,
-  //  * one using dvh units, and a fallback using vh units, as React inline styles only
-  //  * allow a single property assignment. */
-  // useEffect(() => {
-  //   const wrapper = containerRef.current;
-  //   if (!wrapper) return;
-  //   wrapper.style.setProperty(
-  //     "--number-of-children",
-  //     content.length.toString(),
-  //   );
-  //   wrapper.style.setProperty("--child-height", "150");
-  // }, [content, containerRef]);
 
   const snapToIndex = (index: number) => {
     if (!containerRef.current || !containerDataRef.current || !lenis) return;
-    const scrollTarget =
-      containerDataRef.current.start +
-      containerDataRef.current.height * index * scrollFraction;
+    const { start, height } = containerDataRef.current;
+    const scrollTarget = start + (height * index) / content.length;
     lenis.scrollTo(scrollTarget, {
       lock: true,
       immediate: true,
@@ -95,7 +70,7 @@ const ProfessionalWorkPage = ({ content }: Props) => {
 
   const style: ExtendedCSSProperties = {
     "--number-of-children": content.length.toString(),
-    "--child-height": "150", // in vh
+    "--child-height": "150", // in vh/dvh
   };
 
   return (
