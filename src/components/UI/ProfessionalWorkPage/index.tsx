@@ -8,9 +8,9 @@ import { useLenis } from "@studio-freight/react-lenis";
 import { LenisScrollEvent } from "@/types/lenis";
 import { ContentfulResponse } from "@/types/content";
 
-import Nav from "../Nav";
+import ListNav from "../ListNav";
 import { ProfessionalWorkWrapper, StickyContainerElement } from "./styles";
-import ProfessionalEntries from "./ProfessionalEntries";
+import ProfessionalEntryCard from "./ProfessionalEntryCard";
 
 interface Props {
   content: ContentfulResponse;
@@ -56,7 +56,8 @@ const ProfessionalWorkPage = ({ content }: Props) => {
     const { start, end } = containerDataRef.current;
     let progress = gsap.utils.mapRange(start, end, 0, 1, scroll);
     progress = gsap.utils.clamp(0, 1, progress);
-    setActiveIndex(Math.floor(progress * content.length));
+    const newIndex = Math.floor(progress * content.length);
+    if (newIndex < content.length) setActiveIndex(newIndex);
   });
 
   const snapToIndex = (index: number) => {
@@ -77,13 +78,13 @@ const ProfessionalWorkPage = ({ content }: Props) => {
   return (
     <StickyContainerElement ref={containerRef} style={style}>
       <ProfessionalWorkWrapper>
-        <h1>PROFESSIONAL WORK</h1>
-        <Nav
+        <ListNav
+          title="PROFESSIONAL WORK"
           content={content}
           activeIndex={activeIndex}
           snapToIndex={snapToIndex}
         />
-        <ProfessionalEntries activeIndex={activeIndex} content={content} />
+        <ProfessionalEntryCard activeIndex={activeIndex} content={content} />
       </ProfessionalWorkWrapper>
     </StickyContainerElement>
   );

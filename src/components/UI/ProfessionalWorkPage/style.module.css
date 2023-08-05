@@ -4,11 +4,14 @@ div.StickyContainerElement {
 }
 
 section.ProfessionalWorkWrapper {
-  height: 100vh;
-  height: 100dvh;
-
-  padding-block: var(--padding-vertical);
-  
   position: sticky;
   top: 0;
+  height: 100vh;
+  height: 100dvh;
+  
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 24px;
+
+  padding-block: var(--padding-vertical);
 }

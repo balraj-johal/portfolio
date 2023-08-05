@@ -1,4 +1,4 @@
-a.NavLinkElement {
+a.ListNavLinkElement {
   color: var(--color-black);
   text-decoration: none;
   text-transform: uppercase;
@@ -9,9 +9,6 @@ a.NavLinkElement {
   line-height: 1.2em;
 }
 
-a.NavLinkElement_Active { 
+a.ListNavLinkElement_Active { 
   opacity: 1;
-  transform: scale(1.25);
-  transform-origin: left;
-  margin-bottom: 2px;
 }

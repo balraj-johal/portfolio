@@ -1,5 +1,5 @@
-nav.NavWrapper {
-  width: fit-content;
+nav.ListNavWrapper {
+  grid-column: 1 / 5;
   display: flex;
   flex-direction: column;
 }

@@ -2,7 +2,7 @@
 
 import { AnchorClickEvent } from "@/types/events";
 
-import { NavLinkElement } from "./styles";
+import { ListNavLinkElement } from "./styles";
 
 interface Props {
   id: string;
@@ -12,7 +12,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const NavLink = ({ id, index, snapToIndex, active, children }: Props) => {
+const ListNavLink = ({ id, index, snapToIndex, active, children }: Props) => {
   const href = `#${id}`;
 
   const handleClick = (e: AnchorClickEvent) => {
@@ -21,10 +21,10 @@ const NavLink = ({ id, index, snapToIndex, active, children }: Props) => {
   };
 
   return (
-    <NavLinkElement href={href} onClick={handleClick} active={active}>
+    <ListNavLinkElement href={href} onClick={handleClick} active={active}>
       {children}
-    </NavLinkElement>
+    </ListNavLinkElement>
   );
 };
 
-export default NavLink;
+export default ListNavLink;
