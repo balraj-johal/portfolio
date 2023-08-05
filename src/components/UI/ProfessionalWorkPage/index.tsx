@@ -5,6 +5,7 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useLenis } from "@studio-freight/react-lenis";
 
+import { LenisScrollEvent } from "@/types/lenis";
 import { ContentfulResponse } from "@/types/content";
 
 import Nav from "../Nav";
@@ -50,7 +51,7 @@ const ProfessionalWorkPage = ({ content }: Props) => {
     return () => window.removeEventListener("resize", updateContainerData);
   }, [containerRef, content]);
 
-  const lenis = useLenis(({ scroll }: { scroll: number }) => {
+  const lenis = useLenis(({ scroll }: LenisScrollEvent) => {
     if (!containerDataRef.current) return;
     const { start, end } = containerDataRef.current;
     let progress = gsap.utils.mapRange(start, end, 0, 1, scroll);
