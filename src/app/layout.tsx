@@ -11,6 +11,7 @@ import Providers from "@/components/Providers";
 
 import "./globals.css";
 import "@/theme/animation.css";
+import "@/theme/spacing.css";
 import "@/theme/colors.css";
 import "@/theme/type.css";
 

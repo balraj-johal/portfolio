@@ -9,7 +9,7 @@ import { LenisScrollEvent } from "@/types/lenis";
 import { ContentfulResponse } from "@/types/content";
 
 import Nav from "../Nav";
-import { StickyContainerElement } from "./styles";
+import { ProfessionalWorkWrapper, StickyContainerElement } from "./styles";
 import ProfessionalEntries from "./ProfessionalEntries";
 
 interface Props {
@@ -76,12 +76,14 @@ const ProfessionalWorkPage = ({ content }: Props) => {
 
   return (
     <StickyContainerElement ref={containerRef} style={style}>
-      <Nav
-        content={content}
-        activeIndex={activeIndex}
-        snapToIndex={snapToIndex}
-      />
-      <ProfessionalEntries activeIndex={activeIndex} content={content} />
+      <ProfessionalWorkWrapper>
+        <Nav
+          content={content}
+          activeIndex={activeIndex}
+          snapToIndex={snapToIndex}
+        />
+        <ProfessionalEntries activeIndex={activeIndex} content={content} />
+      </ProfessionalWorkWrapper>
     </StickyContainerElement>
   );
 };

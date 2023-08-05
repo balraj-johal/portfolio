@@ -15,6 +15,9 @@ export default async function Home() {
         <Subtitle>I do some things on the internet</Subtitle>
       </Hero>
       <ProfessionalWorkPage content={professionalEntries} />
+      <Hero>
+        <Title>Another test div</Title>
+      </Hero>
     </Main>
   );
 }

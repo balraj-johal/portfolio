@@ -2,3 +2,13 @@ div.StickyContainerElement {
   height: calc(var(--number-of-children) * var(--child-height) * 1vh);
   height: calc(var(--number-of-children) * var(--child-height) * 1dvh);
 }
+
+section.ProfessionalWorkWrapper {
+  height: 100vh;
+  height: 100dvh;
+
+  padding-block: var(--padding-vertical);
+  
+  position: sticky;
+  top: 0;
+}
