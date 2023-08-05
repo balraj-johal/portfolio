@@ -3,12 +3,12 @@ import localFont from "next/font/local";
 const supplySans = localFont({
   src: [
     {
-      path: "./PPSupplySans-Regular.otf",
+      path: "files/PPSupplySans-Regular.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./PPSupplySans-Ultralight.otf",
+      path: "files/PPSupplySans-Ultralight.otf",
       weight: "200",
       style: "light",
     },
@@ -19,12 +19,12 @@ const supplySans = localFont({
 const supplyMono = localFont({
   src: [
     {
-      path: "./PPSupplyMono-Regular.otf",
+      path: "files/PPSupplyMono-Regular.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./PPSupplySans-Ultralight.otf",
+      path: "files/PPSupplySans-Ultralight.otf",
       weight: "200",
       style: "light",
     },
