@@ -6,6 +6,10 @@ main.MainElement {
 
   opacity: 0;
   transition: opacity var(--speed-route-transition) ease;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
 }
 
 main.MainElement_Loaded {
