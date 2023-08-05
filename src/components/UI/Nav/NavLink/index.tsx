@@ -1,7 +1,5 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
-
 import { AnchorClickEvent } from "@/types/events";
 
 import { NavLinkElement } from "./styles";
@@ -9,17 +7,17 @@ import { NavLinkElement } from "./styles";
 interface Props {
   id: string;
   index: number;
-  setActiveIndex: Dispatch<SetStateAction<number>>;
+  snapToIndex: (index: number) => void;
   active: boolean;
   children: React.ReactNode;
 }
 
-const NavLink = ({ id, index, setActiveIndex, active, children }: Props) => {
+const NavLink = ({ id, index, snapToIndex, active, children }: Props) => {
   const href = `#${id}`;
 
   const handleClick = (e: AnchorClickEvent) => {
     e.preventDefault();
-    setActiveIndex(index);
+    snapToIndex(index);
   };
 
   return (

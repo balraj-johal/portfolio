@@ -18,7 +18,8 @@ interface Props {
 }
 
 const ProfessionalEntries = ({ activeIndex, content }: Props) => {
-  const visibleEntry = content[activeIndex].fields as ProfessionalContentEntry;
+  const visibleEntry = content[activeIndex]?.fields as ProfessionalContentEntry;
+  if (!visibleEntry) return null;
   const { image, title, slug, oneLiner } = visibleEntry;
 
   const imageURL = getImageURL(image);
