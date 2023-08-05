@@ -77,6 +77,7 @@ const ProfessionalWorkPage = ({ content }: Props) => {
   return (
     <StickyContainerElement ref={containerRef} style={style}>
       <ProfessionalWorkWrapper>
+        <h1>PROFESSIONAL WORK</h1>
         <Nav
           content={content}
           activeIndex={activeIndex}
