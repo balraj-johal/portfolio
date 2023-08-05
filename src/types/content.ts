@@ -1,4 +1,6 @@
-export type ContentEntry = {
+import { Entry, EntrySkeletonType } from "contentful";
+
+export type ProfessionalContentEntry = {
   slug: string;
   title: string;
   oneLiner: string;
@@ -16,3 +18,5 @@ export type ContentfulImage = {
     };
   };
 };
+
+export type ContentfulResponse = Entry<EntrySkeletonType, undefined, string>[];

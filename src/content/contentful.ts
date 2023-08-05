@@ -1,10 +1,13 @@
-import { Entry, EntrySkeletonType, createClient } from "contentful";
+import { createClient } from "contentful";
 
-import { ContentType, ContentfulImage } from "@/types/content";
+import { ContentType } from "@/types/content";
+
+if (!process.env.CONTENTFUL_ACCESS_TOKEN) throw Error("No contentful token");
+if (!process.env.CONTENTFUL_SPACE_ID) throw Error("No contentful space ID");
 
 const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID ?? "",
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN ?? "",
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  space: process.env.CONTENTFUL_SPACE_ID,
 });
 
 export const getContent = async (type: ContentType) => {
@@ -13,19 +16,4 @@ export const getContent = async (type: ContentType) => {
   });
 
   return response.items;
-};
-
-export const findEntry = (
-  items: Entry<EntrySkeletonType, undefined, string>[],
-  slug: string,
-) => {
-  for (const entry of items) {
-    if (entry.fields.slug === slug) return entry;
-  }
-  return undefined;
-};
-
-export const getImageURL = (image: ContentfulImage) => {
-  if (!image) return "";
-  return `https:${image.fields.file.url}`;
 };

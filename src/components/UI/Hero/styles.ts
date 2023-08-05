@@ -1,8 +1,7 @@
 import { styled } from "@phntms/css-components";
 
-import FullHeight from "../FullHeight";
 import css from "./style.module.css";
 
-export const HeroWrapper = styled(FullHeight, {
+export const HeroWrapper = styled("section", {
   css: css.HeroWrapper,
 });

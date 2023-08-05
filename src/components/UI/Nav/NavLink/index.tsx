@@ -1,20 +1,28 @@
 "use client";
 
-import { useLenis } from "@studio-freight/react-lenis";
+import { AnchorClickEvent } from "@/types/events";
 
 import { NavLinkElement } from "./styles";
 
 interface Props {
   id: string;
+  index: number;
+  snapToIndex: (index: number) => void;
+  active: boolean;
+  children: React.ReactNode;
 }
 
-const NavLink = ({ id }: Props) => {
-  const lenis = useLenis();
+const NavLink = ({ id, index, snapToIndex, active, children }: Props) => {
   const href = `#${id}`;
 
+  const handleClick = (e: AnchorClickEvent) => {
+    e.preventDefault();
+    snapToIndex(index);
+  };
+
   return (
-    <NavLinkElement href={href} onClick={() => lenis.scrollTo(href)}>
-      {id}
+    <NavLinkElement href={href} onClick={handleClick} active={active}>
+      {children}
     </NavLinkElement>
   );
 };

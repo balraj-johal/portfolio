@@ -9,8 +9,7 @@ a.NavLinkElement {
   line-height: 1.2em;
 }
 
-/* will be the active class */
-a.NavLinkElement:first-of-type { 
+a.NavLinkElement_Active { 
   opacity: 1;
   transform: scale(1.25);
   transform-origin: left;

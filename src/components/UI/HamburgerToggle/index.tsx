@@ -1,6 +1,6 @@
 "use client";
 
-import { defaultTransition } from "@/theme/franer-configs";
+import { defaultTransition } from "@/theme/framer-configs";
 import { useApplicationState } from "@/contexts/applicationState";
 
 import { HamburgerToggleLine, HamburgerToggleWrapper } from "./styles";
