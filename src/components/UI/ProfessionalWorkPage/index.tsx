@@ -22,14 +22,15 @@ const ProfessionalWorkPage = ({ content }: Props) => {
     container: containerRef,
   });
 
-  useLenis(({ scroll }) => console.log(scroll));
+  const lenis = useLenis(({ scroll }: { scroll: number }) =>
+    console.log(scroll),
+  );
 
   /** Setting panel height via css variables to allow for two height property values,
    * one using dvh units, and a fallback using vh units, as React inline styles only
    * allow a single property assignment. */
   useEffect(() => {
     const wrapper = containerRef.current;
-    console.log(wrapper);
     if (!wrapper) return;
     wrapper.style.setProperty(
       "--number-of-children",
@@ -37,6 +38,12 @@ const ProfessionalWorkPage = ({ content }: Props) => {
     );
     wrapper.style.setProperty("--child-height", "150");
   }, [content, containerRef]);
+
+  useEffect(() => {
+    const wrapper = containerRef.current;
+    if (!wrapper || !lenis) return;
+    lenis.scrollTo(activeIndex * 100);
+  }, [activeIndex, lenis]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     console.log(latest);
