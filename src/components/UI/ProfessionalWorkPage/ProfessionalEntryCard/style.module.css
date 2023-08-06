@@ -46,7 +46,7 @@ p.ProfessionalEntryCardOneLiner {
 a.ProfessionalEntryCardLink {
   width: 100%;
 
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 
   font-size: 18px;
   text-align: right;
@@ -54,12 +54,6 @@ a.ProfessionalEntryCardLink {
   color: var(--color-black);
 
   -webkit-tap-highlight-color: transparent;
-}
-
-@media (min-width: 768px) {
-  a.ProfessionalEntryCardLink {
-    font-size: 20px;
-  }
 }
 
 div.ProfessionalEntryCardImageContainer {
