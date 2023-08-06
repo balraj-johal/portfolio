@@ -4,6 +4,10 @@ nav.ListNavWrapper {
   flex-direction: column;
 }
 
+nav.ListNavWrapper h1 {
+  margin-bottom: 2.5rem;
+}
+
 @media (min-width: 768px) {
   nav.ListNavWrapper {
     grid-column: 1 / 5;
