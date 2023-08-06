@@ -21,6 +21,9 @@ p.ProfessionalEntryCardOneLiner {
   margin: 0;
   width: 50%;
 
+  font-size: 18px;
+  letter-spacing: 0.25px;
+
   /* shenanigans to align visually with link below */
   position: absolute;
   bottom: 1.5rem;

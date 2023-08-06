@@ -72,7 +72,7 @@ const ProfessionalWorkPage = ({ content }: Props) => {
 
   const style: ExtendedCSSProperties = {
     "--number-of-children": content.length.toString(),
-    "--child-height": "150", // in vh/dvh
+    "--child-height": "125", // in vh/dvh
   };
 
   return (

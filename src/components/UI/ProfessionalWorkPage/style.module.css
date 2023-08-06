@@ -11,7 +11,7 @@ section.ProfessionalWorkWrapper {
   
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  gap: 24px;
+  gap: var(--grid-gap);
 
   padding-block: var(--padding-vertical);
 }

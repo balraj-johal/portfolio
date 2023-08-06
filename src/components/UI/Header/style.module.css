@@ -1,0 +1,24 @@
+header.HeaderWrapper {
+  /* shenanigans to align with grid while keeping position sticky */
+  --1-fr: calc(calc(100% - 264px) / 12);
+  --1-col-offset: calc(var(--1-fr) + var(--grid-gap));
+  --2-col-offset: calc(var(--1-fr) * 2 + calc(2 * var(--grid-gap)));
+
+  position: fixed;
+  top: var(--padding-vertical);
+  left: var(--1-col-offset);
+  width: calc(100% - var(--2-col-offset));
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+div.ButtonAreaWrapper {
+  position: relative;
+  width: 30px;
+  aspect-ratio: 1;
+}

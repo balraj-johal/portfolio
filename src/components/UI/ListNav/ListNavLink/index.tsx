@@ -22,7 +22,7 @@ const ListNavLink = ({ id, index, snapToIndex, active, children }: Props) => {
 
   return (
     <ListNavLinkElement href={href} onClick={handleClick} active={active}>
-      {children}
+      <span>{children}</span>
     </ListNavLinkElement>
   );
 };
