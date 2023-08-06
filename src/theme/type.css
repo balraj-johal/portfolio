@@ -10,3 +10,8 @@ h1 {
 
   color: var(--color-black);
 }
+
+p {
+  line-height: 104%;
+  font-weight: 300;
+}
