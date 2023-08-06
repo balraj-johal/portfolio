@@ -8,17 +8,19 @@ a.ListNavLinkElement {
   line-height: 1.2em;
 }
 
-a.ListNavLinkElement::before {
-  content: ">";
-  position: absolute;
-  left: -12px;
-  top: -2px;
-  transition: opacity var(--speed-fast) ease;
-  opacity: 0;
-}
-
-a.ListNavLinkElement:hover::before {
-  opacity: 1;
+@media (min-width: 768px) {
+  a.ListNavLinkElement::before {
+    content: ">";
+    position: absolute;
+    left: -12px;
+    top: -2px;
+    transition: opacity var(--speed-fast) ease;
+    opacity: 0;
+  }
+  
+  a.ListNavLinkElement:hover::before {
+    opacity: 1;
+  }
 }
 
 a.ListNavLinkElement span {

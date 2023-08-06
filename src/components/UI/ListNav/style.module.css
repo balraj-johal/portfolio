@@ -1,5 +1,11 @@
 nav.ListNavWrapper {
-  grid-column: 1 / 5;
+  grid-column: 1 / end;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  nav.ListNavWrapper {
+    grid-column: 1 / 5;
+  }
 }

@@ -2,7 +2,7 @@ button.MenuToggleWrapper {
   all: unset;
   position: absolute;
   inset: 0;
-  width: 30px;
+  width: inherit;
 
   pointer-events: all;
   transition: opacity var(--speed-regular) ease;
