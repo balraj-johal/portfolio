@@ -17,7 +17,8 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   const isDesktop = useMediaQuery("(pointer: fine) and (min-width: 768px)");
   const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
   const animFrameRef = useRef<number>(0);
-  const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
+  const [cursorType, setCursorType] = useState<CursorType>(CursorType.Text);
+  const [animationPlaying, setAnimationPlaying] = useState<boolean>(false);
 
   /** Normalises mouse position in range 0 - 1
    * @param e MouseEvent
@@ -61,7 +62,7 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
       mousePos.current = getRelativeMousePos(e);
       if (!(e.target instanceof HTMLElement)) return;
       const targetCursorType = checkParentsForCursorType(e.target);
-      if (!targetCursorType) return setCursorType(CursorType.Hidden);
+      // if (!targetCursorType) return setCursorType(CursorType.Hidden);
       if (cursorType !== targetCursorType) setCursorType(targetCursorType);
     },
     [checkParentsForCursorType, cursorType],
@@ -74,6 +75,22 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
       window.removeEventListener("mousemove", updateCursor);
     };
   }, [updateCursor, isDesktop]);
+
+  const handleClick = useCallback(() => {
+    if (!animationPlaying) setAnimationPlaying(true);
+  }, [animationPlaying]);
+
+  const setAnimationEnded = () => {
+    setAnimationPlaying(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, [handleClick]);
 
   /**
    *
@@ -111,6 +128,8 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
 
   return {
     cursorType,
+    animationPlaying,
+    setAnimationEnded,
   };
 };
 

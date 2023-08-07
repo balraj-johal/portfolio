@@ -18,5 +18,8 @@ export const CustomCursorElement = styled("div", {
       link: css.CustomCursorElement_Link,
       hidden: css.CustomCursorElement_Hidden,
     },
+    animating: {
+      true: css.CustomCursorElement_Animating,
+    },
   },
 });

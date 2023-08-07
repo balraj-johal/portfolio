@@ -13,12 +13,17 @@ import CustomCursorContent from "./CustomCursorContent";
 
 const CustomCursorWindow = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const { cursorType } = useCustomCursor(cursorRef);
+  const { cursorType, animationPlaying, setAnimationEnded } =
+    useCustomCursor(cursorRef);
 
   return (
     <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursorElement type={cursorType}>
+        <CustomCursorElement
+          animating={animationPlaying}
+          onAnimationEnd={setAnimationEnded}
+          type={cursorType}
+        >
           <CustomCursorContent cursorType={cursorType} />
         </CustomCursorElement>
       </CustomCursorWrapper>
