@@ -9,7 +9,9 @@ main.MainElement {
 
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
+  gap: var(--grid-gap);
+
+  overflow-x: clip;
 }
 
 main.MainElement_Loaded {

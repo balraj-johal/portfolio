@@ -11,7 +11,13 @@ section.ProfessionalWorkWrapper {
   
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  gap: 24px;
+  gap: var(--grid-gap);
 
-  padding-block: var(--padding-vertical);
+  padding-block: var(--padding-mobile);
+}
+
+@media (min-width: 768px) {
+  section.ProfessionalWorkWrapper {
+    padding-block: var(--padding-vertical);
+  }
 }

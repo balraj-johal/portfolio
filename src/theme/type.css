@@ -5,7 +5,7 @@ h1 {
   font-family: var(--font-supply-mono);
   
   line-height: 78%;
-  letter-spacing: -1.6px;
+  letter-spacing: -1px;
   text-transform: uppercase;
 
   color: var(--color-black);
@@ -14,4 +14,8 @@ h1 {
 p {
   line-height: 104%;
   font-weight: 300;
+}
+
+a {
+  letter-spacing: -1px;
 }

@@ -1,6 +1,6 @@
 div.ProfessionalEntryCardWrapper {
   position: relative;
-  grid-column: 6 / end;
+  grid-column: 1 / end;
   
   display: flex;
   flex-direction: column;
@@ -11,6 +11,12 @@ div.ProfessionalEntryCardWrapper {
   margin-bottom: 88px;
 }
 
+@media (min-width: 768px) {
+  div.ProfessionalEntryCardWrapper {
+    grid-column: 6 / end;
+  }
+}
+
 h2.ProfessionalEntryCardTitle {
   /* Hidden for accessibility purposes */
   position: absolute;
@@ -19,7 +25,10 @@ h2.ProfessionalEntryCardTitle {
 
 p.ProfessionalEntryCardOneLiner {
   margin: 0;
-  width: 50%;
+  width: 60%;
+
+  font-size: 16px;
+  letter-spacing: 0.25px;
 
   /* shenanigans to align visually with link below */
   position: absolute;
@@ -27,14 +36,24 @@ p.ProfessionalEntryCardOneLiner {
   transform: translateY(100%);
 }
 
+@media (min-width: 768px) {
+  p.ProfessionalEntryCardOneLiner {
+    width: 50%;
+    font-size: 18px;
+  }
+}
+
 a.ProfessionalEntryCardLink {
   width: 100%;
 
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 
+  font-size: 18px;
   text-align: right;
   text-decoration: none;
   color: var(--color-black);
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 div.ProfessionalEntryCardImageContainer {
