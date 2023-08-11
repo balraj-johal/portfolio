@@ -19,6 +19,8 @@ interface ContextProps {
   finishLoading: () => void;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  headerVisible: boolean;
+  setHeaderVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 interface ProviderProps {
@@ -33,6 +35,7 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const url = useRouterURL();
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
   const finishLoading = useCallback(() => setLoading(false), [setLoading]);
@@ -57,8 +60,17 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
       finishLoading,
       menuOpen,
       setMenuOpen,
+      headerVisible,
+      setHeaderVisible,
     }),
-    [finishLoading, loading, menuOpen, startTransitioning, transitioning],
+    [
+      finishLoading,
+      headerVisible,
+      loading,
+      menuOpen,
+      startTransitioning,
+      transitioning,
+    ],
   );
 
   return (

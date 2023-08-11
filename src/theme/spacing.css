@@ -1,7 +1,18 @@
 :root {
   --padding-vertical: 74px;
+  --padding-mobile: 12px;
+
+  --grid-gap: 24px;
 }
 
-.grid-10-centered {
-  grid-column: 2 / 12;
+.container {
+  grid-column: 1 / end;
+  padding: var(--padding-mobile);
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-column: 2 / 12;
+    padding: unset;
+  }
 }
