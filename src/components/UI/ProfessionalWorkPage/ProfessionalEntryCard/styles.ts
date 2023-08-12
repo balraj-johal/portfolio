@@ -18,11 +18,3 @@ export const ProfessionalEntryCardOneLiner = styled("p", {
 export const ProfessionalEntryCardLink = styled(TransitionLink, {
   css: css.ProfessionalEntryCardLink,
 });
-
-export const ProfessionalEntryCardImage = styled("img", {
-  css: css.ProfessionalEntryCardImage,
-});
-
-export const ProfessionalEntryCardImageContainer = styled("div", {
-  css: css.ProfessionalEntryCardImageContainer,
-});

@@ -1,15 +1,11 @@
-"use client";
-
 import { useMemo } from "react";
 
 import { getImageURLs } from "@/utils/contentful";
 import { CursorType } from "@/types/cursor";
 import { ContentfulResponse, ProfessionalContentEntry } from "@/types/content";
-import usePrefetchedImages from "@/hooks/usePrefetchedImages";
 
+import ProfessionalEntryImages from "../ProfessionalEntryImages";
 import {
-  ProfessionalEntryCardImage,
-  ProfessionalEntryCardImageContainer,
   ProfessionalEntryCardLink,
   ProfessionalEntryCardOneLiner,
   ProfessionalEntryCardTitle,
@@ -23,7 +19,6 @@ interface Props {
 
 const ProfessionalEntryCard = ({ activeIndex, content }: Props) => {
   const imageURLs = useMemo(() => getImageURLs(content), [content]);
-  const images = usePrefetchedImages(imageURLs);
 
   // destructure content
   const visibleEntry = content[activeIndex]?.fields as ProfessionalContentEntry;
@@ -35,9 +30,11 @@ const ProfessionalEntryCard = ({ activeIndex, content }: Props) => {
   return (
     <ProfessionalEntryCardWrapper>
       <ProfessionalEntryCardTitle>{title}</ProfessionalEntryCardTitle>
-      <ProfessionalEntryCardImageContainer>
-        <ProfessionalEntryCardImage src={images[activeIndex]} alt={imageAlt} />
-      </ProfessionalEntryCardImageContainer>
+      <ProfessionalEntryImages
+        activeIndex={activeIndex}
+        activeAlt={imageAlt}
+        imageURLs={imageURLs}
+      />
       <ProfessionalEntryCardOneLiner>{oneLiner}</ProfessionalEntryCardOneLiner>
       <ProfessionalEntryCardLink
         href={linkHref}
