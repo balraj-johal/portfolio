@@ -1,12 +1,11 @@
-"use client";
+import { useMemo } from "react";
 
-import { getImageURL } from "@/utils/contentful";
+import { getImageURLs } from "@/utils/contentful";
 import { CursorType } from "@/types/cursor";
 import { ContentfulResponse, ProfessionalContentEntry } from "@/types/content";
 
+import ProfessionalEntryImages from "../ProfessionalEntryImages";
 import {
-  ProfessionalEntryCardImage,
-  ProfessionalEntryCardImageContainer,
   ProfessionalEntryCardLink,
   ProfessionalEntryCardOneLiner,
   ProfessionalEntryCardTitle,
@@ -19,25 +18,23 @@ interface Props {
 }
 
 const ProfessionalEntryCard = ({ activeIndex, content }: Props) => {
+  const imageURLs = useMemo(() => getImageURLs(content), [content]);
+
+  // destructure content
   const visibleEntry = content[activeIndex]?.fields as ProfessionalContentEntry;
   if (!visibleEntry) return null;
-  const { image, title, slug, oneLiner } = visibleEntry;
-
-  const imageURL = getImageURL(image);
+  const { title, slug, oneLiner } = visibleEntry;
   const imageAlt = `Image of ${title}`;
   const linkHref = `/work/${slug}`;
 
   return (
     <ProfessionalEntryCardWrapper>
       <ProfessionalEntryCardTitle>{title}</ProfessionalEntryCardTitle>
-      <ProfessionalEntryCardImageContainer>
-        <ProfessionalEntryCardImage
-          src={imageURL}
-          alt={imageAlt}
-          width={720}
-          height={360}
-        />
-      </ProfessionalEntryCardImageContainer>
+      <ProfessionalEntryImages
+        activeIndex={activeIndex}
+        activeAlt={imageAlt}
+        imageURLs={imageURLs}
+      />
       <ProfessionalEntryCardOneLiner>{oneLiner}</ProfessionalEntryCardOneLiner>
       <ProfessionalEntryCardLink
         href={linkHref}

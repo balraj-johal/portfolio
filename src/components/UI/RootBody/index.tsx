@@ -20,9 +20,8 @@ type LenisScrollEvent = {
 const RootBody = ({ children }: Props) => {
   const { setScrollDiff } = useGradientConfig();
   const { transitioning } = useApplicationState();
-  const lenis = useLenis();
 
-  useLenis(({ velocity }: LenisScrollEvent) => {
+  const lenis = useLenis(({ velocity }: LenisScrollEvent) => {
     setScrollDiff(velocity);
   });
 
