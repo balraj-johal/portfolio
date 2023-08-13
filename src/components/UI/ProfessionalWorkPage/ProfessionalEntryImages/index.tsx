@@ -17,16 +17,20 @@ const ProfessionalEntryImages = ({
   activeAlt,
   imageURLs,
 }: Props) => {
-  const images = usePrefetchedImages(imageURLs);
+  const loadedImages = usePrefetchedImages(imageURLs);
+  const showLoader = loadedImages.length <= 0;
 
   return (
     <ProfessionalEntryCardImageContainer>
-      {images.length > 0 ? (
-        <ProfessionalEntryCardImage src={images[activeIndex]} alt={activeAlt} />
-      ) : (
+      {showLoader ? (
         <ProfessionalEntryCardImagePlaceholder>
           Loading
         </ProfessionalEntryCardImagePlaceholder>
+      ) : (
+        <ProfessionalEntryCardImage
+          src={loadedImages[activeIndex]}
+          alt={activeAlt}
+        />
       )}
     </ProfessionalEntryCardImageContainer>
   );
