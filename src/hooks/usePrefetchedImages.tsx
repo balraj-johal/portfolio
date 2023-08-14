@@ -23,7 +23,7 @@ const usePrefetchedImages = (sources: string[]) => {
       });
 
       // get image as local blob URL
-      const result = fetch("http://localhost:3000" + nextImageURL)
+      const result = fetch(nextImageURL)
         .then(validateResponse)
         .then((response) => response.blob())
         .then((blob) => URL.createObjectURL(blob))
