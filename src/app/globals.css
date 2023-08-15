@@ -5,6 +5,8 @@
 html, body {
   height: 100%;
   width: 100%;
+
+  /* cursor: none; */
 }
 
 html {
@@ -15,7 +17,7 @@ body {
   margin: 0;
 }
 
-/* Disables cursor on desktop for elements where custom cursor is visible */
+Disables cursor on desktop for elements where custom cursor is visible
 @media (pointer: fine) and (min-width: 768px) {
   *[data-cursor-type] {
     cursor: none;

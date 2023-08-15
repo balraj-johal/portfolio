@@ -10,13 +10,6 @@ export const CustomCursorWrapper = styled("div", {
   css: css.CustomCursorWrapper,
 });
 
-export const CustomCursorElement = styled("div", {
+export const CustomCursorElement = styled("svg", {
   css: css.CustomCursorElement,
-  variants: {
-    type: {
-      text: css.CustomCursorElement_Text,
-      link: css.CustomCursorElement_Link,
-      hidden: css.CustomCursorElement_Hidden,
-    },
-  },
 });

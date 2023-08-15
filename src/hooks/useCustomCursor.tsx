@@ -2,10 +2,30 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 import { useMediaQuery } from "usehooks-ts";
 
+import { buildTranslation } from "@/utils/transforms";
 import { MousePos } from "@/types/events";
 import { CursorType } from "@/types/cursor";
 
 const INITIAL_MOUSE_POS = { x: 0.5, y: 0.5 };
+
+type CursorCornerPositions = {
+  topLeft: {
+    x: number;
+    y: number;
+  };
+  topRight: {
+    x: number;
+    y: number;
+  };
+  bottomLeft: {
+    x: number;
+    y: number;
+  };
+  bottomRight: {
+    x: number;
+    y: number;
+  };
+};
 
 /** Handles states for a contextual custom cursor following the
  * mouse pointer on desktop views
@@ -18,6 +38,8 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
   const mousePos = useRef<MousePos>(INITIAL_MOUSE_POS);
   const animFrameRef = useRef<number>(0);
   const [cursorType, setCursorType] = useState<CursorType>(CursorType.Hidden);
+  const cursorTargetRef = useRef<HTMLElement>();
+  const cursorCornerTargetsRef = useRef<CursorCornerPositions>();
 
   /** Normalises mouse position in range 0 - 1
    * @param e MouseEvent
@@ -44,6 +66,7 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
       if (remainingParentsToCheck <= 0) return;
       const targetCursorType = target.dataset.cursorType as CursorType;
       if (targetCursorType) {
+        cursorTargetRef.current = target;
         return targetCursorType;
       }
       if (!target.offsetParent || !(target.offsetParent instanceof HTMLElement))
@@ -61,7 +84,12 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
       mousePos.current = getRelativeMousePos(e);
       if (!(e.target instanceof HTMLElement)) return;
       const targetCursorType = checkParentsForCursorType(e.target);
-      if (!targetCursorType) return setCursorType(CursorType.Hidden);
+      if (!targetCursorType) {
+        cursorTargetRef.current = undefined;
+        cursorCornerTargetsRef.current = undefined;
+        setCursorType(CursorType.Hidden);
+        return;
+      }
       if (cursorType !== targetCursorType) setCursorType(targetCursorType);
     },
     [checkParentsForCursorType, cursorType],
@@ -75,42 +103,61 @@ const useCustomCursor = (cursorRef: RefObject<HTMLDivElement>) => {
     };
   }, [updateCursor, isDesktop]);
 
-  /**
-   *
-   * @param pos Takes normalised mouse position and maps it to a css transform
-   * @returns css transform
-   */
-  const buildTransform = (pos: MousePos) => {
-    const xPosInPX = window.innerWidth * pos.x;
-    const yPosInPX = window.innerHeight * (1 - pos.y);
-    return `translate(${xPosInPX}px, ${yPosInPX}px)`;
+  const getTargetCorners = (target: HTMLElement): CursorCornerPositions => {
+    const rect = target.getBoundingClientRect();
+    return {
+      topLeft: {
+        x: rect.left,
+        y: rect.top,
+      },
+      topRight: {
+        x: rect.right,
+        y: rect.top,
+      },
+      bottomLeft: {
+        x: rect.left,
+        y: rect.bottom,
+      },
+      bottomRight: {
+        x: rect.right,
+        y: rect.bottom,
+      },
+    };
   };
 
-  const animateCursor = useCallback(() => {
-    animFrameRef.current = requestAnimationFrame(animateCursor);
+  const animateCursorPosition = useCallback(() => {
+    animFrameRef.current = requestAnimationFrame(animateCursorPosition);
     if (!cursorRef.current) return;
-    cursorRef.current.style.transform = buildTransform(mousePos.current);
+    // cursorRef.current.style.transform = buildTranslation(mousePos.current);
+    if (cursorTargetRef.current) {
+      cursorCornerTargetsRef.current = getTargetCorners(
+        cursorTargetRef.current,
+      );
+    }
   }, [mousePos, cursorRef]);
 
   useEffect(() => {
-    if (isDesktop) animFrameRef.current = requestAnimationFrame(animateCursor);
+    if (isDesktop)
+      animFrameRef.current = requestAnimationFrame(animateCursorPosition);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [animateCursor, isDesktop]);
+  }, [animateCursorPosition, isDesktop]);
 
-  useEffect(() => {
-    if (cursorType === CursorType.Hidden) {
-      document.body.style.removeProperty("cursor");
-    } else {
-      document.body.style.cursor = "none";
-    }
+  // conditionally hide cursor
+  // useEffect(() => {
+  //   if (cursorType === CursorType.Hidden) {
+  //     document.body.style.removeProperty("cursor");
+  //   } else {
+  //     document.body.style.cursor = "none";
+  //   }
 
-    return () => {
-      document.body.style.removeProperty("cursor");
-    };
-  }, [cursorType]);
+  //   return () => {
+  //     document.body.style.removeProperty("cursor");
+  //   };
+  // }, [cursorType]);
 
   return {
     cursorType,
+    cursorCornerTargetsRef,
   };
 };
 
