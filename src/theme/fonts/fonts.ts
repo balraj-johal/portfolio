@@ -32,6 +32,24 @@ const supplyMono = localFont({
   variable: "--font-supply-mono",
 });
 
-export const FONT_CLASSES = [supplySans.variable, supplyMono.variable].join(
-  " ",
-);
+const protoMono = localFont({
+  src: [
+    {
+      path: "files/Proto Mono Medium.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "files/Proto Mono Light.ttf",
+      weight: "200",
+      style: "light",
+    },
+  ],
+  variable: "--font-proto-mono",
+});
+
+export const FONT_CLASSES = [
+  supplySans.variable,
+  supplyMono.variable,
+  protoMono.variable,
+].join(" ");
