@@ -18,8 +18,14 @@ div.CustomCursorWrapper {
 
   transition: all var(--speed-very-fast) ease;
 }
-
+/* 
 svg.CustomCursorElement {
   transition: transform var(--speed-regular) ease;
   transform: translate(-50%, -50%) scale(1);
+} */
+
+div.CustomCursorWrapper svg {
+  position: fixed;
+  inset: 0;
+  transition: transform 10s;
 }

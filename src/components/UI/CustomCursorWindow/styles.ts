@@ -9,7 +9,3 @@ export const CustomCursorWindowWrapper = styled("div", {
 export const CustomCursorWrapper = styled("div", {
   css: css.CustomCursorWrapper,
 });
-
-export const CustomCursorElement = styled("svg", {
-  css: css.CustomCursorElement,
-});

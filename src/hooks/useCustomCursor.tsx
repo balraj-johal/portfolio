@@ -2,7 +2,6 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 import { useMediaQuery } from "usehooks-ts";
 
-import { buildTranslation } from "@/utils/transforms";
 import { MousePos } from "@/types/events";
 import { CursorType } from "@/types/cursor";
 

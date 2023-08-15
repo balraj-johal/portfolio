@@ -31,47 +31,37 @@ const CustomCursorWindow = () => {
   return (
     <CustomCursorWindowWrapper>
       <CustomCursorWrapper ref={cursorRef}>
-        <CustomCursorElement width="20" height="20" viewBox="0 0 20 20">
-          <g>
-            <g id="topLeft">
-              <line y1="0.299805" x2="4" y2="0.299805" stroke="black" />
-              <line x1="0.5" y1="2.18557e-08" x2="0.5" y2="4" stroke="black" />
-            </g>
-            <g id="topRight">
-              <line
-                x1="19.7"
-                y1="2.18557e-08"
-                x2="19.7"
-                y2="4"
-                stroke="black"
-              />
-              <line x1="20" y1="0.5" x2="16" y2="0.5" stroke="black" />
-            </g>
-            <g id="bottomRight">
-              <line x1="20" y1="19.7002" x2="16" y2="19.7002" stroke="black" />
-              <line x1="19.5" y1="20" x2="19.5" y2="16" stroke="black" />
-            </g>
-            <g id="bottomLeft">
-              <line
-                x1="0.300049"
-                y1="20"
-                x2="0.300049"
-                y2="16"
-                stroke="black"
-              />
-              <line
-                x1="8.74228e-08"
-                y1="19.5"
-                x2="4"
-                y2="19.5"
-                stroke="black"
-              />
-            </g>
-          </g>
-        </CustomCursorElement>
+        <Corner id="topLeft" />
+        <Corner id="topRight" transform="scaleX(-1) translateX(-100%)" />
+        <Corner
+          id="bottomRight"
+          transform="scale(-1, -1) translate(-100%, -100%)"
+        />
+        <Corner id="bottomLeft" transform="scaleY(-1) translateY(-100%)" />
       </CustomCursorWrapper>
     </CustomCursorWindowWrapper>
   );
 };
 
 export default CustomCursorWindow;
+
+type CornerProps = {
+  id: string;
+  transform?: string;
+};
+
+const Corner = ({ id, transform }: CornerProps) => {
+  return (
+    <svg viewBox="0 0 4 4" width="20" height="20" id={id}>
+      <g
+        style={{
+          transformOrigin: "top left",
+          transform: transform,
+        }}
+      >
+        <line y1="0.299805" x2="4" y2="0.299805" stroke="black" />
+        <line x1="0.5" y1="2.18557e-08" x2="0.5" y2="4" stroke="black" />
+      </g>
+    </svg>
+  );
+};
