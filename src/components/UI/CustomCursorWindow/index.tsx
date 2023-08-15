@@ -52,7 +52,7 @@ type CornerProps = {
 
 const Corner = ({ id, transform }: CornerProps) => {
   return (
-    <svg viewBox="0 0 4 4" width="20" height="20" id={id}>
+    <svg viewBox="0 0 4 4" width="8" height="8" id={id}>
       <g
         style={{
           transformOrigin: "top left",
