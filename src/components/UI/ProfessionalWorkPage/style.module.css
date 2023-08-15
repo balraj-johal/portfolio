@@ -8,6 +8,8 @@ section.ProfessionalWorkWrapper {
   top: 0;
   height: 100vh;
   height: 100dvh;
+
+  grid-column: 1 / end;
   
   display: grid;
   grid-template-columns: repeat(10, 1fr);

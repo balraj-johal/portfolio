@@ -1,0 +1,4 @@
+.MainTitle {
+  grid-column: 1 / end;
+  grid-row-start: 6;
+}

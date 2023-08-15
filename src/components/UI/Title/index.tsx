@@ -13,12 +13,8 @@ const Title = ({ children, ...rest }: Props) => {
   const { transitioning } = useApplicationState();
 
   return (
-    <HeadingOne>
-      <Text
-        animate={!transitioning}
-        {...rest}
-        data-cursor-type={CursorType.Text}
-      >
+    <HeadingOne {...rest}>
+      <Text animate={!transitioning} data-cursor-type={CursorType.Text}>
         {children}
       </Text>
     </HeadingOne>

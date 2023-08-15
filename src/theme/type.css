@@ -1,11 +1,8 @@
-.type-h1 {
-}
-
 h1 {
-  font-family: var(--font-supply-mono);
-  
+  font-family: var(--font-proto-mono);
+  font-weight: 400;
   line-height: 78%;
-  letter-spacing: -1px;
+  letter-spacing: -0.075em;
   text-transform: uppercase;
 
   color: var(--color-black);
