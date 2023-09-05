@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import { validateResponse } from "@/utils/promises";
 import { buildNextImageURL } from "@/utils/next";
-
-type PossibleImage = string | undefined;
+import { PossibleImage } from "@/types/images";
 
 /**
  * Prefetches images that have been optimised with the _next/image api
@@ -27,10 +26,7 @@ const usePrefetchedImages = (sources: string[], load?: boolean) => {
       const result = fetch(nextImageURL)
         .then(validateResponse)
         .then((response) => response.blob())
-        .then((blob) => {
-          console.log("blobbed");
-          return URL.createObjectURL(blob);
-        })
+        .then((blob) => URL.createObjectURL(blob))
         .catch((error) => {
           console.error(error);
           return undefined;
@@ -45,14 +41,10 @@ const usePrefetchedImages = (sources: string[], load?: boolean) => {
   // on render, fetch all these images to ensure they're
   // loaded when the user reaches the parent panel
   useEffect(() => {
-    if (load === undefined || load === true) {
-      Promise.all(getImageFetches())
-        .then((results: PossibleImage[]) => {
-          setImages(results);
-          console.log("loaded");
-        })
-        .catch((error) => console.error(error));
-    }
+    if (load === false) return;
+    Promise.all(getImageFetches())
+      .then((results) => setImages(results))
+      .catch((error) => console.error(error));
   }, [getImageFetches, load]);
 
   return images;
