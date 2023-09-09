@@ -16,7 +16,7 @@ const CustomCursorWindow = () => {
   const { cursorType } = useCustomCursor(cursorRef);
 
   return (
-    <CustomCursorWindowWrapper>
+    <CustomCursorWindowWrapper aria-hidden>
       <CustomCursorWrapper ref={cursorRef}>
         <CustomCursorElement type={cursorType}>
           <CustomCursorContent cursorType={cursorType} />

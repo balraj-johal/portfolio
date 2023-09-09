@@ -1,10 +1,11 @@
 "use client";
 
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { gsap } from "gsap";
 import { useLenis } from "@studio-freight/react-lenis";
 
+import { extendedStyle } from "@/utils/css";
 import { LenisScrollEvent } from "@/types/lenis";
 import { ContentfulResponse } from "@/types/content";
 
@@ -21,13 +22,6 @@ type ContainerData = {
   start: number;
   end: number;
 };
-
-type CustomCSSProperties = {
-  "--child-height": string;
-  "--number-of-children": string;
-};
-
-type ExtendedCSSProperties = CSSProperties & CustomCSSProperties;
 
 const ProfessionalWorkPage = ({ content }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -70,10 +64,10 @@ const ProfessionalWorkPage = ({ content }: Props) => {
     });
   };
 
-  const style: ExtendedCSSProperties = {
+  const style = extendedStyle({
     "--number-of-children": content.length.toString(),
     "--child-height": "125", // in vh/dvh
-  };
+  });
 
   return (
     <StickyContainerElement ref={containerRef} style={style}>

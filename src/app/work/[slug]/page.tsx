@@ -4,7 +4,6 @@ import { findEntry } from "@/utils/contentful";
 import { ProfessionalContentEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
-import Title from "@/components/UI/Title";
 
 interface Props {
   params: {
@@ -35,7 +34,7 @@ export default async function Work({ params }: Props) {
   return (
     <>
       <TransitionLink href="/">Back</TransitionLink>
-      <Title>{title}</Title>
+      <h1>{title}</h1>
       <p>{oneLiner}</p>
     </>
   );

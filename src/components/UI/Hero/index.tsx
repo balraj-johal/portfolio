@@ -1,11 +1,18 @@
+import { getImagesInfo } from "@/utils/contentful";
+import { getContent } from "@/content/contentful";
+
 import { HeroWrapper } from "./styles";
+import HeroMedia from "./HeroMedia";
 
-interface Props {
-  children?: React.ReactNode;
-}
+const Hero = async () => {
+  const professionalEntries = await getContent("professionalWork");
+  const images = getImagesInfo(professionalEntries);
 
-const Hero = ({ children, ...rest }: Props) => {
-  return <HeroWrapper {...rest}>{children}</HeroWrapper>;
+  return (
+    <HeroWrapper>
+      <HeroMedia images={images} />
+    </HeroWrapper>
+  );
 };
 
 export default Hero;
