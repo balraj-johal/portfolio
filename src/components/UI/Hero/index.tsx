@@ -2,7 +2,7 @@ import { getImagesInfo } from "@/utils/contentful";
 import { getContent } from "@/content/contentful";
 
 import { HeroWrapper } from "./styles";
-import ImageStrip from "./ImageStrip";
+import HeroMedia from "./HeroMedia";
 
 const Hero = async () => {
   const professionalEntries = await getContent("professionalWork");
@@ -10,7 +10,7 @@ const Hero = async () => {
 
   return (
     <HeroWrapper>
-      <ImageStrip images={images} />
+      <HeroMedia images={images} />
     </HeroWrapper>
   );
 };
