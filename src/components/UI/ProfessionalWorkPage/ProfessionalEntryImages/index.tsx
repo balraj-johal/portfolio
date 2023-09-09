@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import usePrefetchedImages from "@/hooks/usePrefetchedImages";
 
 import {
@@ -17,8 +19,18 @@ const ProfessionalEntryImages = ({
   activeAlt,
   imageURLs,
 }: Props) => {
-  const loadedImages = usePrefetchedImages(imageURLs);
+  const [loadImages, setLoadImages] = useState(false);
+  const loadedImages = usePrefetchedImages(imageURLs, loadImages);
   const showLoader = loadedImages.length <= 0;
+
+  // preload images when user scrolls at all
+  useEffect(() => {
+    const handleScroll = () => setLoadImages(true);
+
+    window.addEventListener("scroll", handleScroll);
+
+    () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <ProfessionalEntryCardImageContainer>

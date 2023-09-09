@@ -1,20 +1,20 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { validateResponse } from "@/utils/promises";
 import { buildNextImageURL } from "@/utils/next";
-
-type PossibleImage = string | undefined;
+import { PossibleImage } from "@/types/images";
 
 /**
  * Prefetches images that have been optimised with the _next/image api
  * @param {string[]} sources - external image data URL's
+ * @param {boolean} [load] - if present, waits till load is true to fetch
  * @returns images: string[] - local blob URL's containing the fetched img data
  */
-const usePrefetchedImages = (sources: string[]) => {
+const usePrefetchedImages = (sources: string[], load?: boolean) => {
   const [images, setImages] = useState<PossibleImage[]>([]);
 
   // build object of promises to prefetch images for each content entry
-  const imageFetches = useMemo(() => {
+  const getImageFetches = useCallback(() => {
     const promises = [];
     for (const source of sources) {
       const nextImageURL = buildNextImageURL({
@@ -41,12 +41,11 @@ const usePrefetchedImages = (sources: string[]) => {
   // on render, fetch all these images to ensure they're
   // loaded when the user reaches the parent panel
   useEffect(() => {
-    Promise.all(imageFetches)
-      .then((results: PossibleImage[]) => {
-        setImages(results);
-      })
+    if (load === false) return;
+    Promise.all(getImageFetches())
+      .then((results) => setImages(results))
       .catch((error) => console.error(error));
-  }, [imageFetches]);
+  }, [getImageFetches, load]);
 
   return images;
 };
