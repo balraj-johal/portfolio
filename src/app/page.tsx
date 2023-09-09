@@ -1,4 +1,3 @@
-import { getImageURLs } from "@/utils/contentful";
 import { SearchParams } from "@/types/routing";
 import { getContent } from "@/content/contentful";
 import WebsitePendingSplash from "@/components/UI/WebsitePendingSplash";
@@ -11,12 +10,11 @@ export default async function Home({
   searchParams: SearchParams;
 }) {
   const professionalEntries = await getContent("professionalWork");
-  const imageURLs = getImageURLs(professionalEntries);
 
   return (
     <>
       {!searchParams.skip && <WebsitePendingSplash />}
-      <Hero imageURLs={imageURLs} />
+      <Hero />
       <ProfessionalWorkPage content={professionalEntries} />
     </>
   );

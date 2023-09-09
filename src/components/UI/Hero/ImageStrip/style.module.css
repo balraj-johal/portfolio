@@ -14,3 +14,7 @@
 .ImageContainer_Visible {
   opacity: 1;
 }
+
+.ImageContainer > img {
+  object-fit: cover;
+}

@@ -1,14 +1,16 @@
+import { getImagesInfo } from "@/utils/contentful";
+import { getContent } from "@/content/contentful";
+
 import { HeroWrapper } from "./styles";
 import ImageStrip from "./ImageStrip";
 
-interface Props {
-  imageURLs: string[];
-}
+const Hero = async () => {
+  const professionalEntries = await getContent("professionalWork");
+  const images = getImagesInfo(professionalEntries);
 
-const Hero = ({ imageURLs }: Props) => {
   return (
     <HeroWrapper>
-      <ImageStrip imageURLs={imageURLs} />
+      <ImageStrip images={images} />
     </HeroWrapper>
   );
 };

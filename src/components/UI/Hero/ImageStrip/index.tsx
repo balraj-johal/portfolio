@@ -5,18 +5,20 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import useWindowSize from "@buildinams/use-window-size";
 
+import { ImageInfo } from "@/types/content";
+
 import { ImageContainer, ImageStripWrapper } from "./styles";
 
 interface Props {
-  imageURLs: string[];
+  images: ImageInfo[];
 }
 
-const ImageStrip = ({ imageURLs }: Props) => {
+const ImageStrip = ({ images }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [imageWidth, setImageWidth] = useState(0);
   const { width } = useWindowSize();
 
-  const count = imageURLs.length;
+  const count = images.length;
 
   useEffect(() => {
     const base = width / count;
@@ -26,31 +28,32 @@ const ImageStrip = ({ imageURLs }: Props) => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX } = e;
-      setActiveIndex(Math.floor(clientX / width / count));
+      const fr = width / count;
+      setActiveIndex(Math.floor(clientX / fr));
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [count, width]);
 
-  const containerLeftPositions = imageURLs.map((_, i) => {
-    const safeArea = width - imageWidth; // to account for left and right offset
+  const containerLeftPositions = images.map((_, i) => {
+    const safeArea = width - imageWidth;
     const offset = safeArea / (count - 1);
     return `${offset * i}px`;
   });
 
   return (
     <ImageStripWrapper aria-hidden>
-      {imageURLs.map((url, i) => (
+      {images.map((image, i) => (
         <ImageContainer
-          key={url}
+          key={image.id}
           visible={activeIndex === i}
           style={{
             left: containerLeftPositions[i],
             width: `${imageWidth}px`,
           }}
         >
-          <Image src={url} alt="" priority fill />
+          <Image src={image.url} alt={image.description} priority fill />
         </ImageContainer>
       ))}
     </ImageStripWrapper>
