@@ -1,0 +1,16 @@
+.ImageStripWrapper {
+  position: relative;
+  height: 40vh;
+}
+
+.ImageContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+
+  opacity: 0;
+}
+
+.ImageContainer_Visible {
+  opacity: 1;
+}

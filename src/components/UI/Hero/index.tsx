@@ -1,11 +1,16 @@
 import { HeroWrapper } from "./styles";
+import ImageStrip from "./ImageStrip";
 
 interface Props {
-  children?: React.ReactNode;
+  imageURLs: string[];
 }
 
-const Hero = ({ children, ...rest }: Props) => {
-  return <HeroWrapper {...rest}>{children}</HeroWrapper>;
+const Hero = ({ imageURLs }: Props) => {
+  return (
+    <HeroWrapper>
+      <ImageStrip imageURLs={imageURLs} />
+    </HeroWrapper>
+  );
 };
 
 export default Hero;
