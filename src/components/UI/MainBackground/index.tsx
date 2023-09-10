@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AnimationSequence, animate } from "framer-motion";
 import useWindowSize from "@buildinams/use-window-size";
@@ -22,10 +22,6 @@ const MainBackground = () => {
 
   useScrollLock(animating);
 
-  const handleAnimationComplete = useCallback(() => {
-    setAnimating(false);
-  }, []);
-
   useEffect(() => {
     if (!fillRef.current || !animating) return;
 
@@ -45,16 +41,12 @@ const MainBackground = () => {
         duration: 0.5,
         ease: EASE_IN_AND_TINY_OUT,
       },
-    }).then(handleAnimationComplete);
-  }, [handleAnimationComplete, height, animating, initalFillScale]);
+    }).then(() => setAnimating(false));
+  }, [height, animating, initalFillScale]);
 
   return (
     <MainBackgroundWrapper aria-hidden>
-      <MainBackgroundFill
-        ref={fillRef}
-        initial={{ scaleX: 0, scaleY: 0 }}
-        onAnimationComplete={handleAnimationComplete}
-      />
+      <MainBackgroundFill ref={fillRef} initial={{ scaleX: 0, scaleY: 0 }} />
     </MainBackgroundWrapper>
   );
 };
