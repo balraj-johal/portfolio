@@ -28,6 +28,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
+      <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
       <Providers>
         <RootBody>
           <Main>
