@@ -1,6 +1,6 @@
-import { useRef, useState, AnimationEvent } from "react";
+// import { useRef, useState, AnimationEvent } from "react";
 
-import useScrollLock from "@/hooks/useScrollLock";
+// import useScrollLock from "@/hooks/useScrollLock";
 
 import { StartupFill, StartupWrapper } from "./styles";
 
