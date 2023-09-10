@@ -34,7 +34,6 @@ export default function RootLayout({
         <RootBody>
           <Main>
             <Header />
-
             <Suspense>{children}</Suspense>
           </Main>
           <CustomCursorWindow />
