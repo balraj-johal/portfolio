@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
 import TransitionSplash from "@/components/UI/Splashes/TransitionSplash";
-import LoadingSplash from "@/components/UI/Splashes/LoadingSplash";
 import RootBody from "@/components/UI/RootBody";
 import Main from "@/components/UI/Main";
 import Header from "@/components/UI/Header";
@@ -38,7 +37,6 @@ export default function RootLayout({
           </Main>
           <CustomCursorWindow />
           <TransitionSplash />
-          <LoadingSplash />
           <Analytics />
         </RootBody>
       </Providers>
