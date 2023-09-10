@@ -11,7 +11,7 @@ import useScrollLock from "@/hooks/useScrollLock";
 import { StartupFill, StartupWrapper } from "./styles";
 
 /** Duration of Startup animation sequence */
-export const STARTUP_ANIM_DURATION = 1.0;
+export const STARTUP_ANIM_DURATION = 0.6;
 
 const Startup = () => {
   const [animating, setAnimating] = useState(true);
@@ -32,13 +32,13 @@ const Startup = () => {
         { duration: 0 },
       ],
       [fillRef.current, { scaleX: 1 }],
-      [fillRef.current, { scaleX: 1, scaleY: 1 }, { delay: 0.2 }],
+      [fillRef.current, { scaleX: 1, scaleY: 1 }, { delay: 0.25 }],
     ];
 
     animate(animationSequence, {
       defaultTransition: {
         delay: 0,
-        duration: 0.4,
+        duration: 0.3,
         ease: EASE_IN_AND_TINY_OUT,
       },
     }).then(() => setAnimating(false));
