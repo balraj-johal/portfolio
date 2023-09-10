@@ -1,6 +1,6 @@
 import { SearchParams } from "@/types/routing";
 import { getContent } from "@/content/contentful";
-import WebsitePendingSplash from "@/components/UI/WebsitePendingSplash";
+import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
 import ProfessionalWorkPage from "@/components/UI/ProfessionalWorkPage";
 import MainBackground from "@/components/UI/MainBackground";
 import Hero from "@/components/UI/Hero";
