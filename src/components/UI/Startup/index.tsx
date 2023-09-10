@@ -8,12 +8,12 @@ import useWindowSize from "@buildinams/use-window-size";
 import { EASE_IN_AND_TINY_OUT } from "@/theme/eases";
 import useScrollLock from "@/hooks/useScrollLock";
 
-import { MainBackgroundFill, MainBackgroundWrapper } from "./styles";
+import { StartupFill, StartupWrapper } from "./styles";
 
-/** Duration of MainBackground animation sequence */
-export const MAIN_BG_ANIM_DURATION = 1.0;
+/** Duration of Startup animation sequence */
+export const STARTUP_ANIM_DURATION = 0.6;
 
-const MainBackground = () => {
+const Startup = () => {
   const [animating, setAnimating] = useState(true);
   const fillRef = useRef<HTMLDivElement>(null);
   const { height } = useWindowSize();
@@ -32,23 +32,23 @@ const MainBackground = () => {
         { duration: 0 },
       ],
       [fillRef.current, { scaleX: 1 }],
-      [fillRef.current, { scaleX: 1, scaleY: 1 }],
+      [fillRef.current, { scaleX: 1, scaleY: 1 }, { delay: 0.25 }],
     ];
 
     animate(animationSequence, {
       defaultTransition: {
-        delay: 0.2,
-        duration: 0.5,
+        delay: 0,
+        duration: 0.3,
         ease: EASE_IN_AND_TINY_OUT,
       },
     }).then(() => setAnimating(false));
   }, [height, animating, initalFillScale]);
 
   return (
-    <MainBackgroundWrapper aria-hidden>
-      <MainBackgroundFill ref={fillRef} initial={{ scaleX: 0, scaleY: 0 }} />
-    </MainBackgroundWrapper>
+    <StartupWrapper aria-hidden>
+      <StartupFill ref={fillRef} initial={{ scaleX: 0, scaleY: 0 }} />
+    </StartupWrapper>
   );
 };
 
-export default MainBackground;
+export default Startup;

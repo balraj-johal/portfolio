@@ -1,12 +1,9 @@
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
 
-import TransitionSplash from "@/components/UI/Splashes/TransitionSplash";
 import RootBody from "@/components/UI/RootBody";
 import Main from "@/components/UI/Main";
-import Header from "@/components/UI/Header";
-import CustomCursorWindow from "@/components/UI/CustomCursorWindow";
 import Providers from "@/components/Providers";
 
 import "./globals.css";
@@ -20,6 +17,13 @@ export const metadata = {
   description: ":)",
 };
 
+const LazyTransitionSplash = lazy(
+  () => import("@/components/UI/Splashes/TransitionSplash"),
+);
+const LazyCustomCursorWindow = lazy(
+  () => import("@/components/UI/CustomCursorWindow"),
+);
+
 export default function RootLayout({
   children,
 }: {
@@ -32,11 +36,10 @@ export default function RootLayout({
       <Providers>
         <RootBody>
           <Main>
-            <Header />
             <Suspense>{children}</Suspense>
           </Main>
-          <CustomCursorWindow />
-          <TransitionSplash />
+          <LazyCustomCursorWindow />
+          <LazyTransitionSplash />
           <Analytics />
         </RootBody>
       </Providers>
