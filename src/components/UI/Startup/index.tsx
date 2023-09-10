@@ -11,20 +11,18 @@ export const STARTUP_ANIM_DURATION = 0.8;
 
 const Startup = () => {
   const [animating, setAnimating] = useState(true);
-  const [stageOneDone, setStageOneDone] = useState(false);
   const fillRef = useRef<HTMLDivElement>(null);
 
   useScrollLock(animating);
+  console.log("mount");
 
   return (
     <StartupWrapper aria-hidden>
       <StartupFill
         ref={fillRef}
-        stageOneDone={stageOneDone}
         onAnimationEnd={(e: AnimationEvent) => {
-          // css anim complete
-          if (e.animationName.includes("growOut")) setStageOneDone(true);
-          if (e.animationName.includes("growOut")) setAnimating(false);
+          setAnimating(false);
+          console.log(e);
         }}
       />
     </StartupWrapper>
