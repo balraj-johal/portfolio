@@ -24,11 +24,11 @@ const ImageStrip = ({ images }: Props) => {
           key={image.id}
           visible={activeIndex === i}
           style={{
-            left: containerLeftPositions[i],
-            width: `${imageWidth}px`,
+            left: containerLeftPositions[i] ?? "0px",
+            width: imageWidth ? `${imageWidth}px` : "0px",
           }}
         >
-          <Image src={image.url} alt={image.description} priority fill />
+          <Image src={image.url} alt={image.description ?? ""} priority fill />
         </ImageContainer>
       ))}
     </ImageStripWrapper>
