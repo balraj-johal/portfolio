@@ -1,7 +1,8 @@
 import { SearchParams } from "@/types/routing";
 import { getContent } from "@/content/contentful";
-import WebsitePendingSplash from "@/components/UI/WebsitePendingSplash";
+import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
 import ProfessionalWorkPage from "@/components/UI/ProfessionalWorkPage";
+import MainBackground from "@/components/UI/MainBackground";
 import Hero from "@/components/UI/Hero";
 
 export default async function Home({
@@ -13,9 +14,10 @@ export default async function Home({
 
   return (
     <>
-      {!searchParams.skip && <WebsitePendingSplash />}
+      <MainBackground />
       <Hero />
       <ProfessionalWorkPage content={professionalEntries} />
+      {!searchParams.skip && <WebsitePendingSplash />}
     </>
   );
 }

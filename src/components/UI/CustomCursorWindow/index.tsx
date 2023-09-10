@@ -2,8 +2,7 @@
 
 import { useRef } from "react";
 
-import useCustomCursor from "@/hooks/useCustomCursor";
-
+import useCustomCursor from "./useCustomCursor";
 import {
   CustomCursorElement,
   CustomCursorWrapper,

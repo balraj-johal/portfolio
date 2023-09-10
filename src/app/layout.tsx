@@ -2,10 +2,9 @@ import { Suspense } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
 
-import TransitionSplash from "@/components/UI/TransitionSplash";
+import TransitionSplash from "@/components/UI/Splashes/TransitionSplash";
 import RootBody from "@/components/UI/RootBody";
 import Main from "@/components/UI/Main";
-import LoadingSplash from "@/components/UI/LoadingSplash";
 import Header from "@/components/UI/Header";
 import CustomCursorWindow from "@/components/UI/CustomCursorWindow";
 import Providers from "@/components/Providers";
@@ -34,12 +33,10 @@ export default function RootLayout({
         <RootBody>
           <Main>
             <Header />
-
             <Suspense>{children}</Suspense>
           </Main>
           <CustomCursorWindow />
           <TransitionSplash />
-          <LoadingSplash />
           <Analytics />
         </RootBody>
       </Providers>

@@ -9,9 +9,9 @@ import { extendedStyle } from "@/utils/css";
 import { LenisScrollEvent } from "@/types/lenis";
 import { ContentfulResponse } from "@/types/content";
 
-import ListNav from "../ListNav";
 import { ProfessionalWorkWrapper, StickyContainerElement } from "./styles";
 import ProfessionalEntryCard from "./ProfessionalEntryCard";
+import ListNav from "./ListNav";
 
 interface Props {
   content: ContentfulResponse;
@@ -23,7 +23,7 @@ type ContainerData = {
   end: number;
 };
 
-const ProfessionalWorkPage = ({ content }: Props) => {
+const ProfessionalWork = ({ content }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const containerDataRef = useRef<ContainerData | undefined>();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -84,4 +84,4 @@ const ProfessionalWorkPage = ({ content }: Props) => {
   );
 };
 
-export default ProfessionalWorkPage;
+export default ProfessionalWork;

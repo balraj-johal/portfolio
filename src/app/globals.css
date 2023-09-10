@@ -8,7 +8,7 @@ html, body {
 }
 
 html {
-  background: black;
+  background: var(--color-black);
 }
 
 body {
