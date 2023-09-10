@@ -1,9 +1,14 @@
+import { lazy } from "react";
+
 import { SearchParams } from "@/types/routing";
 import { getContent } from "@/content/contentful";
 import Startup from "@/components/UI/Startup";
 import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
-import ProfessionalWorkPage from "@/components/UI/ProfessionalWorkPage";
 import Hero from "@/components/UI/Hero";
+
+const LazyProfessionalWorkPage = lazy(
+  () => import("@/components/UI/ProfessionalWorkPage"),
+);
 
 export default async function Home({
   searchParams,
@@ -16,7 +21,7 @@ export default async function Home({
     <>
       <Startup />
       <Hero />
-      <ProfessionalWorkPage content={professionalEntries} />
+      <LazyProfessionalWorkPage content={professionalEntries} />
       {!searchParams.skip && <WebsitePendingSplash />}
     </>
   );
