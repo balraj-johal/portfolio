@@ -14,7 +14,7 @@ interface Props {
 const ImageStrip = ({ images }: Props) => {
   const { activeIndex, containerLeftPositions, imageWidth } = useImageStrip({
     count: images.length,
-    scale: 2,
+    scale: 2, // horizontal scale factor
   });
 
   return (
