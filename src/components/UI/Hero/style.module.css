@@ -4,12 +4,15 @@ section.HeroWrapper {
   display: flex;
   flex-direction: column;
 
-  grid-column: 1 / 13;
+  /* Not sure why 14's needed as col end here :/ */
+  grid-column: 1 / 14;
 }
 
 
 @media (min-width: 768px) {
   section.HeroWrapper {
     padding-top: 10%;
+
+    grid-column: 1 / 13;
   }
 }
