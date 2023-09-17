@@ -4,9 +4,6 @@ section.HeroWrapper {
   display: flex;
   flex-direction: column;
 
-  padding-top: 2rem;
-  padding-bottom: 8rem;
-
   grid-column: 1 / 13;
 }
 

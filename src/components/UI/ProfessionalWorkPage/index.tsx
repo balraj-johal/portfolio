@@ -66,7 +66,7 @@ const ProfessionalWork = ({ content }: Props) => {
 
   const style = extendedStyle({
     "--number-of-children": content.length.toString(),
-    "--child-height": "125", // in vh/dvh
+    "--child-height": "75", // in vh/dvh
   });
 
   return (

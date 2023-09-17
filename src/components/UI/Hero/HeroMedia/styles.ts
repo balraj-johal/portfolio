@@ -4,5 +4,5 @@ import { styled } from "@phntms/css-components";
 import css from "./style.module.css";
 
 export const HeroMediaWrapper = styled(motion.div, {
-  css: css.HeroMediaWrapper,
+  css: [css.HeroMediaWrapper, "no-highlight"],
 });
