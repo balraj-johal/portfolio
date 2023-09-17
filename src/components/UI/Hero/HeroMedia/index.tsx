@@ -15,7 +15,8 @@ interface Props {
   images: ImageInfo[];
 }
 
-const DELAY = STARTUP_ANIM_DURATION + 0.1;
+const DESKTOP_DELAY = STARTUP_ANIM_DURATION + 0.1;
+const MOBILE_DELAY = STARTUP_ANIM_DURATION + 0.2;
 
 const HeroMedia = ({ images }: Props) => {
   const isMobile = useMediaQuery(IS_MOBILE);
@@ -23,10 +24,10 @@ const HeroMedia = ({ images }: Props) => {
   return (
     <HeroMediaWrapper
       aria-hidden
-      initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
+      initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
       animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
       transition={{
-        delay: DELAY,
+        delay: isMobile ? MOBILE_DELAY : DESKTOP_DELAY,
         ease: EASE_IN_AND_TINY_OUT,
         duration: 0.4,
       }}
