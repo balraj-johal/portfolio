@@ -20,6 +20,7 @@ export const metadata = {
 const LazyTransitionSplash = lazy(
   () => import("@/components/UI/Splashes/TransitionSplash"),
 );
+
 const LazyCustomCursorWindow = lazy(
   () => import("@/components/UI/CustomCursorWindow"),
 );

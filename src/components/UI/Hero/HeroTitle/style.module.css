@@ -1,0 +1,24 @@
+.HeroTitleWrapper {
+  top: 40vh;
+}
+
+.HeroTitleElement {
+  display: block;
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  font-size: clamp(26px, 12vw, 120px);
+  text-align: center;
+
+  transform: translateY(-50%);
+}
+
+@media (min-width: 768px) {
+  .HeroTitleWrapper {
+    top: 55vh;
+  }
+
+  .HeroTitleElement {
+    font-size: 10vw;
+  }
+}
