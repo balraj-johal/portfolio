@@ -5,6 +5,11 @@ import css from "./style.module.css";
 
 export const HeroTitleWrapper = styled(motion.div, {
   css: css.HeroTitleWrapper,
+  variants: {
+    masked: {
+      true: css.HeroTitleWrapper_Masked,
+    },
+  },
 });
 
 export const HeroTitleElement = styled("h1", {

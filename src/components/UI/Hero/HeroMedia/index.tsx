@@ -11,6 +11,7 @@ import { EASE_IN_AND_TINY_OUT } from "@/theme/eases";
 import { IS_MOBILE } from "@/config/mediaQueries";
 import { STARTUP_ANIM_DURATION } from "@/components/UI/Startup";
 
+import HeroTitle from "../HeroTitle";
 import { HeroMediaWrapper } from "./styles";
 import ImageStrip from "./ImageStrip";
 import ImageCarousel from "./ImageCarousel";
@@ -23,31 +24,39 @@ const DESKTOP_DELAY = STARTUP_ANIM_DURATION + 0.1;
 const MOBILE_DELAY = STARTUP_ANIM_DURATION + 0.2;
 
 const HeroMedia = ({ images }: Props) => {
+  const maskOffsetRef = useRef(0);
   const mediaRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery(IS_MOBILE);
 
   useLenis(({ scroll }) => {
     if (!mediaRef.current) return;
-    mediaRef.current.style.transform = `translateY(-${scroll * 0.1}px)`;
+    const offsetY = scroll * 0.1;
+    maskOffsetRef.current = offsetY;
+    mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
   });
 
   return (
-    <HeroMediaWrapper
-      ref={mediaRef}
-      aria-hidden
-      {...revealDown}
-      transition={{
-        delay: isMobile ? MOBILE_DELAY : DESKTOP_DELAY,
-        ease: EASE_IN_AND_TINY_OUT,
-        duration: 0.4,
-      }}
-    >
-      {isMobile ? (
-        <ImageCarousel images={images} />
-      ) : (
-        <ImageStrip images={images} />
-      )}
-    </HeroMediaWrapper>
+    <>
+      <HeroTitle masked maskOffsetRef={maskOffsetRef}>
+        Balraj Johal
+      </HeroTitle>
+      <HeroMediaWrapper
+        ref={mediaRef}
+        aria-hidden
+        {...revealDown}
+        transition={{
+          delay: isMobile ? MOBILE_DELAY : DESKTOP_DELAY,
+          ease: EASE_IN_AND_TINY_OUT,
+          duration: 0.4,
+        }}
+      >
+        {isMobile ? (
+          <ImageCarousel images={images} />
+        ) : (
+          <ImageStrip images={images} />
+        )}
+      </HeroMediaWrapper>
+    </>
   );
 };
 
