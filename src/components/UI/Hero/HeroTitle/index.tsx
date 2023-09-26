@@ -23,6 +23,8 @@ const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
 
   useAnimationFrame(() => {
     if (!isMasked || !elemRef.current) return;
+    // top updating dom if it's already out of bounds
+    if (maskOffsetRef.current > 50) return;
     elemRef.current.style.clipPath = `inset(0% 0% calc(50% + ${maskOffsetRef.current}px) 0%)`;
   });
 
