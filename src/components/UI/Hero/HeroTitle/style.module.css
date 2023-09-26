@@ -7,7 +7,7 @@
 
 .HeroTitleWrapper_Masked .HeroTitleElement {
   z-index: 1;
-  color: rgba(0 0 0 / 0.5);
+  color: rgb(255, 255, 255);
 }
 
 .HeroTitleElement {

@@ -35,7 +35,7 @@ export const useImageStrip = ({ count, scale = 1 }: Props) => {
     for (let i = 0; i < count; i++) {
       const safeArea = width - imageWidth;
       const offset = safeArea / (count - 1);
-      positions.push(`${offset * i}px`);
+      positions.push(offset * i);
     }
     return positions;
   }, [count, imageWidth, width]);

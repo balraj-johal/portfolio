@@ -23,15 +23,27 @@ interface Props {
 const DESKTOP_DELAY = STARTUP_ANIM_DURATION + 0.1;
 const MOBILE_DELAY = STARTUP_ANIM_DURATION + 0.2;
 
+export interface ClipPath {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+}
+
 const HeroMedia = ({ images }: Props) => {
-  const maskOffsetRef = useRef(0);
+  const maskOffsetRef = useRef<ClipPath>({
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  });
   const mediaRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery(IS_MOBILE);
 
   useLenis(({ scroll }) => {
     if (!mediaRef.current) return;
     const offsetY = scroll * 0.1;
-    maskOffsetRef.current = offsetY;
+    maskOffsetRef.current.bottom = offsetY;
     mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
   });
 
@@ -53,7 +65,7 @@ const HeroMedia = ({ images }: Props) => {
         {isMobile ? (
           <ImageCarousel images={images} />
         ) : (
-          <ImageStrip images={images} />
+          <ImageStrip images={images} maskOffsetRef={maskOffsetRef} />
         )}
       </HeroMediaWrapper>
     </>
