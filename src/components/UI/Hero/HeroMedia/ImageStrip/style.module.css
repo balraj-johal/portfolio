@@ -1,6 +1,7 @@
 .ImageStripWrapper {
   position: relative;
   height: 100%;
+  pointer-events: none;
 }
 
 .ImageContainer {

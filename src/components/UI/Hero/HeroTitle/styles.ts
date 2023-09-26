@@ -7,7 +7,7 @@ export const HeroTitleWrapper = styled(motion.div, {
   css: css.HeroTitleWrapper,
   variants: {
     masked: {
-      true: css.HeroTitleWrapper_Masked,
+      true: [css.HeroTitleWrapper_Masked, "no-highlight"],
     },
   },
 });

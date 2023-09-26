@@ -43,6 +43,7 @@ const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: DELAY, duration: 0.25, ease: EASE_IN_OUT_EXPO }}
       masked={masked}
+      aria-hidden={masked}
     >
       <HeroTitleElement ref={elemRef}>{children}</HeroTitleElement>
     </HeroTitleWrapper>
