@@ -16,3 +16,26 @@ section.HeroWrapper {
     grid-column: 1 / 13;
   }
 }
+
+.HeroSubContent {
+  position: absolute;
+  width: 100%;
+  height: 33%;
+  bottom: 0;
+}
+
+.HeroContentLeft {
+  grid-column: 2 / 5;
+  height: 100%;
+
+  border: 1px solid blue;
+}
+
+.HeroContentRight {
+  grid-column: 6 / 10;
+  height: 100%;
+
+  text-align: right;
+  
+  border: 1px solid blue;
+}

@@ -5,6 +5,13 @@
   --grid-gap: 24px;
 }
 
+.twelve-col-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: var(--grid-gap);
+  gap: var(--grid-gap);
+}
+
 .container {
   grid-column: 1 / end;
   padding: var(--padding-mobile);
