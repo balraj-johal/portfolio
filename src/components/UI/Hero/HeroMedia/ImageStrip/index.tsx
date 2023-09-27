@@ -27,7 +27,6 @@ const ImageStrip = ({ images, maskOffsetRef }: Props) => {
     const right = left + imageWidth;
     maskOffsetRef.current.left = left;
     maskOffsetRef.current.right = right;
-    console.log(maskOffsetRef.current);
   }, [activeIndex, containerLeftPositions, imageWidth, maskOffsetRef]);
 
   return (
