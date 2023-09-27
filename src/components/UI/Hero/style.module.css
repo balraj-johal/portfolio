@@ -11,7 +11,9 @@ section.HeroWrapper {
 
 @media (min-width: 768px) {
   section.HeroWrapper {
-    padding-top: 15vh;
+    --hero-top-offset: 6.66vh;
+    --hero-media-height: 40vh;
+    padding-top: var(--hero-top-offset);
 
     grid-column: 1 / 13;
   }

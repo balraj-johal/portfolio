@@ -1,6 +1,6 @@
 .HeroTitleWrapper {
   position: absolute;
-  top: 40vh;
+  top: var(--hero-media-height);
 
   width: 100%;
 }
@@ -28,7 +28,7 @@
 
 @media (min-width: 768px) {
   .HeroTitleWrapper {
-    top: 55vh;
+    top: calc(var(--hero-media-height) + var(--hero-top-offset));
   }
 
   .HeroTitleElement {

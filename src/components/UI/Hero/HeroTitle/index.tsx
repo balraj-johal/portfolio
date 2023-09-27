@@ -20,6 +20,8 @@ interface Props {
 
 const DELAY = STARTUP_ANIM_DURATION + 0.4;
 
+const CLIP_PATH_UPDATE_LIMIT = 100;
+
 const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
   const elemRef = useRef<HTMLHeadingElement>(null);
   const isMobile = useMediaQuery(IS_MOBILE);
@@ -29,7 +31,7 @@ const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
     if (!isMasked || !elemRef.current) return;
     const { right, bottom, left } = maskOffsetRef.current;
     // stop updating dom if it's already out of bounds
-    if (bottom > 50) return;
+    if (bottom > CLIP_PATH_UPDATE_LIMIT) return;
     if (isMobile) {
       elemRef.current.style.clipPath = `inset(0% 0% calc(50% + ${bottom}px) 0%)`;
     } else {

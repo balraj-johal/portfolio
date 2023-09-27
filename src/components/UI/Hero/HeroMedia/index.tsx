@@ -20,6 +20,8 @@ interface Props {
   images: ImageInfo[];
 }
 
+export const MEDIA_PARALLAX_AMOUNT = 0.2;
+
 const DESKTOP_DELAY = STARTUP_ANIM_DURATION + 0.1;
 const MOBILE_DELAY = STARTUP_ANIM_DURATION + 0.2;
 
@@ -42,7 +44,7 @@ const HeroMedia = ({ images }: Props) => {
 
   useLenis(({ scroll }) => {
     if (!mediaRef.current) return;
-    const offsetY = scroll * 0.1;
+    const offsetY = scroll * MEDIA_PARALLAX_AMOUNT;
     maskOffsetRef.current.bottom = offsetY;
     mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
   });
