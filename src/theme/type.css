@@ -1,21 +1,18 @@
-.type-h1 {
+body {
+  font-weight: 500;
+  letter-spacing: -0.075em;
 }
 
 h1 {
   font-family: var(--font-proto-mono);
+  font-weight: 500;
   
-  line-height: 78%;
-  letter-spacing: -1px;
   text-transform: uppercase;
 
   color: var(--color-black);
 }
 
 p {
-  line-height: 104%;
   font-weight: 300;
-}
-
-a {
-  letter-spacing: -1px;
+  line-height: 0.9em;
 }

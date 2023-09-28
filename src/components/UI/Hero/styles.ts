@@ -10,10 +10,10 @@ export const HeroSubContent = styled("div", {
   css: [css.HeroSubContent, "twelve-col-grid"],
 });
 
-export const HeroContentLeft = styled("div", {
+export const HeroContentLeft = styled("p", {
   css: css.HeroContentLeft,
 });
 
-export const HeroContentRight = styled("div", {
+export const HeroContentRight = styled("p", {
   css: css.HeroContentRight,
 });

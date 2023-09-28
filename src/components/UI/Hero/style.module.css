@@ -11,7 +11,7 @@ section.HeroWrapper {
 
 @media (min-width: 768px) {
   section.HeroWrapper {
-    --hero-top-offset: 6.66vh;
+    --hero-top-offset: 8vh;
     --hero-media-height: 40vh;
     padding-top: var(--hero-top-offset);
 
@@ -24,13 +24,13 @@ section.HeroWrapper {
   width: 100%;
   height: 33%;
   bottom: 0;
+
+  font-size: 22px;
 }
 
 .HeroContentLeft {
   grid-column: 2 / 5;
   height: 100%;
-
-  border: 1px solid blue;
 }
 
 .HeroContentRight {
@@ -38,6 +38,4 @@ section.HeroWrapper {
   height: 100%;
 
   text-align: right;
-  
-  border: 1px solid blue;
 }
