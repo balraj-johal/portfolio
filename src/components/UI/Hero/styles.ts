@@ -7,13 +7,13 @@ export const HeroWrapper = styled("section", {
 });
 
 export const HeroSubContent = styled("div", {
-  css: [css.HeroSubContent, "twelve-col-grid"],
+  css: css.HeroSubContent,
 });
 
 export const HeroContentLeft = styled("p", {
   css: css.HeroContentLeft,
 });
 
-export const HeroContentRight = styled("p", {
-  css: css.HeroContentRight,
+export const PhantomLink = styled("a", {
+  css: css.PhantomLink,
 });

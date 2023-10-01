@@ -45,19 +45,10 @@ const ProfessionalWork = ({ content }: Props) => {
     return () => window.removeEventListener("resize", updateContainerData);
   }, [containerRef, content]);
 
-  const updateParallaxEffect = (start: number, scroll: number) => {
-    if (!containerRef.current) return;
-    console.log(start - scroll);
-    const offset = start / scroll;
-    containerRef.current.style.transform = `translateY(${offset * 0.1}px)`;
-  };
-
   const lenis = useLenis(({ scroll }: LenisScrollEvent) => {
     if (!containerDataRef.current) return;
     const { start, end } = containerDataRef.current;
     let progress = gsap.utils.mapRange(start, end, 0, 1, scroll);
-
-    if (progress < 0) updateParallaxEffect(start, scroll);
 
     progress = gsap.utils.clamp(0, 1, progress);
     const newIndex = Math.floor(progress * content.length);
