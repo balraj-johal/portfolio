@@ -1,7 +1,6 @@
 import { Suspense, lazy } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
-import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 
 import RootBody from "@/components/UI/RootBody";
 import Main from "@/components/UI/Main";
@@ -12,11 +11,6 @@ import "@/theme/animation.css";
 import "@/theme/spacing.css";
 import "@/theme/colors.css";
 import "@/theme/type.css";
-
-storyblokInit({
-  accessToken: process.env.STORYBLOK_TOKEN,
-  use: [apiPlugin],
-});
 
 export const metadata = {
   title: "Balraj Johal",
