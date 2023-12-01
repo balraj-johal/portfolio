@@ -13,7 +13,7 @@ const TransitionSplash = ({ ...rest }: Props) => {
 
   return (
     <TransitionSplashWrapper transitioning={transitioning} {...rest}>
-      Transitioningg.....
+      Transitioning...
     </TransitionSplashWrapper>
   );
 };

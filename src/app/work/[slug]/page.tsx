@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { findEntry } from "@/utils/contentful";
+import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import { getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
@@ -22,13 +22,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const entries = await getContent(CONTENT_TYPE);
-  const entry = findEntry(entries, params.slug);
+  const entry = findEntryBySlug(entries, params.slug);
   return { title: entry?.fields.title };
 }
 
 export default async function Work({ params }: Props) {
   const entries = await getContent(CONTENT_TYPE);
-  const entry = findEntry(entries, params.slug);
+  const entry = findEntryBySlug(entries, params.slug);
   if (!entry) notFound();
 
   const { title, oneLiner } =

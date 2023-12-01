@@ -29,7 +29,7 @@ interface ProviderProps {
 
 const ApplicationStateContext = createContext<ContextProps>({} as ContextProps);
 
-const TRANSITION_DURATION = 1000; // ms
+export const ROUTE_TRANSITION_DURATION = 1000; // ms
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const url = useRouterURL();
@@ -45,7 +45,7 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     const loadedTimeout = setTimeout(() => {
       if (transitioning) setTransitioning(false);
-    }, TRANSITION_DURATION);
+    }, ROUTE_TRANSITION_DURATION);
 
     return () => {
       clearTimeout(loadedTimeout);

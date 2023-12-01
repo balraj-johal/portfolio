@@ -1,3 +1,5 @@
 .BlogPostWrapper {
   background-color: var(--color-white);
+
+  grid-column: 1 / end;
 }

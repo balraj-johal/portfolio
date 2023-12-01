@@ -1,7 +1,5 @@
 import { Entry, EntrySkeletonType } from "contentful";
 
-export type ContentType = "professionalWork" | "blog";
-
 export type ContentfulImage = {
   fields: {
     file: {

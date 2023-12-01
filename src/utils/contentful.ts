@@ -4,7 +4,7 @@ import {
   ImageInfo,
 } from "@/types/content";
 
-export const findEntry = (items: ContentfulResponse, slug: string) => {
+export const findEntryBySlug = (items: ContentfulResponse, slug: string) => {
   for (const entry of items) {
     if (entry.fields.slug === slug) return entry;
   }

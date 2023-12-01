@@ -9,7 +9,6 @@ import { ImageInfo } from "@/types/content";
 import { revealDown } from "@/theme/framer-configs";
 import { EASE_IN_AND_TINY_OUT } from "@/theme/eases";
 import { IS_MOBILE } from "@/config/mediaQueries";
-import { STARTUP_ANIM_DURATION } from "@/components/UI/Startup";
 
 import HeroTitle from "../HeroTitle";
 import { HeroMediaWrapper } from "./styles";
@@ -22,8 +21,8 @@ interface Props {
 
 export const MEDIA_PARALLAX_AMOUNT = 0.2;
 
-const DESKTOP_DELAY = STARTUP_ANIM_DURATION + 0.1;
-const MOBILE_DELAY = STARTUP_ANIM_DURATION + 0.2;
+const DESKTOP_DELAY = 0.1;
+const MOBILE_DELAY = 0.2;
 
 export interface ClipPath {
   top: number;

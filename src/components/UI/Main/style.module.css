@@ -16,4 +16,5 @@ main.MainElement {
 
 main.MainElement_Loaded {
   opacity: 1;
+  transition-delay: var(--speed-route-transition);
 }

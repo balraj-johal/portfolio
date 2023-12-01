@@ -23,7 +23,7 @@ const TransitionLink = ({ href, children, className, ...rest }: Props) => {
     startTransitioning();
     setTimeout(() => {
       router.push(href);
-    }, 1500);
+    }, 0.3);
   };
 
   return (

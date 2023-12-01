@@ -37,6 +37,33 @@ export interface IBlog extends Entry<IBlogFields> {
   };
 }
 
+export interface IBlogPageFields {
+  /** title */
+  title: string;
+
+  /** Meta Title */
+  metaTitle: string;
+}
+
+/** Content for the page showing all blog posts */
+
+export interface IBlogPage extends Entry<IBlogPageFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "blogPage";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export interface ILandingPageContentFields {
   /** Name */
   name: string;
@@ -44,8 +71,11 @@ export interface ILandingPageContentFields {
   /** Subtitle */
   subtitle?: string | undefined;
 
-  /** Skills */
-  skills?: string | undefined;
+  /** What I do */
+  whatIDo: string[];
+
+  /** Recognition */
+  recognition: string[];
 }
 
 export interface ILandingPageContent extends Entry<ILandingPageContentFields> {
@@ -105,9 +135,17 @@ export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
   };
 }
 
-export type CONTENT_TYPE = "blog" | "landingPageContent" | "professionalWork";
+export type CONTENT_TYPE =
+  | "blog"
+  | "blogPage"
+  | "landingPageContent"
+  | "professionalWork";
 
-export type IEntry = IBlog | ILandingPageContent | IProfessionalWork;
+export type IEntry =
+  | IBlog
+  | IBlogPage
+  | ILandingPageContent
+  | IProfessionalWork;
 
 export type LOCALE_CODE = "en-US";
 

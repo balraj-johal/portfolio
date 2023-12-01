@@ -9,7 +9,6 @@ import { EASE_IN_OUT_EXPO } from "@/theme/eases";
 import { IS_MOBILE } from "@/config/mediaQueries";
 
 import { ClipPath } from "../HeroMedia";
-import { STARTUP_ANIM_DURATION } from "../../Startup";
 import { HeroTitleElement, HeroTitleWrapper } from "./styles";
 
 interface Props {
@@ -18,7 +17,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const DELAY = STARTUP_ANIM_DURATION + 0.4;
+const DELAY = 0.4;
 
 const CLIP_PATH_UPDATE_LIMIT = 100;
 
