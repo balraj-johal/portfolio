@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 
 import { getImageURLs } from "@/utils/contentful";
+import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import { CursorType } from "@/types/cursor";
-import { ContentfulResponse, ProfessionalContentEntry } from "@/types/content";
+import { ContentfulResponse } from "@/types/content";
 
 import ProfessionalEntryImages from "../ProfessionalEntryImages";
 import {
@@ -21,7 +22,8 @@ const ProfessionalEntryCard = ({ activeIndex, content }: Props) => {
   const imageURLs = useMemo(() => getImageURLs(content), [content]);
 
   // destructure content
-  const visibleEntry = content[activeIndex]?.fields as ProfessionalContentEntry;
+  const visibleEntry = content[activeIndex]
+    ?.fields as unknown as IProfessionalWorkFields;
   if (!visibleEntry) return null;
   const { title, slug, oneLiner } = visibleEntry;
   const imageAlt = `Image of ${title}`;

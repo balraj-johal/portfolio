@@ -1,15 +1,6 @@
 import { Entry, EntrySkeletonType } from "contentful";
 
-export type ProfessionalContentEntry = {
-  slug: string;
-  title: string;
-  oneLiner: string;
-  imageID: string;
-  href: string;
-  image: ContentfulImage;
-};
-
-export type ContentType = "professionalWork";
+export type ContentType = "professionalWork" | "blog";
 
 export type ContentfulImage = {
   fields: {

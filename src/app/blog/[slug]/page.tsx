@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 
 import { findEntry } from "@/utils/contentful";
-import { IProfessionalWorkFields } from "@/types/generated/contentful";
+import { IBlogFields } from "@/types/generated/contentful";
+import { BlogPostEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
+
+import { BlogPostWrapper } from "./styles";
 
 interface Props {
   params: {
@@ -11,7 +14,7 @@ interface Props {
   };
 }
 
-const CONTENT_TYPE = "professionalWork";
+const CONTENT_TYPE = "blog";
 
 export async function generateStaticParams() {
   const entries = await getContent(CONTENT_TYPE);
@@ -26,19 +29,18 @@ export async function generateMetadata({ params }: Props) {
   return { title: entry?.fields.title };
 }
 
-export default async function Work({ params }: Props) {
+export default async function BlogEntry({ params }: Props) {
   const entries = await getContent(CONTENT_TYPE);
   const entry = findEntry(entries, params.slug);
   if (!entry) notFound();
 
-  const { title, oneLiner } =
-    entry.fields as unknown as IProfessionalWorkFields;
+  const { title, content } = entry.fields as unknown as IBlogFields;
+  console.log("content", content.content);
 
   return (
-    <>
+    <BlogPostWrapper>
       <TransitionLink href="/">Back</TransitionLink>
       <h1>{title}</h1>
-      <p>{oneLiner}</p>
-    </>
+    </BlogPostWrapper>
   );
 }

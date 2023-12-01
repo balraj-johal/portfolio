@@ -1,4 +1,5 @@
-import { ProfessionalContentEntry, ContentfulResponse } from "@/types/content";
+import { IProfessionalWorkFields } from "@/types/generated/contentful";
+import { ContentfulResponse } from "@/types/content";
 
 import { ListNavWrapper } from "./styles";
 import ListNavLink from "./ListNavLink";
@@ -21,7 +22,7 @@ const ListNav = ({
     <ListNavWrapper {...rest}>
       {title && <h1>{title}</h1>}
       {content.map((entry, i) => {
-        const fields = entry.fields as ProfessionalContentEntry;
+        const fields = entry.fields as unknown as IProfessionalWorkFields;
         return (
           <ListNavLink
             id={fields.slug}
