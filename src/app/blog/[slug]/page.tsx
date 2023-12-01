@@ -37,8 +37,7 @@ export default async function BlogEntry({ params }: Props) {
   const entry = findEntryBySlug(entries, params.slug);
   if (!entry) notFound();
 
-  const { title, content } = getFields<IBlogFields>(entry);
-  console.log("content", content.content);
+  const { title } = getFields<IBlogFields>(entry);
 
   return (
     <BlogPostWrapper>
