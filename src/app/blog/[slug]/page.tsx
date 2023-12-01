@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 
 import { findEntry } from "@/utils/contentful";
 import { IBlogFields } from "@/types/generated/contentful";
-import { BlogPostEntry } from "@/types/content";
 import { getContent } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
 
