@@ -2,7 +2,6 @@ import { lazy } from "react";
 
 import { SearchParams } from "@/types/routing";
 import { getContent } from "@/content/contentful";
-import Startup from "@/components/UI/Startup";
 import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
 import Hero from "@/components/UI/Hero";
 
@@ -19,7 +18,6 @@ export default async function Home({
 
   return (
     <>
-      <Startup />
       <Hero />
       <LazyProfessionalWorkPage content={professionalEntries} />
       {!searchParams.skip && <WebsitePendingSplash />}
