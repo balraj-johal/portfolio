@@ -2,8 +2,6 @@ import Image from "next/image";
 import { Node } from "@contentful/rich-text-types";
 
 const RTEmbeddedAssetImage = ({ node }: { node: Node }) => {
-  console.log(node);
-
   return (
     <Image
       src={`https://${node.data.target.fields.file.url}`}

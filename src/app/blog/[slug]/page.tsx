@@ -39,7 +39,6 @@ export default async function BlogEntry({ params }: Props) {
   if (!entry) notFound();
 
   const { title, content: document } = getFields<IBlogFields>(entry);
-  // console.log(document.content.at(-1)?.content[1].data);
 
   return (
     <BlogPostWrapper>
