@@ -64,6 +64,31 @@ export interface IBlogPage extends Entry<IBlogPageFields> {
   };
 }
 
+export interface ICodeBlockFields {
+  /** title */
+  title: string;
+
+  /** code */
+  code: string;
+}
+
+export interface ICodeBlock extends Entry<ICodeBlockFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "codeBlock";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export interface ILandingPageContentFields {
   /** Name */
   name: string;
@@ -138,12 +163,14 @@ export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
 export type CONTENT_TYPE =
   | "blog"
   | "blogPage"
+  | "codeBlock"
   | "landingPageContent"
   | "professionalWork";
 
 export type IEntry =
   | IBlog
   | IBlogPage
+  | ICodeBlock
   | ILandingPageContent
   | IProfessionalWork;
 

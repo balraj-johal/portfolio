@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 import { Entry, EntrySkeletonType } from "contentful";
 
 export type ContentfulImage = {
@@ -21,3 +23,5 @@ export type ImageInfo = {
 };
 
 export type ContentfulResponse = Entry<EntrySkeletonType, undefined, string>[];
+
+export type RTTextNode = string | undefined | ReactNode;

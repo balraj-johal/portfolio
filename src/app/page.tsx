@@ -1,7 +1,7 @@
 import { lazy } from "react";
 
 import { SearchParams } from "@/types/routing";
-import { getContent } from "@/content/contentful";
+import { getContentByType } from "@/content/contentful";
 import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
 import Hero from "@/components/UI/Hero";
 
@@ -14,7 +14,7 @@ export default async function Home({
 }: {
   searchParams: SearchParams;
 }) {
-  const professionalEntries = await getContent("professionalWork");
+  const professionalEntries = await getContentByType("professionalWork");
 
   return (
     <>

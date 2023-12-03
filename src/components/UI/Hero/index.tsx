@@ -1,5 +1,5 @@
 import { getImagesInfo } from "@/utils/contentful";
-import { getContent } from "@/content/contentful";
+import { getContentByType } from "@/content/contentful";
 
 import {
   HeroContentLeft,
@@ -11,7 +11,7 @@ import HeroTitle from "./HeroTitle";
 import HeroMedia from "./HeroMedia";
 
 const Hero = async () => {
-  const professionalEntries = await getContent("professionalWork");
+  const professionalEntries = await getContentByType("professionalWork");
   const images = getImagesInfo(professionalEntries);
 
   return (

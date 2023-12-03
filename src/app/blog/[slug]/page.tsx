@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { findEntryBySlug } from "@/utils/contentful";
+import { findEntryBySlug, getFields } from "@/utils/contentful";
 import { IBlogFields } from "@/types/generated/contentful";
-import { getContent, getFields } from "@/content/contentful";
+import { getContentByType } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
 import RichTextDocument from "@/components/UI/RichTextDocument";
 
@@ -17,7 +17,7 @@ interface Props {
 const CONTENT_TYPE = "blog";
 
 const getEntries = async () => {
-  return await getContent(CONTENT_TYPE);
+  return await getContentByType(CONTENT_TYPE);
 };
 
 export async function generateStaticParams() {
@@ -29,8 +29,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const entries = await getEntries();
-  const entry = findEntryBySlug(entries, params.slug);
-  return { title: entry?.fields.title };
+  const entryTitle = findEntryBySlug(entries, params.slug)?.fields.title;
+  return { title: `${entryTitle} - Balraj Johal` };
 }
 
 export default async function BlogEntry({ params }: Props) {
@@ -39,7 +39,7 @@ export default async function BlogEntry({ params }: Props) {
   if (!entry) notFound();
 
   const { title, content: document } = getFields<IBlogFields>(entry);
-  console.log(document.content[1]);
+  // console.log(document.content.at(-1)?.content[1].data);
 
   return (
     <BlogPostWrapper>

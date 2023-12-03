@@ -1,4 +1,4 @@
-import { Entry, EntrySkeletonType, createClient } from "contentful";
+import { createClient } from "contentful";
 
 import { CONTENT_TYPE } from "@/types/generated/contentful";
 
@@ -10,7 +10,7 @@ const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
 });
 
-export const getContent = async (type: CONTENT_TYPE) => {
+export const getContentByType = async (type: CONTENT_TYPE) => {
   const response = await client.getEntries({
     content_type: type,
   });
@@ -18,8 +18,10 @@ export const getContent = async (type: CONTENT_TYPE) => {
   return response.items;
 };
 
-export const getFields = <T>(
-  item: Entry<EntrySkeletonType, undefined, string>,
-) => {
-  return item.fields as T;
+export const getContentByID = async (id: string) => {
+  const response = await client.getEntries({
+    "sys.id": id,
+  });
+
+  return response.items;
 };

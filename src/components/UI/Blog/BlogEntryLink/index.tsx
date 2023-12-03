@@ -1,6 +1,6 @@
-import { findEntryBySlug } from "@/utils/contentful";
+import { findEntryBySlug, getFields } from "@/utils/contentful";
 import { IBlogFields } from "@/types/generated/contentful";
-import { getContent, getFields } from "@/content/contentful";
+import { getContentByType } from "@/content/contentful";
 
 import { BlogEntryLinkWrapper } from "./styles";
 
@@ -12,7 +12,7 @@ interface Props {
 const CONTENT_TYPE = "blog";
 
 const getEntryContent = async (slug: string) => {
-  const entries = await getContent(CONTENT_TYPE);
+  const entries = await getContentByType(CONTENT_TYPE);
   const entry = findEntryBySlug(entries, slug);
   if (!entry) return;
   return getFields<IBlogFields>(entry);

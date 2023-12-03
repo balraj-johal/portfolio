@@ -1,3 +1,6 @@
+import { Entry, EntrySkeletonType } from "contentful";
+import { Node } from "@contentful/rich-text-types";
+
 import {
   ContentfulResponse,
   ContentfulImage,
@@ -40,4 +43,14 @@ export const getImageURLs = (content: ContentfulResponse) => {
     if (imageURL) URLs.push(imageURL);
   }
   return URLs;
+};
+
+export const getFields = <T>(
+  item: Entry<EntrySkeletonType, undefined, string>,
+) => {
+  return item.fields as T;
+};
+
+export const getEmbedItem = (node: Node) => {
+  return node.data.target;
 };
