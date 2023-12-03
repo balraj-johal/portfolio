@@ -33,12 +33,12 @@ const RTCodeBlockClient = ({ code, title }: CodeBlockProps) => {
     <Highlight theme={themes.vsDark} code={code} language="tsx">
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <>
-          <strong>{title}</strong>
           <RTCodeBlockCodeWrapper
             style={style}
             aria-label={code}
             suppressHydrationWarning
           >
+            <strong>{title}</strong>
             {tokens.map((line, i) => (
               <span key={i} {...getLineProps({ line })}>
                 <span>{i + 1}</span>
