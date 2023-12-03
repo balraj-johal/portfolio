@@ -1,6 +1,3 @@
-.type-h1 {
-}
-
 h1 {
   font-family: var(--font-proto-mono);
   
@@ -18,4 +15,13 @@ p {
 
 a {
   letter-spacing: -1px;
+}
+
+span.code {
+  color: blue;
+}
+
+p:has(span.code) {
+  padding: 1rem;
+  font-family: monospace;
 }
