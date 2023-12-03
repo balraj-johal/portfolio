@@ -24,7 +24,6 @@ interface Props {
 const renderOptions = {
   renderMark: {
     [MARKS.BOLD]: (text: RTTextNode) => <RTMarkBold>{text}</RTMarkBold>,
-    // [MARKS.CODE]: (text: RTTextNode) => <RTMarkCode code={text} />,
   },
   renderNode: {
     [BLOCKS.PARAGRAPH]: (_node: Node, children: ReactNode) => (

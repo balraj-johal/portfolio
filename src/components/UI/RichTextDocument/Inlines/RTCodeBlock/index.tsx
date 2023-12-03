@@ -5,6 +5,8 @@ import { Highlight, themes } from "prism-react-renderer";
 import { ICodeBlockFields } from "@/types/generated/contentful";
 import useIsClient from "@/hooks/useIsClient";
 
+import { RTCodeBlockCodeWrapper } from "./styles";
+
 interface Props {
   fields: unknown;
 }
@@ -31,17 +33,21 @@ const RTCodeBlockClient = ({ code, title }: CodeBlockProps) => {
     <Highlight theme={themes.vsDark} code={code} language="tsx">
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <>
-          <h5>{title}</h5>
-          <pre style={style} aria-hidden suppressHydrationWarning>
+          <strong>{title}</strong>
+          <RTCodeBlockCodeWrapper
+            style={style}
+            aria-hidden
+            suppressHydrationWarning
+          >
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line })}>
+              <span key={i} {...getLineProps({ line })}>
                 <span>{i + 1}</span>
                 {line.map((token, key) => (
                   <span key={key} {...getTokenProps({ token })} />
                 ))}
-              </div>
+              </span>
             ))}
-          </pre>
+          </RTCodeBlockCodeWrapper>
         </>
       )}
     </Highlight>
