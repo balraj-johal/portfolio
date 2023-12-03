@@ -13,15 +13,19 @@ p {
   font-weight: 300;
 }
 
+p:empty {
+  display: none;
+}
+
 a {
   letter-spacing: -1px;
 }
 
-span.code {
-  color: blue;
+.bold {
+  font-weight: bold;
 }
 
-p:has(span.code) {
+code {
   padding: 1rem;
   font-family: monospace;
 }
