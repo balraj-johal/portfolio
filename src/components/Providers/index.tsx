@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 
-import { GradientConfigProvider } from "@/contexts/gradient";
 import { ApplicationStateProvider } from "@/contexts/applicationState";
 
 interface Props {
@@ -13,9 +12,7 @@ interface Props {
 const Providers = ({ children }: Props) => {
   return (
     <Suspense fallback={null}>
-      <ApplicationStateProvider>
-        <GradientConfigProvider>{children}</GradientConfigProvider>
-      </ApplicationStateProvider>
+      <ApplicationStateProvider>{children}</ApplicationStateProvider>
     </Suspense>
   );
 };
