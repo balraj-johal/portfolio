@@ -36,7 +36,7 @@ const RTCodeBlockClient = ({ code, title }: CodeBlockProps) => {
           <strong>{title}</strong>
           <RTCodeBlockCodeWrapper
             style={style}
-            aria-hidden
+            aria-label={code}
             suppressHydrationWarning
           >
             {tokens.map((line, i) => (
