@@ -16,14 +16,14 @@ interface CodeBlockProps {
   title: string;
 }
 
-// const RTCodeBlockServer = ({ code, title }: CodeBlockProps) => {
-//   return (
-//     <div className="visually-hidden">
-//       <h5>{title}</h5>
-//       <span>{code}</span>
-//     </div>
-//   );
-// };
+const RTCodeBlockServer = ({ code, title }: CodeBlockProps) => {
+  return (
+    <span className="visually-hidden" aria-hidden>
+      <span>{title}</span>
+      <span>{code}</span>
+    </span>
+  );
+};
 
 const RTCodeBlockClient = ({ code, title }: CodeBlockProps) => {
   const isClient = useIsClient();
@@ -60,7 +60,7 @@ const RTCodeBlock = ({ fields }: Props) => {
   if (typeof code !== "string") return null;
   return (
     <>
-      {/* <RTCodeBlockServer code={code} title={title} /> */}
+      <RTCodeBlockServer code={code} title={title} />
       <RTCodeBlockClient code={code} title={title} />
     </>
   );
