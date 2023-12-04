@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { styled } from "@phntms/css-components";
 
-import css from "./style.module.css";
+import css from "./style.module.scss";
 
 export const MenuToggleWrapper = styled("button", {
   css: css.MenuToggleWrapper,

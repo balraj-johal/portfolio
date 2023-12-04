@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 
 const supplySans = localFont({
   src: [
@@ -58,8 +59,11 @@ const protoMono = localFont({
   variable: "--font-proto-mono",
 });
 
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
 export const FONT_CLASSES = [
   supplySans.variable,
   supplyMono.variable,
   protoMono.variable,
+  inter.variable,
 ].join(" ");
