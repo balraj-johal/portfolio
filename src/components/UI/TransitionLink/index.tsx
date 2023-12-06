@@ -5,7 +5,7 @@ import { CSSProperties, ReactNode, SyntheticEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { useApplicationState } from "@/contexts/applicationState";
+import { useTransitionStore } from "@/stores/transitionStore";
 
 interface Props {
   children: ReactNode;
@@ -15,12 +15,12 @@ interface Props {
 }
 
 const TransitionLink = ({ href, children, className, ...rest }: Props) => {
-  const { startTransitioning } = useApplicationState();
   const router = useRouter();
+  const { startTransition } = useTransitionStore();
 
   const handleNavigation = (e: SyntheticEvent) => {
     e.preventDefault();
-    startTransitioning();
+    startTransition();
     setTimeout(() => {
       router.push(href);
     }, 0.3);

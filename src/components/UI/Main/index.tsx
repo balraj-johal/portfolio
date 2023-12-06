@@ -1,7 +1,3 @@
-"use client";
-
-import { useApplicationState } from "@/contexts/applicationState";
-
 import { MainElement } from "./styles";
 
 interface Props {
@@ -9,13 +5,7 @@ interface Props {
 }
 
 const Main = ({ children, ...rest }: Props) => {
-  const { transitioning } = useApplicationState();
-
-  return (
-    <MainElement transitioning={transitioning} {...rest}>
-      {children}
-    </MainElement>
-  );
+  return <MainElement {...rest}>{children}</MainElement>;
 };
 
 export default Main;

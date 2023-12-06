@@ -1,20 +1,32 @@
 "use client";
 
-import { useApplicationState } from "@/contexts/applicationState";
+import { useRef } from "react";
 
+import dynamic from "next/dynamic";
+
+import { useTransitionStore } from "@/stores/transitionStore";
+
+import { useTransitionAnimation } from "./useTransitionAnimation";
 import { TransitionSplashWrapper } from "./styles";
 
-interface Props {
-  children?: React.ReactNode;
-}
+const BackgroundNoSSR = dynamic(() => import("../Background"), { ssr: false });
 
-const TransitionSplash = ({ ...rest }: Props) => {
-  const { transitioning } = useApplicationState();
+const TransitionSplash = () => {
+  const transitionWrapperRef = useRef<HTMLDivElement>(null);
+
+  const { transitioning, startTransition } = useTransitionStore();
+
+  useTransitionAnimation(transitionWrapperRef);
 
   return (
-    <TransitionSplashWrapper transitioning={transitioning} {...rest}>
-      Transitioning...
-    </TransitionSplashWrapper>
+    <>
+      <TransitionSplashWrapper
+        transitioning={transitioning}
+        ref={transitionWrapperRef}
+      />
+      <button onClick={() => startTransition()}>start</button>
+      <BackgroundNoSSR />
+    </>
   );
 };
 

@@ -4,17 +4,12 @@ import {
   ReactNode,
   useMemo,
   useState,
-  useEffect,
   useCallback,
   SetStateAction,
   Dispatch,
 } from "react";
 
-import useRouterURL from "@/hooks/useRouterURL";
-
 interface ContextProps {
-  transitioning: boolean;
-  startTransitioning: () => void;
   loading: boolean;
   finishLoading: () => void;
   menuOpen: boolean;
@@ -29,33 +24,17 @@ interface ProviderProps {
 
 const ApplicationStateContext = createContext<ContextProps>({} as ContextProps);
 
-export const ROUTE_TRANSITION_DURATION = 1000; // ms
+export const ROUTE_TRANSITION_DURATION = 1800; // ms
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
-  const url = useRouterURL();
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(false);
-  const [transitioning, setTransitioning] = useState(false);
 
   const finishLoading = useCallback(() => setLoading(false), [setLoading]);
-  const startTransitioning = useCallback(() => setTransitioning(true), []);
-
-  // watch URL for changes, and begin timer for finishing load
-  useEffect(() => {
-    const loadedTimeout = setTimeout(() => {
-      if (transitioning) setTransitioning(false);
-    }, ROUTE_TRANSITION_DURATION);
-
-    return () => {
-      clearTimeout(loadedTimeout);
-    };
-  }, [url, transitioning]);
 
   const contextProps: ContextProps = useMemo(
     () => ({
-      transitioning,
-      startTransitioning,
       loading,
       finishLoading,
       menuOpen,
@@ -63,14 +42,7 @@ const ApplicationStateProvider = ({ children }: ProviderProps) => {
       headerVisible,
       setHeaderVisible,
     }),
-    [
-      finishLoading,
-      headerVisible,
-      loading,
-      menuOpen,
-      startTransitioning,
-      transitioning,
-    ],
+    [finishLoading, headerVisible, loading, menuOpen],
   );
 
   return (
