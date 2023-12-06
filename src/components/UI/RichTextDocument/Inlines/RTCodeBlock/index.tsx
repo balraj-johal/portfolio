@@ -1,6 +1,6 @@
 "use client";
 
-import { Highlight, themes } from "prism-react-renderer";
+import { Highlight } from "prism-react-renderer";
 
 import { ICodeBlockFields } from "@/types/generated/contentful";
 import useIsClient from "@/hooks/useIsClient";
@@ -30,7 +30,7 @@ const RTCodeBlockClient = ({ code, title }: CodeBlockProps) => {
 
   if (!isClient) return;
   return (
-    <Highlight theme={themes.vsDark} code={code} language="tsx">
+    <Highlight code={code} language="tsx">
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <>
           <RTCodeBlockCodeWrapper

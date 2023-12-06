@@ -35,3 +35,11 @@ body {
   visibility: hidden;
   position: absolute;
 }
+
+.token-line {
+  > span:first-of-type {
+    display: inline-block;
+    transform: translateY(4%);
+    margin-inline-end: 1rem;
+  }
+}

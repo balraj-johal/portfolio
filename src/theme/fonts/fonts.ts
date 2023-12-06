@@ -33,6 +33,17 @@ const supplyMono = localFont({
   variable: "--font-supply-mono",
 });
 
+const cascadiaMono = localFont({
+  src: [
+    {
+      path: "files/CascadiaMono/CascadiaMono.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+  variable: "--font-cascadia-mono",
+});
+
 const protoMono = localFont({
   src: [
     {
@@ -65,5 +76,6 @@ export const FONT_CLASSES = [
   supplySans.variable,
   supplyMono.variable,
   protoMono.variable,
+  cascadiaMono.variable,
   inter.variable,
 ].join(" ");

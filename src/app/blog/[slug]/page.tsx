@@ -3,10 +3,9 @@ import { notFound } from "next/navigation";
 import { findEntryBySlug, getFields } from "@/utils/contentful";
 import { IBlogFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
-import TransitionLink from "@/components/UI/TransitionLink";
-import RichTextDocument from "@/components/UI/RichTextDocument";
+import BlogEntry from "@/components/UI/Blog/BlogEntry";
 
-import { BlogPostWrapper } from "./styles";
+import { BlogPostBackLink, BlogPostWrapper } from "./styles";
 
 interface Props {
   params: {
@@ -33,18 +32,17 @@ export async function generateMetadata({ params }: Props) {
   return { title: `${entryTitle} - Balraj Johal` };
 }
 
-export default async function BlogEntry({ params }: Props) {
+export default async function BlogEntryPage({ params }: Props) {
   const entries = await getEntries();
   const entry = findEntryBySlug(entries, params.slug);
   if (!entry) notFound();
 
-  const { title, content: document } = getFields<IBlogFields>(entry);
+  const fields = getFields<IBlogFields>(entry);
 
   return (
     <BlogPostWrapper>
-      <TransitionLink href="/blog">Back</TransitionLink>
-      <h1>{title}</h1>
-      <RichTextDocument document={document} />
+      <BlogPostBackLink href="/blog">Back</BlogPostBackLink>
+      <BlogEntry content={fields} />
     </BlogPostWrapper>
   );
 }
