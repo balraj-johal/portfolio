@@ -1,1 +1,6 @@
-export type ColorSet = "primary" | "secondary";
+export type ColorThemeGLSL = {
+  foreground: number;
+  background: number;
+};
+
+export type ColorThemeKey = "primary" | "secondary";

@@ -1,40 +1,42 @@
-import { RefObject, useEffect, useMemo } from "react";
+import { RefObject, useEffect, useRef } from "react";
 
 import { Mesh, Program, Renderer, Triangle, Vec2 } from "ogl";
 
 import { useTransitionStore } from "@/stores/transitionStore";
+import { COLOR_SCHEMES_GLSL } from "@/config/transition";
 
 import { VERTEX_SHADER, FRAGMENT_SHADER } from "./shaders";
+
+// setup uniforms
+const shaderUniforms = {
+  uTime: { value: 0 },
+  uRes: { value: new Vec2(0, 0) },
+  uProgress: { value: 0 },
+  uColor: { value: 0.99 },
+};
 
 export const useBackground = (
   transitionWrapperRef: RefObject<HTMLDivElement>,
 ) => {
-  const { colorSet } = useTransitionStore();
-
-  // setup uniforms
-  const shaderUniforms = useMemo(() => {
-    return {
-      uTime: { value: 0 },
-      uRes: { value: new Vec2(0, 0) },
-      uProgress: { value: 0 },
-      uColor: { value: 0.99 },
-    };
-  }, []);
+  const { bgColor, hideTransitionOverlay } = useTransitionStore();
+  const canvasReady = useRef(false);
 
   useEffect(() => {
-    console.log("color set changed");
-    console.log(colorSet);
-    shaderUniforms.uColor.value = colorSet === "primary" ? 0.99 : 0.129;
-  }, [colorSet, shaderUniforms.uColor]);
+    shaderUniforms.uColor.value = COLOR_SCHEMES_GLSL[bgColor].background;
+    setTimeout(() => {
+      hideTransitionOverlay();
+    }, 0.1);
+  }, [bgColor, hideTransitionOverlay]);
 
   useEffect(() => {
     const wrapper = transitionWrapperRef.current;
-    if (!wrapper) return;
+    if (!wrapper || canvasReady.current === true) return;
 
     // setup WebGL Canvas
     const renderer = new Renderer();
     const gl = renderer.gl;
     wrapper.appendChild(gl.canvas);
+    canvasReady.current = true;
 
     // setup resize handlers
     const handleResize = () => {
@@ -67,5 +69,5 @@ export const useBackground = (
       renderer.render({ scene: mesh });
     };
     requestAnimationFrame(renderFrame);
-  }, [shaderUniforms, transitionWrapperRef]);
+  }, [transitionWrapperRef]);
 };

@@ -26,24 +26,21 @@ float sineInOut(float t) {
 uniform float uTime;
 uniform float uProgress;
 uniform vec2 uRes;
+uniform vec3 uColor;
 
 in vec2 vUv;
 
 out vec4 fragColor;
 
 void main() {
-    
-    float progress = 0.5;
-
-
     vec2 st = gl_FragCoord.xy / uRes.xy;
 
-    float targetRowHeight = 25.0;
+    float targetRowHeight = 20.0;
     float rowAmount = floor(uRes.y / targetRowHeight);
     float rowHeightInUV = 1.0 / rowAmount;
     float rowIndex = floor((1.0 - vUv.y) / rowHeightInUV);
 
-    vec4 rowColor = vec4(vec3(0.129), 1.0);
+    vec4 rowColor = vec4(uColor, 1.0);
     vec4 transparentColor = vec4(0.0);
 
     float progressMix = step(uProgress * 2.0 - rowIndex / rowAmount, sineInOut(vUv.x));

@@ -22,7 +22,3 @@
   pointer-events: all;
   transition-delay: calc(var(--speed-route-transition) * 1.25);
 }
-
-.BackgroundWrapper canvas:last-of-type {
-  display: none;
-}

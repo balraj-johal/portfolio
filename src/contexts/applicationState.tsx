@@ -24,7 +24,7 @@ interface ProviderProps {
 
 const ApplicationStateContext = createContext<ContextProps>({} as ContextProps);
 
-export const ROUTE_TRANSITION_DURATION = 1800; // ms
+export const ROUTE_TRANSITION_DURATION = 1400; // ms
 
 const ApplicationStateProvider = ({ children }: ProviderProps) => {
   const [loading, setLoading] = useState(true);

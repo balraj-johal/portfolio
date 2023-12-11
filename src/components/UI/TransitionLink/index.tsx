@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, ReactNode, SyntheticEvent } from "react";
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,21 +10,27 @@ import { useTransitionStore } from "@/stores/transitionStore";
 interface Props {
   children: ReactNode;
   href: string;
-  styles?: CSSProperties;
   className?: string;
 }
 
 const TransitionLink = ({ href, children, className, ...rest }: Props) => {
   const router = useRouter();
-  const { startTransition } = useTransitionStore();
+  const { transitioning, startTransition } = useTransitionStore();
+  const [clicked, setClicked] = useState(false);
 
   const handleNavigation = (e: SyntheticEvent) => {
     e.preventDefault();
+
+    if (clicked) return;
+    setClicked(true);
+
     startTransition();
-    setTimeout(() => {
-      router.push(href);
-    }, 0.3);
   };
+
+  // TODO: does this still work w no JS?
+  useEffect(() => {
+    if (clicked && !transitioning) router.push(href);
+  }, [clicked, href, router, transitioning]);
 
   return (
     <Link

@@ -16,11 +16,7 @@
   pointer-events: none;
 }
 
-.TransitionSplashWrapper_Transitioning {
+.TransitionSplashWrapper_Visible {
   opacity: 1;
   pointer-events: all;
-}
-
-.TransitionSplashWrapper canvas:last-of-type {
-  display: none;
 }

@@ -1,78 +1,90 @@
-import { RefObject, useEffect, useMemo } from "react";
+import { RefObject, useEffect, useRef } from "react";
 
-import { Mesh, Program, Renderer, Triangle, Vec2 } from "ogl";
+import { Mesh, Program, Renderer, Triangle, Vec2, Vec3 } from "ogl";
 import { MotionValue, animate } from "framer-motion";
 
 import { EASE_IN_OUT_SINE } from "@/theme/eases";
 import { useTransitionStore } from "@/stores/transitionStore";
 import { ROUTE_TRANSITION_DURATION } from "@/contexts/applicationState";
+import { COLOR_SCHEMES_GLSL } from "@/config/transition";
 
 import { VERTEX_SHADER, FRAGMENT_SHADER } from "./shaders";
 
+// setup uniforms
+const shaderUniforms = {
+  uTime: { value: 0 },
+  uRes: { value: new Vec2(0, 0) },
+  uColor: { value: new Vec3(COLOR_SCHEMES_GLSL.secondary.foreground) },
+  uProgress: { value: 0 },
+};
+
+// setup transition progress motion value and listeners
 const progress = new MotionValue();
 progress.set(0);
 
 export const useTransitionAnimation = (
   transitionWrapperRef: RefObject<HTMLDivElement>,
-  endCallback?: () => void,
 ) => {
-  const { transitioning, colorSet, changeColorSet, endTransition } =
-    useTransitionStore();
-
-  // setup uniforms
-  const shaderUniforms = useMemo(() => {
-    return {
-      uTime: { value: 0 },
-      uRes: { value: new Vec2(0, 0) },
-      uProgress: { value: 0 },
-    };
-  }, []);
+  const {
+    transitioning,
+    transitionOverlayVisible,
+    endTransition,
+    bgColor,
+    toggleBgColor,
+    toggleTransitionColor,
+  } = useTransitionStore();
+  const canvasReady = useRef(false);
 
   useEffect(() => {
     progress.on("change", (value: number) => {
       shaderUniforms.uProgress.value = value;
     });
 
-    const handleAnimationEnd = () => {
-      endTransition();
-      changeColorSet("primary");
-      if (endCallback) endCallback();
-    };
+    // TODO: why does this event listener trigger twice?
+    progress.on("animationComplete", endTransition);
 
-    progress.on("animationComplete", handleAnimationEnd);
-  }, [endCallback, endTransition, shaderUniforms.uProgress, changeColorSet]);
+    return () => progress.clearListeners();
+  }, [endTransition, toggleBgColor]);
 
   useEffect(() => {
-    console.warn(colorSet);
-  }, [colorSet]);
+    if (!transitioning) return;
+    animate(progress, 1, {
+      duration: ROUTE_TRANSITION_DURATION / 1000,
+      ease: EASE_IN_OUT_SINE,
+      onComplete() {
+        toggleBgColor();
+      },
+    });
+  }, [toggleBgColor, transitioning]);
 
   useEffect(() => {
-    if (transitioning) {
-      animate(progress, 1, {
-        duration: ROUTE_TRANSITION_DURATION / 1000,
-        ease: EASE_IN_OUT_SINE,
-      });
-    } else {
-      animate(progress, 0, {
-        duration: 0,
-      });
-    }
-  }, [transitioning]);
+    if (transitionOverlayVisible) return;
+    animate(progress, 0, { duration: 0 });
+    toggleTransitionColor();
+  }, [toggleTransitionColor, transitionOverlayVisible]);
+
+  useEffect(() => {
+    shaderUniforms.uColor.value = new Vec3(
+      COLOR_SCHEMES_GLSL[bgColor].foreground,
+    );
+  }, [bgColor]);
 
   useEffect(() => {
     const wrapper = transitionWrapperRef.current;
-    if (!wrapper) return;
+    if (!wrapper || canvasReady.current === true) return;
 
     // setup WebGL Canvas
     const renderer = new Renderer({ alpha: true });
     const gl = renderer.gl;
     wrapper.appendChild(gl.canvas);
+    canvasReady.current = true;
 
     // setup resize handlers
     const handleResize = () => {
       const height = window.innerHeight;
       const width = document.body.clientWidth;
       renderer.setSize(width, height);
+
       shaderUniforms.uRes.value.x = width;
       shaderUniforms.uRes.value.y = height;
     };
@@ -100,7 +112,7 @@ export const useTransitionAnimation = (
       renderer.render({ scene: mesh });
     };
     requestAnimationFrame(renderFrame);
-  }, [shaderUniforms, transitionWrapperRef]);
+  }, [transitionWrapperRef]);
 
   return shaderUniforms;
 };

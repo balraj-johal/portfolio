@@ -2,8 +2,6 @@
 
 import { useRef } from "react";
 
-import { createPortal } from "react-dom";
-
 import { useBackground } from "./useBackground";
 import { BackgroundWrapper } from "./styles";
 
@@ -12,14 +10,7 @@ const Background = () => {
 
   useBackground(transitionWrapperRef);
 
-  return (
-    <>
-      {createPortal(
-        <BackgroundWrapper transitioning ref={transitionWrapperRef} />,
-        document.body,
-      )}
-    </>
-  );
+  return <BackgroundWrapper transitioning ref={transitionWrapperRef} />;
 };
 
 export default Background;

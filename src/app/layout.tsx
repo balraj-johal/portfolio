@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 
+import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/UI/RootBody";
@@ -25,6 +26,11 @@ const LazyCustomCursorWindow = lazy(
   () => import("@/components/UI/CustomCursorWindow"),
 );
 
+const BackgroundNoSSR = dynamic(
+  () => import("@/components/UI/Splashes/Background"),
+  { ssr: false },
+);
+
 export default function RootLayout({
   children,
 }: {
@@ -34,6 +40,7 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
       <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+      <Analytics />
       <Providers>
         <RootBody>
           <Main>
@@ -41,7 +48,7 @@ export default function RootLayout({
           </Main>
           <LazyCustomCursorWindow />
           <LazyTransitionSplash />
-          <Analytics />
+          <BackgroundNoSSR />
         </RootBody>
       </Providers>
     </html>
