@@ -34,6 +34,7 @@ const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
     if (isMobile) {
       elemRef.current.style.clipPath = `inset(0% 0% calc(50% + ${bottom}px) 0%)`;
     } else {
+      // eslint-disable-next-line max-len
       elemRef.current.style.clipPath = `inset(0% calc(100% - ${right}px) calc(50% + ${bottom}px) ${left}px)`;
     }
   });
