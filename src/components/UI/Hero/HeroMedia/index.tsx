@@ -42,10 +42,13 @@ const HeroMedia = ({ images }: Props) => {
   const isMobile = useMediaQuery(IS_MOBILE);
 
   useLenis(({ scroll }) => {
-    if (!mediaRef.current) return;
-    const offsetY = scroll * MEDIA_PARALLAX_AMOUNT;
-    maskOffsetRef.current.bottom = offsetY;
-    mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
+    window.requestAnimationFrame(() => {
+      if (!mediaRef.current) return;
+
+      const offsetY = scroll * MEDIA_PARALLAX_AMOUNT;
+      maskOffsetRef.current.bottom = offsetY;
+      mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
+    });
   });
 
   return (
