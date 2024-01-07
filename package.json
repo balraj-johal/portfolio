@@ -13,7 +13,7 @@
     "@buildinams/use-window-size": "^0.0.1",
     "@contentful/rich-text-react-renderer": "^15.19.0",
     "@phntms/css-components": "^0.4.0",
-    "@studio-freight/react-lenis": "^0.0.38",
+    "@studio-freight/react-lenis": "^0.0.40",
     "@vercel/analytics": "^1.0.1",
     "contentful": "^10.6.12",
     "contentful-management": "^11.5.4",
