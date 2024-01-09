@@ -15,6 +15,10 @@ const easeInCirc = (value: number) => {
   return 1 - Math.sqrt(1 - Math.pow(value, 2));
 };
 
+function easeOutExpo(value: number): number {
+  return value === 1 ? 1 : 1 - Math.pow(2, -10 * value);
+}
+
 interface Props {
   images: ImageInfo[];
   mediaOffsetRef: MutableRefObject<ClipPath>;

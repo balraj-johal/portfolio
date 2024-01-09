@@ -4,8 +4,6 @@ import { MutableRefObject, useRef } from "react";
 
 import { useAnimationFrame } from "framer-motion";
 
-import { EASE_IN_OUT_EXPO } from "@/theme/eases";
-
 import { ClipPath } from "../HeroMedia";
 import { HeroTitleElement, HeroTitleWrapper } from "./styles";
 
@@ -15,8 +13,6 @@ interface Props {
   counterXTranslation?: string;
   children?: React.ReactNode;
 }
-
-const DELAY = 0.4;
 
 const CLIP_PATH_UPDATE_LIMIT = 100;
 
@@ -40,13 +36,7 @@ const HeroTitle = ({
   });
 
   return (
-    <HeroTitleWrapper
-      initial={{ y: "0.2em", opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: DELAY, duration: 0.25, ease: EASE_IN_OUT_EXPO }}
-      masked={masked}
-      aria-hidden={masked}
-    >
+    <HeroTitleWrapper masked={masked} aria-hidden={masked}>
       <HeroTitleElement ref={elemRef}>{children}</HeroTitleElement>
     </HeroTitleWrapper>
   );
