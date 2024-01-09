@@ -2,18 +2,17 @@
 
 import { MutableRefObject, useRef } from "react";
 
-import { useMediaQuery } from "usehooks-ts";
 import { useAnimationFrame } from "framer-motion";
 
 import { EASE_IN_OUT_EXPO } from "@/theme/eases";
-import { IS_MOBILE } from "@/config/mediaQueries";
 
 import { ClipPath } from "../HeroMedia";
 import { HeroTitleElement, HeroTitleWrapper } from "./styles";
 
 interface Props {
   masked?: boolean;
-  maskOffsetRef?: MutableRefObject<ClipPath>;
+  mediaOffsetRef?: MutableRefObject<ClipPath>;
+  counterXTranslation?: string;
   children?: React.ReactNode;
 }
 
@@ -21,22 +20,23 @@ const DELAY = 0.4;
 
 const CLIP_PATH_UPDATE_LIMIT = 100;
 
-const HeroTitle = ({ masked, maskOffsetRef, children }: Props) => {
+const HeroTitle = ({
+  masked,
+  mediaOffsetRef,
+  counterXTranslation,
+  children,
+}: Props) => {
   const elemRef = useRef<HTMLHeadingElement>(null);
-  const isMobile = useMediaQuery(IS_MOBILE);
-  const isMasked = !!maskOffsetRef;
+  const isMasked = !!mediaOffsetRef;
 
   useAnimationFrame(() => {
     if (!isMasked || !elemRef.current) return;
-    const { right, bottom, left } = maskOffsetRef.current;
+    const { bottom } = mediaOffsetRef.current;
+
     // stop updating dom if it's already out of bounds
     if (bottom > CLIP_PATH_UPDATE_LIMIT) return;
-    if (isMobile) {
-      elemRef.current.style.clipPath = `inset(0% 0% calc(50% + ${bottom}px) 0%)`;
-    } else {
-      // eslint-disable-next-line max-len
-      elemRef.current.style.clipPath = `inset(0% calc(100% - ${right}px) calc(50% + ${bottom}px) ${left}px)`;
-    }
+
+    elemRef.current.style.transform = `translate(-${counterXTranslation}, -50%)`;
   });
 
   return (

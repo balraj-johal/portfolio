@@ -10,7 +10,6 @@ import { revealDown } from "@/theme/framer-configs";
 import { EASE_IN_AND_TINY_OUT } from "@/theme/eases";
 import { IS_MOBILE } from "@/config/mediaQueries";
 
-import HeroTitle from "../HeroTitle";
 import { HeroMediaWrapper } from "./styles";
 import ImageStrip from "./ImageStrip";
 import ImageCarousel from "./ImageCarousel";
@@ -32,12 +31,13 @@ export interface ClipPath {
 }
 
 const HeroMedia = ({ images }: Props) => {
-  const maskOffsetRef = useRef<ClipPath>({
+  const mediaOffsetRef = useRef({
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
   });
+  const yTranslationRef = useRef(0);
   const mediaRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery(IS_MOBILE);
 
@@ -46,16 +46,14 @@ const HeroMedia = ({ images }: Props) => {
       if (!mediaRef.current) return;
 
       const offsetY = scroll * MEDIA_PARALLAX_AMOUNT;
-      maskOffsetRef.current.bottom = offsetY;
+      mediaOffsetRef.current.bottom = offsetY;
+      yTranslationRef.current = offsetY;
       mediaRef.current.style.transform = `translateY(-${offsetY}px)`;
     });
   });
 
   return (
     <>
-      <HeroTitle masked maskOffsetRef={maskOffsetRef}>
-        Balraj Johal
-      </HeroTitle>
       <HeroMediaWrapper
         ref={mediaRef}
         aria-hidden
@@ -69,7 +67,11 @@ const HeroMedia = ({ images }: Props) => {
         {isMobile ? (
           <ImageCarousel images={images} />
         ) : (
-          <ImageStrip images={images} maskOffsetRef={maskOffsetRef} />
+          <ImageStrip
+            images={images}
+            mediaOffsetRef={mediaOffsetRef}
+            yTranslationRef={yTranslationRef}
+          />
         )}
       </HeroMediaWrapper>
     </>

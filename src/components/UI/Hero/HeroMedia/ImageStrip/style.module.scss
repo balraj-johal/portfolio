@@ -6,16 +6,19 @@
 
 .ImageContainer {
   position: absolute;
-  top: 0;
-  height: 100%;
+  height: inherit;
+  overflow: hidden;
+  border-radius: 8px;
 
-  opacity: 0;
-}
+  backface-visibility: culled;
+  transform: translate3d(0);
 
-.ImageContainer_Visible {
-  opacity: 1;
-}
+  .StripImage {
+    object-fit: cover;
+    opacity: 0;
 
-.ImageContainer > img {
-  object-fit: cover;
+    &.StripImage_Visible {
+      opacity: 1;
+    }
+  }
 }

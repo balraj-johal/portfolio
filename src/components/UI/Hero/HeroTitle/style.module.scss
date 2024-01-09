@@ -5,10 +5,18 @@
   width: 100%;
 }
 
-.HeroTitleWrapper_Masked .HeroTitleElement {
+.HeroTitleWrapper_Masked {
   z-index: 1;
-  color: rgb(255, 255, 255);
-  mix-blend-mode: difference;
+
+  .HeroTitleElement {
+    z-index: 1;
+    color: rgb(255, 255, 255);
+    mix-blend-mode: difference;
+
+    width: 100vw;
+
+    position: absolute;
+  }
 }
 
 .HeroTitleElement {
@@ -29,6 +37,18 @@
 @media (min-width: 768px) {
   .HeroTitleWrapper {
     top: calc(var(--hero-media-height) + var(--hero-top-offset));
+  }
+
+  .HeroTitleWrapper_Masked {
+    top: calc(var(--hero-media-height));
+
+    .HeroTitleElement {
+      z-index: 1;
+      color: rgb(255, 255, 255);
+      mix-blend-mode: difference;
+
+      position: absolute;
+    }
   }
 
   .HeroTitleElement {
