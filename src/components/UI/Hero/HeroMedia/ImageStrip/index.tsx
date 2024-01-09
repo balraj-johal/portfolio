@@ -15,8 +15,8 @@ const easeInCirc = (value: number) => {
   return 1 - Math.sqrt(1 - Math.pow(value, 2));
 };
 
-function easeOutExpo(value: number): number {
-  return value === 1 ? 1 : 1 - Math.pow(2, -10 * value);
+function easeOutCubic(value: number): number {
+  return 1 - Math.pow(1 - value, 3);
 }
 
 interface Props {
@@ -24,6 +24,16 @@ interface Props {
   mediaOffsetRef: MutableRefObject<ClipPath>;
   yTranslationRef: MutableRefObject<number>;
 }
+
+const getHorizTranslation = (distanceToClosest: number) => {
+  const sign = distanceToClosest < 0 ? -1 : 1;
+  return sign * easeInCirc(Math.abs(distanceToClosest) * 2) * 50;
+};
+
+const getHorizTranslationDamped = (distanceToClosest: number) => {
+  const sign = distanceToClosest < 0 ? -1 : 1;
+  return sign * easeOutCubic(Math.abs(distanceToClosest) * 2) * 4;
+};
 
 const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
   const maskedTitleRef = useRef<HTMLDivElement>(null);
@@ -33,7 +43,7 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
   const { activeIndex, containerLeftPositions, imageWidth } = useImageStrip({
     count: images.length,
     scale: 2, // horizontal scale factor
-    padding: 16,
+    padding: 20,
     distanceToClosestIndexRef,
   });
 
@@ -65,30 +75,36 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
       imageContainerRef.current &&
       maskedTitleRef.current
     ) {
-      const sign = distanceToClosestIndexRef.current < 0 ? -1 : 1;
-      const horizontalTranslaton =
-        sign * easeInCirc(Math.abs(distanceToClosestIndexRef.current) * 2) * 50;
-
       let imageContainerTransform = "";
       let maskedTitleXTransform = "";
 
       if (distanceToClosestIndexRef.current > 0) {
         if (!clampedEnd) {
-          imageContainerTransform = `translateX(${horizontalTranslaton}px)`;
-          maskedTitleXTransform = `translateX(-${horizontalTranslaton}px)`;
+          const translation = getHorizTranslation(
+            distanceToClosestIndexRef.current
+          );
+          imageContainerTransform = `translateX(${translation}px)`;
+          maskedTitleXTransform = `translateX(-${translation}px)`;
         } else {
-          imageContainerTransform = `translateX(0px)`;
-          maskedTitleXTransform = `translateX(0px)`;
+          const translation = getHorizTranslationDamped(
+            distanceToClosestIndexRef.current
+          );
+          imageContainerTransform = `translateX(${translation}px)`;
+          maskedTitleXTransform = `translateX(-${translation}px)`;
         }
       } else {
         if (!clampedStart) {
-          imageContainerTransform = `translateX(${horizontalTranslaton}px)`;
-          maskedTitleXTransform = `translateX(${Math.abs(
-            horizontalTranslaton
-          )}px)`;
+          const translation = getHorizTranslation(
+            distanceToClosestIndexRef.current
+          );
+          imageContainerTransform = `translateX(${translation}px)`;
+          maskedTitleXTransform = `translateX(${Math.abs(translation)}px)`;
         } else {
-          imageContainerTransform = `translateX(0px)`;
-          maskedTitleXTransform = `translateX(0px)`;
+          const translation = getHorizTranslationDamped(
+            distanceToClosestIndexRef.current
+          );
+          imageContainerTransform = `translateX(${translation}px)`;
+          maskedTitleXTransform = `translateX(${Math.abs(translation)}px)`;
         }
       }
 
