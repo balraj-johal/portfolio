@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Suspense, lazy } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
