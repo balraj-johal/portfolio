@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { ImageInfo } from "@/types/content";
 
 import { PreloaderImage, PreloaderWrapper } from "./styles";
@@ -9,12 +11,22 @@ type Props = {
 };
 
 const Preloader = ({ images }: Props) => {
-  const firstImage = images[0];
+  const [index, setIndex] = useState(0);
+  const { url, description } = images[index];
+  const progress = (index / images.length) * 100;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((index) => (index + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   return (
     <PreloaderWrapper>
-      <span>0%</span>
-      <PreloaderImage src={firstImage.url} alt={firstImage.description} />
+      <span>{progress}%</span>
+      <PreloaderImage src={url} alt={description} />
     </PreloaderWrapper>
   );
 };
