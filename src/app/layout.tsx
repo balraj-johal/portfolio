@@ -4,7 +4,8 @@ import { Suspense, lazy } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/UI/RootBody";
-import PreloaderManager from "@/components/UI/Preloader/manager";
+import PreloaderManager from "@/components/UI/Preloader/Manager";
+import Preloader from "@/components/UI/Preloader";
 import Main from "@/components/UI/Main";
 import Providers from "@/components/Providers";
 
@@ -43,7 +44,14 @@ export default function RootLayout({
           </Main>
           <LazyCustomCursorWindow />
           <LazyTransitionSplash />
-          <PreloaderManager />
+          {/* <PreloaderManager /> */}
+          <Preloader
+            images={[
+              { url: "/assets/images/favicon.png", description: "favicon" },
+              { url: "/assets/images/favicon.png", description: "favicon" },
+              { url: "/assets/images/favicon.png", description: "favicon" },
+            ]}
+          />
         </RootBody>
         <Analytics />
       </Providers>

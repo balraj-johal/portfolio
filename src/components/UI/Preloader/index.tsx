@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useAnimationFrame } from "framer-motion";
 
 import { ImageInfo } from "@/types/content";
+import useMousePosition from "@/hooks/useMousePosition";
 
 import { PreloaderImage, PreloaderWrapper } from "./styles";
 
@@ -11,9 +14,13 @@ type Props = {
 };
 
 const Preloader = ({ images }: Props) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const mousePositionRef = useMousePosition(wrapperRef, "center-normalized");
+
   const [index, setIndex] = useState(0);
-  const { url, description } = images[index];
-  const progress = (index / images.length) * 100;
+  const { url, description, id } = images[index];
+  const progress = Math.floor((index * 100) / images.length);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,10 +30,17 @@ const Preloader = ({ images }: Props) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  useAnimationFrame(() => {
+    const { x, y } = mousePositionRef.current;
+
+    imageRef.current?.style.setProperty("--mouse-x", `${x}px`);
+    imageRef.current?.style.setProperty("--mouse-y", `${y}px`);
+  });
+
   return (
-    <PreloaderWrapper>
+    <PreloaderWrapper ref={wrapperRef}>
       <span>{progress}%</span>
-      <PreloaderImage src={url} alt={description} />
+      {/* <PreloaderImage key={id} src={url} alt={description} ref={imageRef} /> */}
     </PreloaderWrapper>
   );
 };
