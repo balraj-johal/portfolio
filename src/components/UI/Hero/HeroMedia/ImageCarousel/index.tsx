@@ -49,17 +49,12 @@ const ImageCarousel = ({ images, interval = 3000 }: Props) => {
     >
       {images.map((image) => (
         <ImageContainer key={image.id}>
-          <Image src={image.url} alt={image.description ?? ""} priority fill />
+          <Image src={image.url} alt={image.description ?? ""} fill />
         </ImageContainer>
       ))}
       {/* duplicate first image, again to fake loop */}
       <ImageContainer>
-        <Image
-          src={firstImage.url}
-          alt={firstImage.description}
-          priority
-          fill
-        />
+        <Image src={firstImage.url} alt={firstImage.description} fill />
       </ImageContainer>
     </ImageCarouselWrapper>
   );

@@ -1,0 +1,27 @@
+.PreloaderWrapper {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  color: var(--color-white);
+  background-color: var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: var(--font-proto-mono);
+  font-size: 20px;
+  text-align: center;
+}
+
+.PreloaderImage {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  filter: brightness(0.25);
+}

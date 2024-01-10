@@ -43,7 +43,7 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
 
   const { activeIndex, containerLeftPositions, imageWidth } = useImageStrip({
     count: images.length,
-    scale: 2, // horizontal scale factor
+    scale: 1.71, // horizontal scale factor
     padding: 20,
     distanceToClosestIndexRef,
   });
@@ -136,7 +136,6 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
           <StripImage
             src={image.url}
             alt={image.description ?? ""}
-            priority
             fill
             key={image.url}
             visible={activeIndex === i}
