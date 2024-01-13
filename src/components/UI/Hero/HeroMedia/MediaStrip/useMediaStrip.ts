@@ -12,7 +12,7 @@ interface Props {
   distanceToClosestIndexRef?: MutableRefObject<number>;
 }
 
-export const useImageStrip = ({
+export const useMediaStrip = ({
   count,
   padding = 0,
   scale = 1,

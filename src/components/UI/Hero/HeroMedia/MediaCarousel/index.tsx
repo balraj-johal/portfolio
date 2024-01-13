@@ -6,14 +6,14 @@ import Image from "next/image";
 
 import { ImageInfo } from "@/types/content";
 
-import { ImageContainer, ImageCarouselWrapper } from "./styles";
+import { MediaContainer, MediaCarouselWrapper } from "./styles";
 
 interface Props {
   images: ImageInfo[];
   interval?: number;
 }
 
-const ImageCarousel = ({ images, interval = 3000 }: Props) => {
+const MediaCarousel = ({ images, interval = 3000 }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const firstImage = images[0];
 
@@ -39,7 +39,7 @@ const ImageCarousel = ({ images, interval = 3000 }: Props) => {
   }, [activeIndex, images.length]);
 
   return (
-    <ImageCarouselWrapper
+    <MediaCarouselWrapper
       aria-hidden
       initial={{ x: 0 }}
       animate={{ x: `-${activeIndex * 100}%` }}
@@ -48,16 +48,21 @@ const ImageCarousel = ({ images, interval = 3000 }: Props) => {
       onAnimationComplete={handleAnimationComplete}
     >
       {images.map((image) => (
-        <ImageContainer key={image.id}>
-          <Image src={image.url} alt={image.description ?? ""} fill />
-        </ImageContainer>
+        <MediaContainer key={image.id}>
+          {image.url.includes("video") ? (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video src={image.url} muted playsInline autoPlay loop />
+          ) : (
+            <Image src={image.url} alt={image.description ?? ""} fill />
+          )}
+        </MediaContainer>
       ))}
       {/* duplicate first image, again to fake loop */}
-      <ImageContainer>
+      <MediaContainer>
         <Image src={firstImage.url} alt={firstImage.description} fill />
-      </ImageContainer>
-    </ImageCarouselWrapper>
+      </MediaContainer>
+    </MediaCarouselWrapper>
   );
 };
 
-export default ImageCarousel;
+export default MediaCarousel;

@@ -1,46 +1,87 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useAnimationFrame } from "framer-motion";
-
-import { ImageInfo } from "@/types/content";
-import useMousePosition from "@/hooks/useMousePosition";
-
-import { PreloaderImage, PreloaderWrapper } from "./styles";
+import { PreloaderWrapper } from "./styles";
 
 type Props = {
-  images: ImageInfo[];
+  sources?: HeroMedia[];
 };
 
-const Preloader = ({ images }: Props) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const mousePositionRef = useMousePosition(wrapperRef, "center-normalized");
+type HeroMedia = {
+  url: string;
+  type: "image" | "video";
+};
 
-  const [index, setIndex] = useState(0);
-  const { url, description, id } = images[index];
-  const progress = Math.floor((index * 100) / images.length);
+const SOURCES: HeroMedia[] = [
+  {
+    url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    type: "video",
+  },
+];
+
+// // Let's create a video pre-cache and store all first segments of videos inside.
+// window.caches.open("video-pre-cache").then((cache) => {
+//   return Promise.all(VIDEO_URLS.map((url) => fetchAndCache(url, cache)));
+// });
+
+// const fetchAndCache = async (videoUrl: string, cache: Cache) => {
+//   // Check first if video is in the cache.
+//   return cache.match(videoUrl).then((cacheResponse) => {
+//     // Let's return cached response if video is already in the cache.
+//     if (cacheResponse) return cacheResponse;
+
+//     // Otherwise, fetch the video from the network.
+//     return fetch(videoUrl).then((networkResponse) => {
+//       // Add the response to the cache and return network response in parallel.
+//       cache.put(videoUrl, networkResponse.clone());
+//       return networkResponse;
+//     });
+//   });
+// };
+
+const buildImageLoadPromise = (url: string) => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = url;
+    image.onload = resolve;
+    image.onerror = reject;
+  });
+};
+
+const buildVideoLoadPromise = (url: string) => {
+  return fetch(url);
+};
+
+const Preloader = ({ sources }: Props) => {
+  console.log(sources);
+
+  const [noOfLoadedPromises, setNoOfLoadedPromises] = useState(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const loadPromises = useMemo(() => {
+    return SOURCES.map((source) => {
+      if (source.type == "video") return buildVideoLoadPromise(source.url);
+      return buildImageLoadPromise(source.url);
+    });
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((index) => (index + 1) % images.length);
-    }, 3000);
+    const fetchMedia = async () => {
+      return await Promise.allSettled(loadPromises).then(() =>
+        setNoOfLoadedPromises((noOfLoadedPromises) => noOfLoadedPromises + 1)
+      );
+    };
 
-    return () => clearInterval(interval);
-  }, [images.length]);
+    fetchMedia();
+  }, [loadPromises]);
 
-  useAnimationFrame(() => {
-    const { x, y } = mousePositionRef.current;
-
-    imageRef.current?.style.setProperty("--mouse-x", `${x}px`);
-    imageRef.current?.style.setProperty("--mouse-y", `${y}px`);
-  });
+  const progress = (noOfLoadedPromises * 100) / loadPromises.length;
 
   return (
     <PreloaderWrapper ref={wrapperRef}>
       <span>{progress}%</span>
-      {/* <PreloaderImage key={id} src={url} alt={description} ref={imageRef} /> */}
     </PreloaderWrapper>
   );
 };

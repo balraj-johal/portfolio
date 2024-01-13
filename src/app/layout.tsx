@@ -28,11 +28,11 @@ const LazyCustomCursorWindow = lazy(
   () => import("@/components/UI/CustomCursorWindow")
 );
 
-export default function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" style={{ background: "#000" }}>
       <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
@@ -44,14 +44,6 @@ export default function RootLayout({
           </Main>
           <LazyCustomCursorWindow />
           <LazyTransitionSplash />
-          {/* <PreloaderManager /> */}
-          <Preloader
-            images={[
-              { url: "/assets/images/favicon.png", description: "favicon" },
-              { url: "/assets/images/favicon.png", description: "favicon" },
-              { url: "/assets/images/favicon.png", description: "favicon" },
-            ]}
-          />
         </RootBody>
         <Analytics />
       </Providers>

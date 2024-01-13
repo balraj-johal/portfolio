@@ -1,10 +1,10 @@
-.ImageStripWrapper {
+.MediaStripWrapper {
   position: relative;
   height: 100%;
   pointer-events: none;
 }
 
-.ImageContainer {
+.MediaContainer {
   position: absolute;
   height: inherit;
   overflow: hidden;
@@ -13,11 +13,15 @@
   backface-visibility: culled;
   transform: translate3d(0);
 
-  .StripImage {
+  .StripImage,
+  .StripVideo {
     object-fit: cover;
     opacity: 0;
+    width: 100%;
+    height: 100%;
 
-    &.StripImage_Visible {
+    &.StripImage_Visible,
+    &.StripVideo_Visible {
       opacity: 1;
     }
   }

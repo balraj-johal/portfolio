@@ -1,4 +1,4 @@
-.ImageCarouselWrapper {
+.MediaCarouselWrapper {
   position: relative;
   height: 100%;
 
@@ -7,10 +7,10 @@
   grid-auto-flow: column;
 }
 
-.ImageContainer {
+.MediaContainer {
   position: relative;
 }
 
-.ImageContainer > img {
+.MediaContainer > img {
   object-fit: cover;
 }

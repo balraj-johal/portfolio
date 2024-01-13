@@ -9,8 +9,13 @@ import { ImageInfo } from "@/types/content";
 
 import HeroTitle from "../../HeroTitle";
 import { ClipPath } from "..";
-import { useImageStrip } from "./useImageStrip";
-import { ImageContainer, ImageStripWrapper, StripImage } from "./styles";
+import { useMediaStrip } from "./useMediaStrip";
+import {
+  MediaContainer,
+  MediaStripWrapper,
+  StripImage,
+  StripVideo,
+} from "./styles";
 
 const easeInCirc = (value: number) => {
   return 1 - Math.sqrt(1 - Math.pow(value, 2));
@@ -36,12 +41,12 @@ const getHorizTranslationDamped = (distanceToClosest: number) => {
   return sign * easeOutCubic(Math.abs(distanceToClosest) * 2) * 4;
 };
 
-const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
+const MediaStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
   const maskedTitleRef = useRef<HTMLDivElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const distanceToClosestIndexRef = useRef(0);
 
-  const { activeIndex, containerLeftPositions, imageWidth } = useImageStrip({
+  const { activeIndex, containerLeftPositions, imageWidth } = useMediaStrip({
     count: images.length,
     scale: 1.71, // horizontal scale factor
     padding: 20,
@@ -115,8 +120,8 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
   });
 
   return (
-    <ImageStripWrapper aria-hidden>
-      <ImageContainer
+    <MediaStripWrapper aria-hidden>
+      <MediaContainer
         ref={imageContainerRef}
         style={{
           left: `${containerLeftPositions[activeIndex]}px`,
@@ -132,18 +137,33 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
             Balraj Johal
           </HeroTitle>
         </div>
-        {images.map((image, i) => (
-          <StripImage
-            src={image.url}
-            alt={image.description ?? ""}
-            fill
-            key={image.url}
-            visible={activeIndex === i}
-          />
-        ))}
-      </ImageContainer>
-    </ImageStripWrapper>
+        {images.map((image, i) => {
+          if (image.url.includes("video")) {
+            return (
+              <StripVideo
+                visible={activeIndex === i}
+                src={image.url}
+                key={image.url}
+                playsInline
+                autoPlay
+                muted
+                loop
+              />
+            );
+          }
+          return (
+            <StripImage
+              src={image.url}
+              alt={image.description ?? ""}
+              fill
+              key={image.url}
+              visible={activeIndex === i}
+            />
+          );
+        })}
+      </MediaContainer>
+    </MediaStripWrapper>
   );
 };
 
-export default ImageStrip;
+export default MediaStrip;
