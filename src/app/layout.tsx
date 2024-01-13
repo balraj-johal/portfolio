@@ -4,8 +4,6 @@ import { Suspense, lazy } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/UI/RootBody";
-import PreloaderManager from "@/components/UI/Preloader/Manager";
-import Preloader from "@/components/UI/Preloader";
 import Main from "@/components/UI/Main";
 import Providers from "@/components/Providers";
 
