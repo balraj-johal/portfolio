@@ -1,6 +1,7 @@
 import { getImagesInfo } from "@/utils/contentful";
 import { getContentByType } from "@/content/contentful";
 
+// import Preloader from "../Preloader";
 import {
   HeroContentLeft,
   HeroContentRight,
@@ -16,6 +17,7 @@ const Hero = async () => {
 
   return (
     <HeroWrapper>
+      {/* <Preloader /> */}
       <HeroMedia images={images} />
       <HeroTitle>Balraj Johal</HeroTitle>
       <HeroSubContent>

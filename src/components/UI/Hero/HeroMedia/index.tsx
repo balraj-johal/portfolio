@@ -11,8 +11,8 @@ import { EASE_IN_AND_TINY_OUT } from "@/theme/eases";
 import { IS_MOBILE } from "@/config/mediaQueries";
 
 import { HeroMediaWrapper } from "./styles";
-import ImageStrip from "./ImageStrip";
-import ImageCarousel from "./ImageCarousel";
+import MediaStrip from "./MediaStrip";
+import MediaCarousel from "./MediaCarousel";
 
 interface Props {
   images: ImageInfo[];
@@ -65,9 +65,9 @@ const HeroMedia = ({ images }: Props) => {
         }}
       >
         {isMobile ? (
-          <ImageCarousel images={images} />
+          <MediaCarousel images={images} />
         ) : (
-          <ImageStrip
+          <MediaStrip
             images={images}
             mediaOffsetRef={mediaOffsetRef}
             yTranslationRef={yTranslationRef}

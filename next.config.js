@@ -9,6 +9,12 @@ const nextConfig = {
         port: "",
         pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
       },
+      {
+        protocol: "https",
+        hostname: "videos.ctfassets.net",
+        port: "",
+        pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
+      },
     ],
   },
 };

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Suspense, lazy } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
@@ -18,20 +19,20 @@ export const metadata = {
 };
 
 const LazyTransitionSplash = lazy(
-  () => import("@/components/UI/Splashes/TransitionSplash"),
+  () => import("@/components/UI/Splashes/TransitionSplash")
 );
 
 const LazyCustomCursorWindow = lazy(
-  () => import("@/components/UI/CustomCursorWindow"),
+  () => import("@/components/UI/CustomCursorWindow")
 );
 
-export default function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+
+export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ background: "#000" }}>
       <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
       <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
       <Providers>
@@ -41,8 +42,8 @@ export default function RootLayout({
           </Main>
           <LazyCustomCursorWindow />
           <LazyTransitionSplash />
-          <Analytics />
         </RootBody>
+        <Analytics />
       </Providers>
     </html>
   );
