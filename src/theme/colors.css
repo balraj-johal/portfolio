@@ -1,7 +1,5 @@
 :root {
- --color-white: #F4F4F4;
+ --color-white: white;
  --color-black: black;
  --color-blackish: #212121;
-
- --color-neon-green: #60FF42;
 }

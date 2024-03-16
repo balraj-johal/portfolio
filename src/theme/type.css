@@ -2,7 +2,9 @@ h1 {
   font-family: var(--font-proto-mono);
   
   line-height: 78%;
-  letter-spacing: -1px;
+  letter-spacing: -0.075em;
+  margin-left: -0.1em;
+
   text-transform: uppercase;
 
   color: var(--color-black);

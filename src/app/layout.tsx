@@ -1,29 +1,30 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 
+import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/UI/RootBody";
 import Main from "@/components/UI/Main";
 import Providers from "@/components/Providers";
 
-import "./globals.css";
-import "@/theme/animation.css";
+import "@/theme/globals.css";
 import "@/theme/spacing.css";
 import "@/theme/colors.css";
 import "@/theme/type.css";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Balraj Johal",
   description: ":)",
+  keywords: ["dev", "developer", "web dev", "creative developer"],
 };
 
-const LazyTransitionSplash = lazy(
-  () => import("@/components/UI/Splashes/TransitionSplash"),
-);
+// const LazyTransitionSplash = lazy(
+//   () => import("@/components/UI/Splashes/TransitionSplash")
+// );
 
-const LazyCustomCursorWindow = lazy(
-  () => import("@/components/UI/CustomCursorWindow"),
-);
+// const LazyCustomCursorWindow = lazy(
+//   () => import("@/components/UI/CustomCursorWindow")
+// );
 
 export default function RootLayout({
   children,
@@ -39,8 +40,6 @@ export default function RootLayout({
           <Main>
             <Suspense>{children}</Suspense>
           </Main>
-          <LazyCustomCursorWindow />
-          <LazyTransitionSplash />
           <Analytics />
         </RootBody>
       </Providers>

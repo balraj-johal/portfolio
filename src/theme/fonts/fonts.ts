@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Inter, Barlow } from "next/font/google";
 
 const supplySans = localFont({
   src: [
@@ -71,6 +71,11 @@ const protoMono = localFont({
 });
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const barlow = Barlow({
+  subsets: ["latin"],
+  variable: "--font-barlow",
+  weight: ["300", "500"],
+});
 
 export const FONT_CLASSES = [
   supplySans.variable,
@@ -78,4 +83,5 @@ export const FONT_CLASSES = [
   protoMono.variable,
   cascadiaMono.variable,
   inter.variable,
+  barlow.variable,
 ].join(" ");

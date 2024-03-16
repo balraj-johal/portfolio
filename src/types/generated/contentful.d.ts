@@ -141,6 +141,9 @@ export interface IProfessionalWorkFields {
 
   /** FWA Winner */
   fwaWinner?: boolean | undefined;
+
+  /** Roles */
+  roles?: string[] | undefined;
 }
 
 export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
@@ -160,19 +163,45 @@ export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
   };
 }
 
+export interface ISelectedWorksFields {
+  /** Selections */
+  selections: IProfessionalWork[];
+}
+
+/** An ordered list of professional work */
+
+export interface ISelectedWorks extends Entry<ISelectedWorksFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "selectedWorks";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export type CONTENT_TYPE =
   | "blog"
   | "blogPage"
   | "codeBlock"
   | "landingPageContent"
-  | "professionalWork";
+  | "professionalWork"
+  | "selectedWorks";
 
 export type IEntry =
   | IBlog
   | IBlogPage
   | ICodeBlock
   | ILandingPageContent
-  | IProfessionalWork;
+  | IProfessionalWork
+  | ISelectedWorks;
 
 export type LOCALE_CODE = "en-US";
 
