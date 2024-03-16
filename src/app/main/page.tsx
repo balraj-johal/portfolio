@@ -6,6 +6,7 @@ import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash"
 import Hero from "@/components/UI/Hero";
 
 const LazyProfessionalWorkPage = lazy(
+  // eslint-disable-next-line prettier/prettier
   () => import("@/components/UI/ProfessionalWorkPage")
 );
 
