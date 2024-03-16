@@ -1,12 +1,25 @@
 import Image from "next/image";
 
-import { IProfessionalWorkFields } from "@/types/generated/contentful";
+import {
+  IProfessionalWorkFields,
+  ISelectedWorks,
+  ISelectedWorksFields,
+} from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
 
 import css from "./page.module.scss";
 
+// TODO: fix bad type asseertions in this file
+// TODO: fix prettier dangling comma rule conflicts
 export default async function Main() {
-  const professionalEntries = await getContentByType("professionalWork");
+  const selectedWorkEntries = (
+    await getContentByType(
+      // eslint-disable-next-line prettier/prettier
+      "selectedWorks"
+    )
+  )[0] as ISelectedWorks;
+  const selectedWorks = (selectedWorkEntries.fields as ISelectedWorksFields)
+    .selections;
 
   return (
     <div className={css.PageContainer}>
@@ -57,7 +70,7 @@ export default async function Main() {
       <section className={css.SelectedWork}>
         <h2 className={css.VisuallyHidden}>Selected Works</h2>
         <ul className={css.WorkList}>
-          {professionalEntries.map((entry) => {
+          {selectedWorks.map((entry) => {
             const fields = entry.fields as unknown as IProfessionalWorkFields;
 
             return (
