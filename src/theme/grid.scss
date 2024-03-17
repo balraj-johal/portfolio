@@ -1,0 +1,25 @@
+// @mixin base-grid {
+//   display: grid;
+//   --columns: 12px;
+//   --gutter: 12px;
+
+//   grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+//   column-gap: var(--gutter);
+//   padding-inline: var(--gutter);
+// }
+
+// @mixin break-grid {
+//   margin-inline: calc(var(--gutter) * -1);
+// }
+
+@mixin inherit-columns {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+  column-gap: inherit;
+
+  @supports #{"\(grid-template-columns: subgrid)"} {
+    grid-template-columns: subgrid;
+    column-gap: unset;
+  }
+}

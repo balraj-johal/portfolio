@@ -44,7 +44,7 @@ export default async function Main() {
         </ul>
       </header>
 
-      <section>
+      <section className={css.AboutMe}>
         <p>Creative Developer</p>
         <p>
           Currently&nbsp;
@@ -70,7 +70,7 @@ export default async function Main() {
       <section className={css.SelectedWork}>
         <h2 className={css.VisuallyHidden}>Selected Works</h2>
         <ul className={css.WorkList}>
-          {selectedWorks.map((entry) => {
+          {selectedWorks.map((entry, i) => {
             const fields = entry.fields as unknown as IProfessionalWorkFields;
 
             return (
@@ -82,7 +82,10 @@ export default async function Main() {
                 >
                   {fields.image && (
                     <div className={css.MediaContainer}>
-                      <Media url={`https:${fields.image.fields.file?.url}`} />
+                      <Media
+                        url={`https:${fields.image.fields.file?.url}`}
+                        first={i === 0}
+                      />
                     </div>
                   )}
                   <h3>{fields.title}</h3>
@@ -108,7 +111,7 @@ export default async function Main() {
   );
 }
 
-const Media = ({ url }: { url: string }) => {
+const Media = ({ url, first }: { url: string; first?: boolean }) => {
   const isVideo = url.includes("mp4") || url.includes("webm");
 
   if (isVideo) {
@@ -118,5 +121,5 @@ const Media = ({ url }: { url: string }) => {
       </video>
     );
   }
-  return <Image src={url} alt="" width={400} height={200} />;
+  return <Image src={url} alt="" width={400} height={200} priority={first} />;
 };
