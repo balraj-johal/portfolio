@@ -30,6 +30,11 @@ const RootBody = ({ children }: Props) => {
     };
   }, [lenis, transitioning]);
 
+  // const isMobile = window.matchMedia("(max-width: 768px)");
+  // const isTouch = window.matchMedia("(pointer: coarse)");
+
+  // if (isMobile || isTouch) lenis.destroy();
+
   return (
     <ReactLenis root>
       <RootBodyElement>{children}</RootBodyElement>

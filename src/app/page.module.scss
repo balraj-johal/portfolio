@@ -1,5 +1,5 @@
 .PageContainer {
-  grid-column: 2 / 12;
+  grid-column: 1 / -1;
 
   @media (min-width: 768px) {
     grid-column: 2 / 10;
@@ -25,8 +25,12 @@
     }
 
     .HeadingMain {
-      font-size: clamp(64px, 4vw, 96px);
+      font-size: clamp(44px, 14vw, 64px);
       margin-block: 0;
+
+      @media (min-width: 768px) {
+        font-size: clamp(64px, 4vw, 96px);
+      }
     }
 
     .Subheading {
@@ -59,6 +63,7 @@
       &::after {
         content: ">";
         margin-left: 4px;
+        margin-top: 1px;
 
         display: inline-block;
 

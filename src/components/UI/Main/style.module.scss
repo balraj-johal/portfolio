@@ -11,6 +11,8 @@ main.MainElement {
   grid-template-columns: repeat(12, 1fr);
   gap: var(--grid-gap);
 
+  padding-inline: 12px;
+
   overflow-x: clip;
 }
 
