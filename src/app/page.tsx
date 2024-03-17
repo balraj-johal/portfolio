@@ -59,12 +59,12 @@ export default async function Main() {
         <p>Based in London</p>
       </section>
 
-      <section className={css.Section_RightAligned}>
+      <section className={css.AccoladesSection}>
         <h2 className={css.VisuallyHidden}>Accolades</h2>
-        <p>2x Awwwards Honorable Mention</p>
         <p>1x FWA Site of the Day</p>
         <p>1x Lovie People&apos;s Choice</p>
         <p>1x Lovie Silver</p>
+        <p>2x Awwwards Honorable Mention</p>
       </section>
 
       <section className={css.SelectedWork}>
