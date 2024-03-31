@@ -7,6 +7,7 @@ import {
 } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
 
+import cssUtils from "../theme/utils.module.scss";
 import css from "./page.module.scss";
 
 // TODO: fix bad type asseertions in this file
@@ -27,7 +28,7 @@ export default async function Main() {
         <h1 className={css.HeadingMain}>Balraj Johal</h1>
         <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
         <ul className={css.ContactMe}>
-          <h2 className={css.VisuallyHidden}>Contact Me</h2>
+          <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
           <li>
             <a href="https://twitter.com/balrajJohal_" target="_blank">
               Twitter
@@ -60,7 +61,7 @@ export default async function Main() {
       </section>
 
       <section className={css.AccoladesSection}>
-        <h2 className={css.VisuallyHidden}>Accolades</h2>
+        <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
         <p>1x FWA Site of the Day</p>
         <p>1x Lovie People&apos;s Choice</p>
         <p>1x Lovie Silver</p>
@@ -68,7 +69,7 @@ export default async function Main() {
       </section>
 
       <section className={css.SelectedWork}>
-        <h2 className={css.VisuallyHidden}>Selected Works</h2>
+        <h2 className={cssUtils.ScreenReaderOnly}>Selected Works</h2>
         <ul className={css.WorkList}>
           {selectedWorks.map((entry, i) => {
             const fields = entry.fields as unknown as IProfessionalWorkFields;
@@ -91,7 +92,7 @@ export default async function Main() {
                   <h3>{fields.title}</h3>
                   {fields.roles && (
                     <div className={css.RolesPanel}>
-                      <h4 className={css.VisuallyHidden}>
+                      <h4 className={cssUtils.ScreenReaderOnly}>
                         Roles on this project
                       </h4>
                       <ul className={css.Column_RightAligned}>
