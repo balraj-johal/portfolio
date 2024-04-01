@@ -3,7 +3,7 @@ import Image from "next/image";
 import {
   IProfessionalWorkFields,
   ISelectedWorks,
-  ISelectedWorksFields
+  ISelectedWorksFields,
 } from "@/types/generated/contentful";
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
@@ -113,7 +113,7 @@ const SUPPORTED_FILE_TYPES = ["mp4", "webm"];
 
 const Media = ({ url, first }: { url: string; first?: boolean }) => {
   const isVideo = !!SUPPORTED_FILE_TYPES.find((filetype) =>
-    url.includes(filetype)
+    url.includes(filetype),
   );
 
   if (isVideo) {

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 
 import { getFields } from "@/utils/contentful";
 import { IBlogFields, IBlogPageFields } from "@/types/generated/contentful";
@@ -12,11 +11,15 @@ import { BlogPostsWrapper } from "./styles";
 const PAGE_INFO_CONTENT_TYPE = "blogPage";
 const ENTRIES_CONTENT_TYPE = "blog";
 
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-  },
-};
+export async function generateMetadata() {
+  const pageInfo = await getPageInfo();
+  return {
+    title: pageInfo?.metaTitle,
+    robots: {
+      index: false,
+    },
+  };
+}
 
 const getPageInfo = async () => {
   const pageInfoEntries = await getContentByType(PAGE_INFO_CONTENT_TYPE);
@@ -27,11 +30,6 @@ const getParsedEntryFields = async () => {
   const entries = await getContentByType(ENTRIES_CONTENT_TYPE);
   return entries.map((entry) => getFields<IBlogFields>(entry));
 };
-
-export async function generateMetadata() {
-  const pageInfo = await getPageInfo();
-  return { title: pageInfo?.metaTitle };
-}
 
 export default async function BlogEntries() {
   const pageInfo = await getPageInfo();

@@ -44,7 +44,7 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
     count: images.length,
     scale: 2, // horizontal scale factor
     padding: 20,
-    distanceToClosestIndexRef
+    distanceToClosestIndexRef,
   });
 
   const clampedStart = activeIndex === 0;
@@ -62,7 +62,7 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
     containerLeftPositions,
     imageWidth,
     mediaOffsetRef,
-    yTranslationRef
+    yTranslationRef,
   ]);
 
   useAnimationFrame(() => {
@@ -81,13 +81,13 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
       if (distanceToClosestIndexRef.current > 0) {
         if (!clampedEnd) {
           const translation = getHorizTranslation(
-            distanceToClosestIndexRef.current
+            distanceToClosestIndexRef.current,
           );
           imageContainerTransform = `translateX(${translation}px)`;
           maskedTitleXTransform = `translateX(-${translation}px)`;
         } else {
           const translation = getHorizTranslationDamped(
-            distanceToClosestIndexRef.current
+            distanceToClosestIndexRef.current,
           );
           imageContainerTransform = `translateX(${translation}px)`;
           maskedTitleXTransform = `translateX(-${translation}px)`;
@@ -95,13 +95,13 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
       } else {
         if (!clampedStart) {
           const translation = getHorizTranslation(
-            distanceToClosestIndexRef.current
+            distanceToClosestIndexRef.current,
           );
           imageContainerTransform = `translateX(${translation}px)`;
           maskedTitleXTransform = `translateX(${Math.abs(translation)}px)`;
         } else {
           const translation = getHorizTranslationDamped(
-            distanceToClosestIndexRef.current
+            distanceToClosestIndexRef.current,
           );
           imageContainerTransform = `translateX(${translation}px)`;
           maskedTitleXTransform = `translateX(${Math.abs(translation)}px)`;
@@ -119,7 +119,7 @@ const ImageStrip = ({ images, mediaOffsetRef, yTranslationRef }: Props) => {
         ref={imageContainerRef}
         style={{
           left: `${containerLeftPositions[activeIndex]}px`,
-          width: imageWidth ? `${imageWidth}px` : "0px"
+          width: imageWidth ? `${imageWidth}px` : "0px",
         }}
       >
         <div ref={maskedTitleRef} style={{ position: "relative", zIndex: 1 }}>

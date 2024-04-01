@@ -1,3 +1,4 @@
 {
-  "trailingComma": "none"
+  "endOfLine": "auto",
+  "danglingComma": "none"
 }

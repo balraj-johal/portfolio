@@ -8,17 +8,17 @@ import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash"
 import Hero from "@/components/UI/Hero";
 
 const LazyProfessionalWorkPage = lazy(
-  () => import("@/components/UI/ProfessionalWorkPage")
+  () => import("@/components/UI/ProfessionalWorkPage"),
 );
 
 export const metadata: Metadata = {
   robots: {
-    index: false
-  }
+    index: false,
+  },
 };
 
 export default async function Home({
-  searchParams
+  searchParams,
 }: {
   searchParams: SearchParams;
 }) {

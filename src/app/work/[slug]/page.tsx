@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 
 import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
@@ -14,23 +13,22 @@ interface Props {
 
 const CONTENT_TYPE = "professionalWork";
 
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-  },
-};
+export async function generateMetadata({ params }: Props) {
+  const entries = await getContentByType(CONTENT_TYPE);
+  const entry = findEntryBySlug(entries, params.slug);
+  return {
+    title: entry?.fields.title,
+    robots: {
+      index: false,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const entries = await getContentByType(CONTENT_TYPE);
   return entries.map((entry) => ({
     slug: entry.fields.slug,
   }));
-}
-
-export async function generateMetadata({ params }: Props) {
-  const entries = await getContentByType(CONTENT_TYPE);
-  const entry = findEntryBySlug(entries, params.slug);
-  return { title: entry?.fields.title };
 }
 
 export default async function Work({ params }: Props) {
