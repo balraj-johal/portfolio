@@ -14,10 +14,7 @@ import css from "./page.module.scss";
 // TODO: fix prettier dangling comma rule conflicts
 export default async function Main() {
   const selectedWorkEntries = (
-    await getContentByType(
-      // eslint-disable-next-line prettier/prettier
-      "selectedWorks"
-    )
+    await getContentByType("selectedWorks")
   )[0] as ISelectedWorks;
   const selectedWorks = (selectedWorkEntries.fields as ISelectedWorksFields)
     .selections;
