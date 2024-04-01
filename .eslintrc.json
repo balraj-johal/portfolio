@@ -44,11 +44,5 @@
             "destructuredArrayIgnorePattern": "^_$"
           }
         ],
-        "prettier/prettier": [
-            "error", 
-          {
-            "endOfLine": "auto"
-          }
-        ]
     }
 }

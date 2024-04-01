@@ -3,15 +3,15 @@ import Image from "next/image";
 import {
   IProfessionalWorkFields,
   ISelectedWorks,
-  ISelectedWorksFields,
+  ISelectedWorksFields
 } from "@/types/generated/contentful";
+import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
 
-import cssUtils from "../theme/utils.module.scss";
 import css from "./page.module.scss";
 
 // TODO: fix bad type asseertions in this file
-// TODO: fix prettier dangling comma rule conflicts
+
 export default async function Main() {
   const selectedWorkEntries = (
     await getContentByType("selectedWorks")
@@ -75,8 +75,8 @@ export default async function Main() {
               <li key={fields.slug}>
                 <a
                   href={fields.linkToWork}
-                  target="_blank"
                   aria-label={`link to ${fields.title}`}
+                  target="_blank"
                 >
                   {fields.image && (
                     <div className={css.MediaContainer}>
@@ -109,8 +109,12 @@ export default async function Main() {
   );
 }
 
+const SUPPORTED_FILE_TYPES = ["mp4", "webm"];
+
 const Media = ({ url, first }: { url: string; first?: boolean }) => {
-  const isVideo = url.includes("mp4") || url.includes("webm");
+  const isVideo = !!SUPPORTED_FILE_TYPES.find((filetype) =>
+    url.includes(filetype)
+  );
 
   if (isVideo) {
     return (
