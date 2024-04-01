@@ -1,5 +1,7 @@
 import { lazy } from "react";
 
+import { Metadata } from "next";
+
 import { SearchParams } from "@/types/routing";
 import { getContentByType } from "@/content/contentful";
 import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
@@ -9,6 +11,12 @@ const LazyProfessionalWorkPage = lazy(
   // eslint-disable-next-line prettier/prettier
   () => import("@/components/UI/ProfessionalWorkPage")
 );
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+  },
+};
 
 export default async function Home({
   searchParams,

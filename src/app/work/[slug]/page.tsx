@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
@@ -12,6 +13,12 @@ interface Props {
 }
 
 const CONTENT_TYPE = "professionalWork";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+  },
+};
 
 export async function generateStaticParams() {
   const entries = await getContentByType(CONTENT_TYPE);

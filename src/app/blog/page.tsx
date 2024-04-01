@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 import { getFields } from "@/utils/contentful";
 import { IBlogFields, IBlogPageFields } from "@/types/generated/contentful";
@@ -10,6 +11,12 @@ import { BlogPostsWrapper } from "./styles";
 
 const PAGE_INFO_CONTENT_TYPE = "blogPage";
 const ENTRIES_CONTENT_TYPE = "blog";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+  },
+};
 
 const getPageInfo = async () => {
   const pageInfoEntries = await getContentByType(PAGE_INFO_CONTENT_TYPE);
