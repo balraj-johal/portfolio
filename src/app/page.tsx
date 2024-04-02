@@ -27,17 +27,30 @@ export default async function Main() {
         <ul className={css.ContactMe}>
           <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
           <li>
-            <a href="https://twitter.com/balrajJohal_" target="_blank">
+            <a
+              className={css.InvertOnHover}
+              href="https://twitter.com/balrajJohal_"
+              target="_blank"
+            >
               Twitter
             </a>
           </li>
           <li>
-            <a href="https://www.linkedin.com/in/balraj-johal/" target="_blank">
+            <a
+              className={css.InvertOnHover}
+              href="https://www.linkedin.com/in/balraj-johal/"
+              target="_blank"
+            >
               Linkedin
             </a>
           </li>
           <li>
-            <a href="mailto:workwithbalraj@gmail.com">email</a>
+            <a
+              className={css.InvertOnHover}
+              href="mailto:workwithbalraj@gmail.com"
+            >
+              email
+            </a>
           </li>
         </ul>
       </header>
@@ -47,7 +60,7 @@ export default async function Main() {
         <p>
           Currently&nbsp;
           <a
-            className={css.PhantomLink}
+            className={`${css.PhantomLink} ${css.InvertOnHover}`}
             href="https://phantom.land"
             target="_blank"
           >
