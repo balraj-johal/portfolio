@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AssetFile, AssetDetails } from "contentful";
 
 import {
   IProfessionalWorkFields,
@@ -75,7 +76,7 @@ export default async function Main() {
         <p>1x FWA Site of the Day</p>
         <p>1x Lovie People&apos;s Choice</p>
         <p>1x Lovie Silver</p>
-        <p>2x Awwwards Honorable Mention</p>
+        <p>3x Awwwards Honorable Mention</p>
       </section>
 
       <section className={css.SelectedWork}>
@@ -95,6 +96,7 @@ export default async function Main() {
                     <div className={css.MediaContainer}>
                       <Media
                         url={`https:${fields.image.fields.file?.url}`}
+                        details={fields.image.fields.file?.details}
                         first={i === 0}
                       />
                     </div>
@@ -124,7 +126,15 @@ export default async function Main() {
 
 const SUPPORTED_FILE_TYPES = ["mp4", "webm"];
 
-const Media = ({ url, first }: { url: string; first?: boolean }) => {
+const Media = ({
+  url,
+  first,
+  details,
+}: {
+  url: string;
+  first?: boolean;
+  details?: AssetFile | AssetDetails;
+}) => {
   const isVideo = !!SUPPORTED_FILE_TYPES.find((filetype) =>
     url.includes(filetype),
   );
@@ -136,5 +146,19 @@ const Media = ({ url, first }: { url: string; first?: boolean }) => {
       </video>
     );
   }
-  return <Image src={url} alt="" width={400} height={200} priority={first} />;
+
+  const imageDetails = (details as AssetDetails)?.image;
+  if (imageDetails) {
+    return (
+      <Image
+        src={url}
+        alt=""
+        width={imageDetails.width}
+        height={imageDetails.height}
+        priority={first}
+      />
+    );
+  } else {
+    return <Image src={url} alt="" fill priority={first} />;
+  }
 };
