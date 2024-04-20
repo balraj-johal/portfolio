@@ -5,10 +5,11 @@
 
   @media (min-width: 768px) {
     grid-column: 2 / 12;
+    padding-bottom: 4rem;
   }
 
-  @media (min-width: 1200px) {
-    grid-column: 4 / 10;
+  @media (min-width: 1440px) {
+    padding-bottom: 6rem;
   }
 
   font-family: var(--font-proto-mono);
@@ -125,7 +126,7 @@
     &.AccoladesSection {
       align-items: flex-end;
 
-      margin-top: 1rem;
+      margin-block: 1rem 1.5rem;
 
       @media (min-width: 768px) {
         margin-top: 0;
@@ -141,17 +142,9 @@
     grid-column: 1 / -1;
 
     @media (min-width: 768px) {
-      grid-column: 3 / 9;
+      grid-column: 2 / 10;
 
       margin-top: 3rem;
-    }
-
-    @media (min-width: 1024px) {
-      grid-column: 2 / 10;
-    }
-
-    @media (min-width: 1440px) {
-      grid-column: 2 / 6;
     }
 
     .WorkList {

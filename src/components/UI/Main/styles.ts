@@ -8,5 +8,8 @@ export const MainElement = styled("main", {
     transitioning: {
       false: css.MainElement_Loaded,
     },
+    contained: {
+      true: css.MainElement_Contained,
+    },
   },
 });

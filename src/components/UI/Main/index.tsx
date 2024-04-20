@@ -12,7 +12,7 @@ const Main = ({ children, ...rest }: Props) => {
   const { transitioning } = useApplicationState();
 
   return (
-    <MainElement transitioning={transitioning} {...rest}>
+    <MainElement transitioning={transitioning} contained {...rest}>
       {children}
     </MainElement>
   );

@@ -14,9 +14,14 @@ main.MainElement {
   padding-inline: 12px;
 
   overflow-x: clip;
-}
 
-main.MainElement_Loaded {
-  opacity: 1;
-  transition-delay: var(--speed-route-transition);
+  &.MainElement_Contained {
+    max-width: 1440px;
+    margin: auto;
+  }
+
+  &.MainElement_Loaded {
+    opacity: 1;
+    transition-delay: var(--speed-route-transition);
+  }
 }
