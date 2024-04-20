@@ -13,18 +13,17 @@ import "@/theme/colors.css";
 import "@/theme/type.css";
 
 export const metadata: Metadata = {
-  title: "Balraj Johal",
-  description: ":)",
-  keywords: ["dev", "developer", "web dev", "creative developer"],
+  title: "Balraj Johal | Portfolio",
+  description: "Creative Developer | Based in London",
+  keywords: [
+    "dev",
+    "developer",
+    "web dev",
+    "creative developer",
+    "phantom studios",
+    "phantom agency",
+  ],
 };
-
-// const LazyTransitionSplash = lazy(
-//   () => import("@/components/UI/Splashes/TransitionSplash")
-// );
-
-// const LazyCustomCursorWindow = lazy(
-//   () => import("@/components/UI/CustomCursorWindow")
-// );
 
 export default function RootLayout({
   children,
