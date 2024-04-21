@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { AssetFile, AssetDetails } from "contentful";
 
+import { SearchParams } from "@/types/routing";
 import {
+  IProfessionalWork,
   IProfessionalWorkFields,
   ISelectedWorks,
   ISelectedWorksFields,
@@ -11,9 +13,13 @@ import { getContentByType } from "@/content/contentful";
 
 import css from "./page.module.scss";
 
-// TODO: fix bad type asseertions in this file
+// TODO: fix bad type assertions in this file
 
-export default async function Main() {
+export default async function Main({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const selectedWorkEntries = (
     await getContentByType("selectedWorks")
   )[0] as ISelectedWorks;
@@ -82,47 +88,66 @@ export default async function Main() {
       <section className={css.SelectedWork}>
         <h2 className={cssUtils.ScreenReaderOnly}>Selected Works</h2>
         <ul className={css.WorkList}>
-          {selectedWorks.map((entry, i) => {
-            const fields = entry.fields as unknown as IProfessionalWorkFields;
-
-            return (
-              <li key={fields.slug}>
-                <a
-                  href={fields.linkToWork}
-                  aria-label={`link to ${fields.title}`}
-                  target="_blank"
-                >
-                  {fields.image && (
-                    <div className={css.MediaContainer}>
-                      <Media
-                        url={`https:${fields.image.fields.file?.url}`}
-                        details={fields.image.fields.file?.details}
-                        first={i === 0}
-                      />
-                    </div>
-                  )}
-                  <h3>{fields.title}</h3>
-                  {fields.roles && (
-                    <div className={css.RolesPanel}>
-                      <h4 className={cssUtils.ScreenReaderOnly}>
-                        Roles on this project
-                      </h4>
-                      <ul className={css.Column_RightAligned}>
-                        {fields.roles.map((role) => (
-                          <li key={role}>- {role}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </a>
-              </li>
-            );
-          })}
+          {selectedWorks.map((entry, i) => (
+            <SelectedWorkItem
+              entry={entry}
+              showAll={!!searchParams.all}
+              first={i === 0}
+              key={i}
+            />
+          ))}
         </ul>
       </section>
     </div>
   );
 }
+
+const SelectedWorkItem = ({
+  entry,
+  showAll,
+  first,
+}: {
+  entry: IProfessionalWork;
+  showAll: boolean;
+  first: boolean;
+}) => {
+  const fields = entry.fields as unknown as IProfessionalWorkFields;
+
+  if (fields.isPublic || showAll) {
+    return (
+      <li>
+        <a
+          href={fields.linkToWork}
+          aria-label={`link to ${fields.title}`}
+          target="_blank"
+        >
+          {fields.image && (
+            <div className={css.MediaContainer}>
+              <Media
+                url={`https:${fields.image.fields.file?.url}`}
+                details={fields.image.fields.file?.details}
+                first={first}
+              />
+            </div>
+          )}
+          <h3>{fields.title}</h3>
+          {fields.roles && (
+            <div className={css.RolesPanel}>
+              <h4 className={cssUtils.ScreenReaderOnly}>
+                Roles on this project
+              </h4>
+              <ul className={css.Column_RightAligned}>
+                {fields.roles.map((role) => (
+                  <li key={role}>- {role}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </a>
+      </li>
+    );
+  }
+};
 
 const SUPPORTED_FILE_TYPES = ["mp4", "webm"];
 

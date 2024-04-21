@@ -136,7 +136,7 @@ export interface IProfessionalWorkFields {
   /** Description */
   description: string;
 
-  /** Image */
+  /** Media */
   image?: Asset | undefined;
 
   /** FWA Winner */
@@ -144,6 +144,9 @@ export interface IProfessionalWorkFields {
 
   /** Roles */
   roles?: string[] | undefined;
+
+  /** isPublic */
+  isPublic: boolean;
 }
 
 export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
