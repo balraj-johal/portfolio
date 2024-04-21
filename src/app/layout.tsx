@@ -23,6 +23,17 @@ export const metadata: Metadata = {
     "phantom studios",
     "phantom agency",
   ],
+  openGraph: {
+    images: [
+      {
+        url: "https://www.balraj.cool/assets/images/og.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+    locale: "en_GB",
+  },
 };
 
 export default function RootLayout({
