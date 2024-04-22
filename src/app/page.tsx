@@ -39,7 +39,7 @@ export default async function Main({
           <li>
             <a
               className={css.InvertOnHover}
-              href="https://twitter.com/balrajJohal_"
+              href="https://twitter.com/BalrajJohal_"
               target="_blank"
             >
               Twitter

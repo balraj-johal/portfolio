@@ -291,8 +291,9 @@
     display: block;
     opacity: 0;
 
-    transition: 50ms ease-out;
-    transition-property: opacity transform;
+    transition:
+      opacity 50ms ease-out,
+      transform 50ms ease-out;
 
     background-image: url("../../public/assets/images/phntm-logo.svg");
     background-size: contain;
