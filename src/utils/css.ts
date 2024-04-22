@@ -1,5 +1,8 @@
 import { CSSProperties } from "react";
 
-export const extendedStyle = <T>(style: CSSProperties & T) => {
-  return style;
+export type CSSCustomProperty = `--${string}`;
+export type CSSCustomProperties = { [key in CSSCustomProperty]: string };
+
+export const extendedStyle = (style: CSSProperties & CSSCustomProperties) => {
+  return style as CSSProperties & CSSCustomProperties;
 };

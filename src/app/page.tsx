@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { AssetFile, AssetDetails } from "contentful";
 
+import { extendedStyle } from "@/utils/css";
 import { SearchParams } from "@/types/routing";
 import {
   IProfessionalWork,
@@ -112,6 +113,11 @@ const SelectedWorkItem = ({
   first: boolean;
 }) => {
   const fields = entry.fields as unknown as IProfessionalWorkFields;
+  const getListItemStyle = (index: number) => {
+    return extendedStyle({
+      "--index": `${index}`,
+    });
+  };
 
   if (fields.isPublic || showAll) {
     return (
@@ -136,9 +142,11 @@ const SelectedWorkItem = ({
               <h4 className={cssUtils.ScreenReaderOnly}>
                 Roles on this project
               </h4>
-              <ul className={css.Column_RightAligned}>
-                {fields.roles.map((role) => (
-                  <li key={role}>- {role}</li>
+              <ul>
+                {fields.roles.map((role, i) => (
+                  <li key={role} style={getListItemStyle(i)}>
+                    {role}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -177,10 +185,10 @@ const Media = ({
     return (
       <Image
         src={url}
-        alt=""
         width={imageDetails.width}
         height={imageDetails.height}
         priority={first}
+        alt=""
       />
     );
   } else {
