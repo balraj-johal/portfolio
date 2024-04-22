@@ -11,6 +11,7 @@ import {
 } from "@/types/generated/contentful";
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
+import SelectionColorSwitcher from "@/components/SelectionColorSwitcher";
 import FaviconSwitcher from "@/components/FaviconSwitcher";
 
 import css from "./page.module.scss";
@@ -30,6 +31,7 @@ export default async function Main({
 
   return (
     <div className={css.PageContainer}>
+      <SelectionColorSwitcher />
       <FaviconSwitcher />
       <header className={css.Header}>
         <h1 className={css.HeadingMain}>Balraj Johal</h1>

@@ -3,6 +3,10 @@
 .PageContainer {
   @include grid.inherit-columns();
 
+  ::selection {
+    background-color: var(--selection-color);
+  }
+
   @media (min-width: 768px) {
     grid-column: 2 / 12;
     padding-bottom: 8rem;
