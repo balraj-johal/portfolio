@@ -43,7 +43,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
+      <link
+        id="favicon-svg"
+        rel="icon"
+        type="image/svg+xml"
+        href="/assets/images/favicon.svg"
+      />
+      <link
+        id="favicon-sad-svg"
+        rel="icon-not-used"
+        type="image/svg+xml"
+        href="/assets/images/favicon-sad.svg"
+      />
       <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
       <Providers>
         <RootBody>
