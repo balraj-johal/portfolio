@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { getFields } from "@/utils/contentful";
 import { IBlogFields, IBlogPageFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
-import TransitionLink from "@/components/UI/TransitionLink";
-import BlogEntryLink from "@/components/UI/Blog/BlogEntryLink";
+import BlogEntryLink from "@/components/Blog/BlogEntryLink";
 
 import css from "./style.module.scss";
 
@@ -39,7 +38,6 @@ export default async function BlogEntries() {
 
   return (
     <section className={css.BlogPostsWrapper}>
-      <TransitionLink href="/">Back</TransitionLink>
       <h1>{title}</h1>
       <div>
         {entries.map((entry) => (

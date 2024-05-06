@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Metadata } from "next";
 
-import BlogEntry from "@/components/UI/Blog/BlogEntry";
+import BlogEntry from "@/components/Blog/BlogEntry";
 
-const TITLE = "TEST TEST TEST TEST TEST TES";
+const TITLE = "This is my first blog entry";
 const HERO_IMAGE = "/assets/images/blog/kixel.webp";
 
 export const metadata: Metadata = {

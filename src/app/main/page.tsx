@@ -4,11 +4,11 @@ import { Metadata } from "next";
 
 import { SearchParams } from "@/types/routing";
 import { getContentByType } from "@/content/contentful";
-import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
-import Hero from "@/components/UI/Hero";
+import WebsitePendingSplash from "@/components/Splashes/WebsitePendingSplash";
+import Hero from "@/components/Hero";
 
 const LazyProfessionalWorkPage = lazy(
-  () => import("@/components/UI/ProfessionalWorkPage"),
+  () => import("@/components/ProfessionalWorkPage"),
 );
 
 export const metadata: Metadata = {

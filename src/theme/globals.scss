@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --border-radius: var(--border-radius);
+}
+
+html,
+body {
+  width: 100%;
+}
+
+html {
+  background: var(--color-white);
+}
+
+body {
+  margin: 0;
+}
+
+.visually-hidden {
+  visibility: hidden;
+  position: absolute;
+}
+
+// code block override
+.token-line {
+  > span:first-of-type {
+    display: inline-block;
+    transform: translateY(4%);
+    margin-inline-end: 1rem;
+  }
+}

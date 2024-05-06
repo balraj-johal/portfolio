@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
-import TransitionLink from "@/components/UI/TransitionLink";
+import TransitionLink from "@/components/TransitionLink";
 
 interface Props {
   params: {

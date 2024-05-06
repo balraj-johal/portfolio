@@ -5,7 +5,7 @@ import {
   ContentfulResponse,
   ContentfulImage,
   ImageInfo,
-} from "@/types/content";
+} from "@/types/contentful";
 
 export const findEntryBySlug = (items: ContentfulResponse, slug: string) => {
   for (const entry of items) {
