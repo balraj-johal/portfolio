@@ -18,9 +18,11 @@ const BlogEntry = async ({ content }: Props) => {
 
   return (
     <>
-      <h1>{title}</h1>
-      <BlogEntryHeroMedia imageInfo={imageInfo} />
-      <RichTextDocument document={document} />
+      <h1 className="heading-main">{title}</h1>
+      <BlogEntryHeroMedia imageInfo={imageInfo} text={title} />
+      <section>
+        <RichTextDocument document={document} />
+      </section>
     </>
   );
 };

@@ -1,12 +1,7 @@
-@use "../theme/grid.scss" as grid;
+@use "../theme/layout" as layout;
 
-.PageContainer {
-  @include grid.inherit-columns();
-
-  @media (min-width: 768px) {
-    grid-column: 2 / 12;
-    padding-bottom: 8rem;
-  }
+.Homepage {
+  @include layout.page-container();
 
   font-family: var(--font-proto-mono);
   letter-spacing: -0.075em;
@@ -20,15 +15,6 @@
     @media (min-width: 768px) {
       margin-top: 4rem;
       margin-bottom: 2rem;
-    }
-
-    .HeadingMain {
-      font-size: clamp(44px, 14vw, 64px);
-      margin-block: 0;
-
-      @media (min-width: 768px) {
-        font-size: clamp(64px, 4vw, 96px);
-      }
     }
 
     .Subheading {

@@ -8,12 +8,12 @@ import Main from "@/components/UI/Main";
 import Providers from "@/components/Providers";
 
 import "@/theme/globals.css";
-import "@/theme/spacing.css";
+import "@/theme/spacing.scss";
 import "@/theme/colors.css";
-import "@/theme/type.css";
+import "@/theme/type.scss";
 
 export const metadata: Metadata = {
-  title: "Balraj Johal | Portfolio",
+  title: "Portfolio | Balraj Johal",
   description: "Creative Developer | Based in London",
   keywords: [
     "dev",

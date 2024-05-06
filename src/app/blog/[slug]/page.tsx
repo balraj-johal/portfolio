@@ -5,7 +5,7 @@ import { IBlogFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
 import BlogEntry from "@/components/UI/Blog/BlogEntry";
 
-import { BlogPostBackLink, BlogPostWrapper } from "./styles";
+import css from "./style.module.scss";
 
 interface Props {
   params: {
@@ -29,7 +29,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const entries = await getEntries();
   const entryTitle = findEntryBySlug(entries, params.slug)?.fields.title;
-  return { title: `${entryTitle} - Balraj Johal` };
+  return {
+    title: `${entryTitle} | Balraj Johal`,
+  };
 }
 
 export default async function BlogEntryPage({ params }: Props) {
@@ -40,9 +42,8 @@ export default async function BlogEntryPage({ params }: Props) {
   const fields = getFields<IBlogFields>(entry);
 
   return (
-    <BlogPostWrapper>
-      <BlogPostBackLink href="/blog">Back</BlogPostBackLink>
+    <article className={css.BlogPostWrapper}>
       <BlogEntry content={fields} />
-    </BlogPostWrapper>
+    </article>
   );
 }

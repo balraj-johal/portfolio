@@ -1,13 +1,31 @@
 h1 {
   font-family: var(--font-proto-mono);
-  
+
   line-height: 78%;
   letter-spacing: -0.075em;
-  margin-inline: -0.1em;
+  // margin-inline: -0.1em;
 
   text-transform: uppercase;
 
   color: var(--color-black);
+
+  &[aria-hidden="true"] {
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+:root {
+  --heading-main-size: clamp(44px, 14vw, 64px);
+
+  @media (min-width: 768px) {
+    --heading-main-size: clamp(64px, 4vw, 96px);
+  }
+}
+
+.heading-main {
+  font-size: var(--heading-main-size);
+  margin-block: 0;
 }
 
 p {

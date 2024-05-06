@@ -1,48 +1,13 @@
 import localFont from "next/font/local";
-import { Inter, Barlow } from "next/font/google";
-
-const supplySans = localFont({
-  src: [
-    {
-      path: "files/Supply/PPSupplySans-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "files/Supply/PPSupplySans-Ultralight.otf",
-      weight: "200",
-      style: "light",
-    },
-  ],
-  variable: "--font-supply-sans",
-});
-
-const supplyMono = localFont({
-  src: [
-    {
-      path: "files/Supply/PPSupplyMono-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "files/Supply/PPSupplySans-Ultralight.otf",
-      weight: "200",
-      style: "light",
-    },
-  ],
-  variable: "--font-supply-mono",
-});
-
-const cascadiaMono = localFont({
-  src: [
-    {
-      path: "files/CascadiaMono/CascadiaMono.woff2",
-      weight: "500",
-      style: "normal",
-    },
-  ],
-  variable: "--font-cascadia-mono",
-});
+import {
+  Albert_Sans,
+  Chakra_Petch,
+  Gothic_A1,
+  Inter_Tight,
+  Khand,
+  Saira,
+  Saira_Condensed,
+} from "next/font/google";
 
 const protoMono = localFont({
   src: [
@@ -70,18 +35,29 @@ const protoMono = localFont({
   variable: "--font-proto-mono",
 });
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const barlow = Barlow({
-  subsets: ["latin"],
-  variable: "--font-barlow",
-  weight: ["300", "500"],
+const moldiv = localFont({
+  src: [
+    {
+      path: "files/Moldiv/Moldiv.ttf",
+      style: "normal",
+    },
+  ],
+  variable: "--font-simple",
 });
 
+const simpleFont = Saira_Condensed({
+  subsets: ["latin"],
+  variable: "--font-simples",
+  weight: ["300", "500"],
+});
+// const simpleFont = Chakra_Petch({
+//   subsets: ["latin"],
+//   variable: "--font-chakra",
+//   weight: ["300", "500"],
+// });
+
 export const FONT_CLASSES = [
-  supplySans.variable,
-  supplyMono.variable,
   protoMono.variable,
-  cascadiaMono.variable,
-  inter.variable,
-  barlow.variable,
+  simpleFont.variable,
+  moldiv.variable,
 ].join(" ");

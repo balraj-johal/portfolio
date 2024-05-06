@@ -6,15 +6,14 @@ import { getContentByType } from "@/content/contentful";
 import TransitionLink from "@/components/UI/TransitionLink";
 import BlogEntryLink from "@/components/UI/Blog/BlogEntryLink";
 
-import { BlogPostsWrapper } from "./styles";
+import css from "./style.module.scss";
 
 const PAGE_INFO_CONTENT_TYPE = "blogPage";
 const ENTRIES_CONTENT_TYPE = "blog";
 
 export async function generateMetadata() {
-  const pageInfo = await getPageInfo();
   return {
-    title: pageInfo?.metaTitle,
+    title: "Blog | Balraj Johal",
     robots: {
       index: false,
     },
@@ -39,7 +38,7 @@ export default async function BlogEntries() {
   const { title } = pageInfo;
 
   return (
-    <BlogPostsWrapper>
+    <section className={css.BlogPostsWrapper}>
       <TransitionLink href="/">Back</TransitionLink>
       <h1>{title}</h1>
       <div>
@@ -47,6 +46,6 @@ export default async function BlogEntries() {
           <BlogEntryLink key={entry.slug} slug={entry.slug} />
         ))}
       </div>
-    </BlogPostsWrapper>
+    </section>
   );
 }

@@ -1,0 +1,20 @@
+@mixin inherit-grid-columns {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+  column-gap: inherit;
+
+  @supports #{"\(grid-template-columns: subgrid)"} {
+    grid-template-columns: subgrid;
+    column-gap: unset;
+  }
+}
+
+@mixin page-container {
+  @include inherit-grid-columns();
+
+  @media (min-width: 768px) {
+    grid-column: 2 / 12;
+    padding-bottom: 8rem;
+  }
+}
