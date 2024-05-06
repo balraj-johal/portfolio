@@ -2,7 +2,6 @@ import { useMemo } from "react";
 
 import { getImageURLs } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
-import { CursorType } from "@/types/cursor";
 import { ContentfulResponse } from "@/types/contentful";
 
 import ProfessionalEntryImages from "../ProfessionalEntryImages";
@@ -38,10 +37,7 @@ const ProfessionalEntryCard = ({ activeIndex, content }: Props) => {
         imageURLs={imageURLs}
       />
       <ProfessionalEntryCardOneLiner>{oneLiner}</ProfessionalEntryCardOneLiner>
-      <ProfessionalEntryCardLink
-        href={linkHref}
-        data-cursor-type={CursorType.Link}
-      >
+      <ProfessionalEntryCardLink href={linkHref}>
         SEE MORE &gt;
       </ProfessionalEntryCardLink>
     </ProfessionalEntryCardWrapper>

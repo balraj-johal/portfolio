@@ -1,6 +1,5 @@
 import { styled } from "@phntms/css-components";
 
-import TransitionLink from "../../TransitionLink";
 import css from "./style.module.scss";
 
 export const ProfessionalEntryCardWrapper = styled("div", {
@@ -15,6 +14,6 @@ export const ProfessionalEntryCardOneLiner = styled("p", {
   css: css.ProfessionalEntryCardOneLiner,
 });
 
-export const ProfessionalEntryCardLink = styled(TransitionLink, {
+export const ProfessionalEntryCardLink = styled("a", {
   css: css.ProfessionalEntryCardLink,
 });

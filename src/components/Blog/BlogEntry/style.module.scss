@@ -1,4 +1,4 @@
-@use "../../../../theme/layout" as layout;
+@use "../../../theme/layout" as layout;
 
 .BlogPostWrapper {
   @include layout.page-container();

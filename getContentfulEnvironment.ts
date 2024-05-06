@@ -1,7 +1,6 @@
 import { strict as assert } from "assert";
 
 import dotenv from "dotenv";
-import { EnvironmentGetter } from "contentful-typescript-codegen";
 import { createClient } from "contentful-management";
 
 dotenv.config({ path: ".env" });
@@ -16,7 +15,7 @@ assert(CONTENTFUL_MANAGEMENT_ACCESS_TOKEN);
 assert(CONTENTFUL_SPACE_ID);
 assert(CONTENTFUL_ENVIRONMENT);
 
-const getContentfulEnvironment: EnvironmentGetter = () => {
+const getContentfulEnvironment = () => {
   const contentfulClient = createClient({
     accessToken: CONTENTFUL_MANAGEMENT_ACCESS_TOKEN,
   });
