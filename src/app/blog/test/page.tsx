@@ -1,6 +1,8 @@
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Metadata } from "next";
 
+import { SearchParams } from "@/types/routing";
 import BlogEntry from "@/components/Blog/BlogEntry";
 
 const TITLE = "This is my first blog entry";
@@ -20,9 +22,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
   },
+  robots: {
+    index: false,
+  },
 };
 
-export default function Page() {
+export default function Page({ searchParams }: { searchParams: SearchParams }) {
+  if (!searchParams.skip) notFound();
+
   return (
     <BlogEntry
       title={TITLE}

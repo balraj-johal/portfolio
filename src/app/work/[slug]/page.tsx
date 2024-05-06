@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { findEntryBySlug } from "@/utils/contentful";
+import { SearchParams } from "@/types/routing";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
 
@@ -8,6 +9,7 @@ interface Props {
   params: {
     slug: string;
   };
+  searchParams: SearchParams;
 }
 
 const CONTENT_TYPE = "professionalWork";
@@ -30,10 +32,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Work({ params }: Props) {
+export default async function Work({ searchParams, params }: Props) {
   const entries = await getContentByType(CONTENT_TYPE);
   const entry = findEntryBySlug(entries, params.slug);
-  if (!entry) notFound();
+  if (!entry || !searchParams.skip) notFound();
 
   const { title, oneLiner } =
     entry.fields as unknown as IProfessionalWorkFields;

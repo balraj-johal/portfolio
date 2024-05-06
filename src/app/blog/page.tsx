@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getFields } from "@/utils/contentful";
+import { SearchParams } from "@/types/routing";
 import { IBlogFields, IBlogPageFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
 import BlogEntryLink from "@/components/Blog/BlogEntryLink";
@@ -29,10 +30,14 @@ const getParsedEntryFields = async () => {
   return entries.map((entry) => getFields<IBlogFields>(entry));
 };
 
-export default async function BlogEntries() {
+export default async function BlogEntries({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const pageInfo = await getPageInfo();
   const entries = await getParsedEntryFields();
-  if (!pageInfo || !entries) notFound();
+  if (!pageInfo || !entries || !searchParams.skip) notFound();
 
   const { title } = pageInfo;
 
