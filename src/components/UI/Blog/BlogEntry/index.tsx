@@ -1,30 +1,31 @@
-import { getImageInfo } from "@/utils/contentful";
-import { IBlogFields } from "@/types/generated/contentful";
-import { ContentfulImage } from "@/types/content";
+import React from "react";
 
-import RichTextDocument from "../../RichTextDocument";
-import BlogEntryHeroMedia from "./BlogEntryHeroMedia";
+import { SecondaryTitle } from "./styles";
+import css from "./style.module.scss";
 
 interface Props {
-  content: IBlogFields;
+  title: string;
+  heroMediaSlot: React.ReactNode;
+  children: React.ReactNode;
+  invertTitleColor?: boolean;
 }
 
-const BlogEntry = async ({ content }: Props) => {
-  if (!content) return null;
-
-  const { title, heroImage, content: document } = content;
-
-  const imageInfo = getImageInfo(heroImage as unknown as ContentfulImage);
-
+export default function BlogEntry({
+  title,
+  heroMediaSlot,
+  children,
+  invertTitleColor = true,
+}: Props) {
   return (
-    <>
+    <article className={css.BlogPostWrapper}>
       <h1 className="heading-main">{title}</h1>
-      <BlogEntryHeroMedia imageInfo={imageInfo} text={title} />
-      <section>
-        <RichTextDocument document={document} />
-      </section>
-    </>
+      <div className={css.BlogEntryHeroMediaWrapper}>
+        <SecondaryTitle inverted={invertTitleColor} aria-hidden>
+          {title}
+        </SecondaryTitle>
+        {heroMediaSlot}
+      </div>
+      <section className={css.BlogPostContent}>{children}</section>
+    </article>
   );
-};
-
-export default BlogEntry;
+}
