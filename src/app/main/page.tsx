@@ -1,14 +1,14 @@
 import { lazy } from "react";
 
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 import { SearchParams } from "@/types/routing";
 import { getContentByType } from "@/content/contentful";
-import WebsitePendingSplash from "@/components/UI/Splashes/WebsitePendingSplash";
-import Hero from "@/components/UI/Hero";
+import Hero from "@/components/Hero";
 
 const LazyProfessionalWorkPage = lazy(
-  () => import("@/components/UI/ProfessionalWorkPage"),
+  () => import("@/components/ProfessionalWorkPage"),
 );
 
 export const metadata: Metadata = {
@@ -24,11 +24,12 @@ export default async function Home({
 }) {
   const professionalEntries = await getContentByType("professionalWork");
 
+  if (!searchParams.skip) return notFound();
+
   return (
     <>
       <Hero />
       <LazyProfessionalWorkPage content={professionalEntries} />
-      {!searchParams.skip && <WebsitePendingSplash />}
     </>
   );
 }

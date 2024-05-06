@@ -3,17 +3,16 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
-import RootBody from "@/components/UI/RootBody";
-import Main from "@/components/UI/Main";
-import Providers from "@/components/Providers";
+import RootBody from "@/components/RootBody";
+import Main from "@/components/Main";
 
-import "@/theme/globals.css";
-import "@/theme/spacing.css";
-import "@/theme/colors.css";
-import "@/theme/type.css";
+import "@/theme/globals.scss";
+import "@/theme/spacing.scss";
+import "@/theme/colors.scss";
+import "@/theme/type.scss";
 
 export const metadata: Metadata = {
-  title: "Balraj Johal | Portfolio",
+  title: "Portfolio | Balraj Johal",
   description: "Creative Developer | Based in London",
   keywords: [
     "dev",
@@ -56,14 +55,12 @@ export default function RootLayout({
         href="/assets/images/favicon-sad.svg"
       />
       <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
-      <Providers>
-        <RootBody>
-          <Main>
-            <Suspense>{children}</Suspense>
-          </Main>
-          <Analytics />
-        </RootBody>
-      </Providers>
+      <RootBody>
+        <Main>
+          <Suspense>{children}</Suspense>
+        </Main>
+        <Analytics />
+      </RootBody>
     </html>
   );
 }

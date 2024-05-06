@@ -1,0 +1,19 @@
+main.MainElement {
+  height: 100%;
+
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gap);
+
+  padding-inline: var(--container-padding);
+
+  overflow-x: clip;
+
+  &.MainElement_Contained {
+    max-width: 1440px;
+    margin: auto;
+  }
+}

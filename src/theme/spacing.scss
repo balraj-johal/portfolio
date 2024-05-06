@@ -1,0 +1,26 @@
+:root {
+  --padding-vertical: 74px;
+  --padding-mobile: 12px;
+  --container-padding: 12px;
+
+  --grid-gap: 24px;
+}
+
+.twelve-col-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: var(--grid-gap);
+  gap: var(--grid-gap);
+}
+
+.container {
+  grid-column: 1 / end;
+  padding: var(--padding-mobile);
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-column: 2 / 12;
+    padding: unset;
+  }
+}

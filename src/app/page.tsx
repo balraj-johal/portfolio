@@ -29,10 +29,10 @@ export default async function Main({
     .selections;
 
   return (
-    <div className={css.PageContainer}>
+    <div className={css.Homepage}>
       <FaviconSwitcher />
       <header className={css.Header}>
-        <h1 className={css.HeadingMain}>Balraj Johal</h1>
+        <h1 className="heading-main">Balraj Johal</h1>
         <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
         <ul className={css.ContactMe}>
           <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>

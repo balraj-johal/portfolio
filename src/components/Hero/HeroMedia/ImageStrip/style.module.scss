@@ -1,0 +1,24 @@
+.ImageStripWrapper {
+  position: relative;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ImageContainer {
+  position: absolute;
+  height: inherit;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+
+  backface-visibility: culled;
+  transform: translate3d(0);
+
+  .StripImage {
+    object-fit: cover;
+    opacity: 0;
+
+    &.StripImage_Visible {
+      opacity: 1;
+    }
+  }
+}

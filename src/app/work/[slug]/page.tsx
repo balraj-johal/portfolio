@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import { getContentByType } from "@/content/contentful";
-import TransitionLink from "@/components/UI/TransitionLink";
 
 interface Props {
   params: {
@@ -41,7 +40,6 @@ export default async function Work({ params }: Props) {
 
   return (
     <>
-      <TransitionLink href="/">Back</TransitionLink>
       <h1>{title}</h1>
       <p>{oneLiner}</p>
     </>
