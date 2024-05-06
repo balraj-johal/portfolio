@@ -1,0 +1,32 @@
+.CopyValueButton {
+  .CopyLabel {
+    display: none;
+  }
+
+  .SuccessLabel {
+    color: var(--color-white);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: var(--color-black);
+      width: calc(100% + 2px);
+    }
+  }
+
+  @media (pointer: fine) {
+    &:hover {
+      cursor: pointer;
+
+      .CopyLabel {
+        display: initial;
+      }
+
+      .DefaultLabel {
+        display: none;
+      }
+    }
+  }
+}

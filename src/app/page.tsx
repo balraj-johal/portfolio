@@ -12,6 +12,7 @@ import {
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
 import FaviconSwitcher from "@/components/FaviconSwitcher";
+import CopyValueButton from "@/components/CopyValueButton";
 
 import css from "./page.module.scss";
 
@@ -55,12 +56,19 @@ export default async function Main({
             </a>
           </li>
           <li>
-            <a
+            <CopyValueButton
+              className={css.InvertOnHover}
+              ariaLabel="Copy email"
+              value="workwithbalraj@gmail.com"
+            >
+              Email
+            </CopyValueButton>
+            {/* <a
               className={css.InvertOnHover}
               href="mailto:workwithbalraj@gmail.com"
             >
               email
-            </a>
+            </a> */}
           </li>
         </ul>
       </header>

@@ -295,8 +295,16 @@
   }
 }
 
-a.InvertOnHover {
+a.InvertOnHover,
+button.InvertOnHover {
+  border: 0;
+  background-color: transparent;
   position: relative;
+  font-family: var(--font-proto-mono);
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+  font-size: 1rem;
+  padding: 0 1px;
 
   &:hover,
   &:focus-visible {
