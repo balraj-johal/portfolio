@@ -84,4 +84,13 @@
   .SecondaryTitle_Inverted {
     color: var(--color-white);
   }
+
+  .PublishedOn {
+    font-family: var(--font-proto-mono);
+    letter-spacing: -0.075em;
+    font-size: 0.75rem;
+    font-weight: 200;
+    text-align: right;
+    margin-block: 2px;
+  }
 }

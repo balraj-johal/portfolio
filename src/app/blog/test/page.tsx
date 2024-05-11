@@ -3,18 +3,22 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 import { SearchParams } from "@/types/routing";
+import { BlogEntryMetadata } from "@/types/blog";
 import BlogEntry from "@/components/Blog/BlogEntry";
 
-const TITLE = "This is my first blog entry";
-const HERO_IMAGE = "/assets/images/blog/kixel.webp";
+const META: BlogEntryMetadata = {
+  title: "This is my first blog entry",
+  heroImagePath: "/assets/images/blog/kixel.webp",
+  datePublished: "11th May 2024",
+};
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Balraj Johal`,
+  title: `${META.title} | Balraj Johal`,
   description: "Creative Developer | Based in London",
   openGraph: {
     images: [
       {
-        url: HERO_IMAGE,
+        url: META.heroImagePath,
         width: 1200,
         height: 630,
       },
@@ -32,9 +36,12 @@ export default function Page({ searchParams }: { searchParams: SearchParams }) {
 
   return (
     <BlogEntry
-      title={TITLE}
+      title={META.title}
       invertTitleColor={false}
-      heroMediaSlot={<Image src={HERO_IMAGE} alt="" width={720} height={480} />}
+      datePublished={META.datePublished}
+      heroMediaSlot={
+        <Image src={META.heroImagePath} alt="" width={720} height={480} />
+      }
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
