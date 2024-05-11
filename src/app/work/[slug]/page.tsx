@@ -35,7 +35,7 @@ export async function generateStaticParams() {
 export default async function Work({ searchParams, params }: Props) {
   const entries = await getContentByType(CONTENT_TYPE);
   const entry = findEntryBySlug(entries, params.slug);
-  if (!entry || !searchParams.skip) notFound();
+  if (!entry || !searchParams.secret) notFound();
 
   const { title, oneLiner } =
     entry.fields as unknown as IProfessionalWorkFields;

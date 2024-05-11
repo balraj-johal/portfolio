@@ -3,22 +3,18 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 import { SearchParams } from "@/types/routing";
-import { BlogEntryMetadata } from "@/types/blog";
+import { BLOG_ENTRIES } from "@/content/blog-meta";
 import BlogEntry from "@/components/Blog/BlogEntry";
 
-const META: BlogEntryMetadata = {
-  title: "This is my first blog entry",
-  heroImagePath: "/assets/images/blog/kixel.webp",
-  datePublished: "11th May 2024",
-};
+const ENTRY = BLOG_ENTRIES.test;
 
 export const metadata: Metadata = {
-  title: `${META.title} | Balraj Johal`,
+  title: `${ENTRY.title} | Balraj Johal`,
   description: "Creative Developer | Based in London",
   openGraph: {
     images: [
       {
-        url: META.heroImagePath,
+        url: ENTRY.heroImagePath,
         width: 1200,
         height: 630,
       },
@@ -32,15 +28,15 @@ export const metadata: Metadata = {
 };
 
 export default function Page({ searchParams }: { searchParams: SearchParams }) {
-  if (!searchParams.skip) notFound();
+  if (!searchParams.secret) notFound();
 
   return (
     <BlogEntry
-      title={META.title}
+      title={ENTRY.title}
       invertTitleColor={false}
-      datePublished={META.datePublished}
+      datePublished={ENTRY.datePublished}
       heroMediaSlot={
-        <Image src={META.heroImagePath} alt="" width={720} height={480} />
+        <Image src={ENTRY.heroImagePath} alt="" width={720} height={480} />
       }
     >
       <p>

@@ -1,8 +1,18 @@
+:root {
+  --heading-main-size: clamp(44px, 14vw, 64px);
+
+  @media (min-width: 768px) {
+    --heading-main-size: clamp(64px, 4vw, 96px);
+  }
+
+  --proto-mono-letter-spacing: -0.075em;
+}
+
 h1 {
   font-family: var(--font-proto-mono);
 
   line-height: 78%;
-  letter-spacing: -0.075em;
+  letter-spacing: var(--proto-mono-letter-spacing);
 
   text-transform: uppercase;
 
@@ -11,14 +21,6 @@ h1 {
   &[aria-hidden="true"] {
     pointer-events: none;
     user-select: none;
-  }
-}
-
-:root {
-  --heading-main-size: clamp(44px, 14vw, 64px);
-
-  @media (min-width: 768px) {
-    --heading-main-size: clamp(64px, 4vw, 96px);
   }
 }
 
@@ -34,10 +36,6 @@ p {
 
 p:empty {
   display: none;
-}
-
-a {
-  letter-spacing: -1px;
 }
 
 .bold {

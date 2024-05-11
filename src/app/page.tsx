@@ -11,8 +11,10 @@ import {
 } from "@/types/generated/contentful";
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
+import { BLOG_HAS_SOME_PUBLISHED_ENTRIES } from "@/content/blog-meta";
 import FaviconSwitcher from "@/components/FaviconSwitcher";
 import CopyValueButton from "@/components/CopyValueButton";
+import BlogLinks from "@/components/Blog/BlogLinks";
 
 import css from "./page.module.scss";
 
@@ -28,6 +30,9 @@ export default async function Main({
   )[0] as ISelectedWorks;
   const selectedWorks = (selectedWorkEntries.fields as ISelectedWorksFields)
     .selections;
+
+  const showBlogLinks =
+    BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!searchParams.secret;
 
   return (
     <div className={css.Homepage}>
@@ -89,6 +94,12 @@ export default async function Main({
         <p>1x Lovie Silver</p>
         <p>3x Awwwards Honorable Mention</p>
       </section>
+
+      {showBlogLinks && (
+        <section className={css.BlogLinksSection}>
+          <BlogLinks />
+        </section>
+      )}
 
       <section className={css.SelectedWork}>
         <h2 className={cssUtils.ScreenReaderOnly}>Selected Works</h2>

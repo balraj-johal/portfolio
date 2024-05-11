@@ -24,7 +24,7 @@ export default async function Home({
 }) {
   const professionalEntries = await getContentByType("professionalWork");
 
-  if (!searchParams.skip) return notFound();
+  if (!searchParams.secret) return notFound();
 
   return (
     <>
