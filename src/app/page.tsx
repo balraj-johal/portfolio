@@ -63,12 +63,6 @@ export default async function Main({
             >
               Email
             </CopyValueButton>
-            {/* <a
-              className={css.InvertOnHover}
-              href="mailto:workwithbalraj@gmail.com"
-            >
-              email
-            </a> */}
           </li>
         </ul>
       </header>
