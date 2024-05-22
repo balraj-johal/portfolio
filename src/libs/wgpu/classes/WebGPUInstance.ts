@@ -5,9 +5,10 @@ export interface WebGPUInstanceProperties {
 }
 
 export class WebGPUInstance {
+  private readonly cleanupCallbacks: Array<() => void> = [];
+
   canvas: HTMLCanvasElement;
   rendering = true;
-
   api?: API;
 
   constructor(properties: WebGPUInstanceProperties) {
@@ -37,6 +38,22 @@ export class WebGPUInstance {
       },
       { threshold: [0] },
     ).observe(this.canvas);
+  }
+
+  /** TODO: fix this
+   *
+   * https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html
+   * https://eliemichel.github.io/LearnWebGPU/basic-3d-rendering/some-interaction/resizing-window.html
+   */
+  private setupResizeHandler() {
+    const handleResize = () => {
+      this.setupCanvas();
+    };
+
+    window.addEventListener("resize", handleResize);
+    this.cleanupCallbacks.push(() =>
+      window.removeEventListener("resize", handleResize),
+    );
   }
 
   async initializeContext(
@@ -73,5 +90,11 @@ export class WebGPUInstance {
 
     // following assertion is only acceptible as all properties have been checked above
     this.api = api as Required<API>;
+  }
+
+  cleanup() {
+    for (const callback of this.cleanupCallbacks) {
+      callback();
+    }
   }
 }
