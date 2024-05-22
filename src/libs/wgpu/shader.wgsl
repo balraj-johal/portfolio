@@ -8,7 +8,7 @@ struct VertexOutput {
   @location(0) color: vec4<f32>
 }
 
-//TODO: maybe better named Uniform Buffer Layout? or Bind Group Layout?
+// //TODO: maybe better named Uniform Buffer Layout? or Bind Group Layout?
 struct ViewParameters {
   view_projection: mat4x4<f32>
 }
@@ -19,11 +19,8 @@ var<uniform> view_parameters: ViewParameters;
 @vertex
 fn vertex_main(vert: VertexInput) -> VertexOutput {
   var out: VertexOutput;
-  out.position = vert.position * view_parameters.view_projection;
 
-  // transform using view projection
-  // out.position *= view_parameters.view_projection;
-
+  out.position = view_parameters.view_projection * vert.position;
   out.color = vert.color;
 
   return out;
