@@ -21,7 +21,7 @@ export default function Page({ searchParams }: { searchParams: SearchParams }) {
 
     if (canvasRef.current) {
       const wgpu = new WebGPUExploration({ canvas: canvasRef.current });
-      wgpu.initialize();
+      wgpu.start();
     }
   });
 

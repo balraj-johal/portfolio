@@ -1,183 +1,26 @@
-import { mat4 } from "gl-matrix";
-import { Controller } from "ez_canvas_controller";
-import { ArcballCamera } from "arcball_camera";
-
-import WebGPUInstance from "./wgpu";
+import WebGPUInstance, { WebGPUInstanceProperties } from "./wgpu";
 import { checkShaderModuleCompilation } from "./utils";
-import { API } from "./types";
 import Triangle from "./triangle";
 import shader from "./shader.wgsl";
+import Camera from "./camera";
 
 export const FLOAT_LENGTH = 4;
 const SWAP_CHAIN_TEXTURE_FORMAT: GPUTextureFormat = "bgra8unorm";
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
-interface WebGPUExplorationProperties {
-  canvas: HTMLCanvasElement;
-}
+interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
 
 export default class WebGPUExploration extends WebGPUInstance {
-  canvas: HTMLCanvasElement;
-
-  api?: API;
   shaderModule?: GPUShaderModule;
-  rendering = true;
 
   private camera;
-  private cameraProjection = mat4.create();
-  private cameraProjectionView = mat4.create();
 
   constructor(properties: WebGPUExplorationProperties) {
-    super();
+    super(properties);
 
-    this.canvas = properties.canvas;
-    this.setupCanvas();
-    this.setupIntersectionObserver();
-    this.camera = this.buildCamera();
-  }
-
-  // checked
-  private setupCanvas() {
-    const canvasParent = this.canvas.parentElement;
-    if (!canvasParent)
-      throw new Error("No canvas parent present to set size from");
-
-    const { clientWidth, clientHeight } = canvasParent;
-    this.canvas.width = clientWidth;
-    this.canvas.height = clientHeight;
-  }
-
-  // checked
-  private setupIntersectionObserver() {
-    new IntersectionObserver(
-      (event) => {
-        if (event[0].isIntersecting) {
-          this.rendering = true;
-        } else {
-          this.rendering = false;
-        }
-      },
-      { threshold: [0] },
-    ).observe(this.canvas);
-  }
-
-  // checked
-  private buildCamera() {
-    const width = this.canvas.width;
-    const height = this.canvas.height;
-
-    // Create an Arcball camera and view projection matrix
-    const camera = new ArcballCamera([0, 0, 3], [0, 0, 0], [0, 1, 0], 0.5, [
-      width,
-      height,
-    ]);
-
-    // Create a perspective projection matrix
-    this.cameraProjection = mat4.perspective(
-      mat4.create(),
-      (50 * Math.PI) / 180.0,
-      width / height,
-      0.1,
-      100,
-    );
-
-    // Matrix which will store the computed projection * view matrix
-    this.cameraProjectionView = mat4.create();
-
-    // Controller utility for interacting with the canvas and driving the Arcball camera
-    const controller = new Controller();
-    controller.mousemove = function (
-      previous: number[],
-      current: number[],
-      event: MouseEvent,
-    ) {
-      if (event.buttons == 1) {
-        camera.rotate(previous, current);
-      } else if (event.buttons == 2) {
-        camera.pan([current[0] - previous[0], previous[1] - current[1]]);
-      }
-    };
-    controller.wheel = function (amount: number) {
-      camera.zoom(amount * 0.5);
-    };
-    controller.registerForCanvas(this.canvas);
-
-    return camera;
-  }
-
-  private updateCameraBuffer() {
-    if (!this.api) {
-      throw new Error("No WebGPU API ready");
-    }
-
-    this.cameraProjectionView = mat4.mul(
-      this.cameraProjectionView,
-      this.cameraProjection,
-      this.camera.camera,
-    );
-
-    const upload = this.api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH,
-      usage: GPUBufferUsage.COPY_SRC,
-      mappedAtCreation: true,
+    this.camera = new Camera({
+      canvas: this.canvas,
     });
-    {
-      const map = new Float32Array(upload.getMappedRange());
-      map.set(this.cameraProjectionView);
-      upload.unmap();
-    }
-
-    return upload;
-  }
-
-  private createCameraBuffer() {
-    if (!this.api) {
-      throw new Error("No WebGPU API ready");
-    }
-
-    return this.api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH,
-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-    });
-  }
-
-  // checked
-  async initializeContext() {
-    const api: Partial<API> = {};
-
-    if (navigator.gpu === undefined) {
-      return alert("WebGPU is not supported.");
-    }
-
-    const adapter = await navigator.gpu.requestAdapter();
-    if (!adapter) {
-      throw new Error("No adapter");
-    } else {
-      api.adapter = adapter;
-    }
-
-    const device = await api.adapter.requestDevice();
-    if (!device) {
-      throw new Error("No device");
-    } else {
-      api.device = device;
-    }
-
-    const context = await this.canvas.getContext("webgpu");
-    if (!context) {
-      throw new Error("No context");
-    } else {
-      api.context = context;
-    }
-
-    api.context.configure({
-      device: api.device,
-      format: SWAP_CHAIN_TEXTURE_FORMAT,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
-    });
-
-    // following assertion is only acceptible as all properties have been checked above
-    this.api = api as Required<API>;
   }
 
   /**
@@ -185,7 +28,6 @@ export default class WebGPUExploration extends WebGPUInstance {
    *
    * i.e., stuff like what format each input is in, how to parse the inputs, which location
    */
-  // checked
   private createVertexState(shaderModule: GPUShaderModule): GPUVertexState {
     // defines the properties of the two interleaved attributes
     const positionAttribute: GPUVertexAttribute = {
@@ -230,7 +72,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     };
   }
 
-  // checked
   private async newShaderModule(shader: string) {
     if (!this.api) {
       throw new Error("No WebGPU API ready");
@@ -242,7 +83,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     return shaderModule;
   }
 
-  // checked
   private createBindGroupLayout() {
     if (!this.api) {
       throw new Error("No WebGPU API ready");
@@ -259,7 +99,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     });
   }
 
-  // checked
   // TODO: create depth and stencil texture?
   private createDepthTexture() {
     if (!this.api) {
@@ -277,7 +116,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     });
   }
 
-  // checked
   private async createRenderPipeline(
     pipelineLayout: GPUPipelineLayout,
     vertexState: GPUVertexState,
@@ -301,7 +139,6 @@ export default class WebGPUExploration extends WebGPUInstance {
 
   /** WTF */
   private createRenderPassDescription(
-    api: API,
     depthTexture: GPUTexture,
   ): GPURenderPassDescriptor {
     const colorAttachment: GPURenderPassColorAttachment = {
@@ -328,8 +165,12 @@ export default class WebGPUExploration extends WebGPUInstance {
     };
   }
 
-  async initialize() {
-    await this.initializeContext();
+  async start() {
+    await this.initializeContext({
+      format: SWAP_CHAIN_TEXTURE_FORMAT,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+
     if (!this.api) {
       throw new Error("No WebGPU API ready");
     }
@@ -338,6 +179,7 @@ export default class WebGPUExploration extends WebGPUInstance {
 
     const vertexState = this.createVertexState(this.shaderModule);
     const fragmentState = this.createFragmentState(this.shaderModule);
+
     const depthTexture = this.createDepthTexture();
     const bindGroupLayout = this.createBindGroupLayout();
     const renderPipelineLayout = this.api.device.createPipelineLayout({
@@ -349,26 +191,25 @@ export default class WebGPUExploration extends WebGPUInstance {
       fragmentState,
     );
 
-    const triangle = new Triangle(this.api);
-
     // Render Pass!
-    const renderPassDescription = this.createRenderPassDescription(
-      this.api,
-      depthTexture,
-    );
+    const renderPassDescription =
+      this.createRenderPassDescription(depthTexture);
 
-    const viewParametersBuffer = this.createCameraBuffer();
+    // create view parameters
+    const viewParametersBuffer = this.camera.createBuffer(this.api);
     const viewParameterBindGroup = this.api.device.createBindGroup({
       layout: bindGroupLayout,
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
+
+    const triangle = new Triangle(this.api);
 
     const render = () => {
       if (!this.api) {
         throw new Error("No WebGPU API ready");
       }
 
-      const cameraBuffer = this.updateCameraBuffer();
+      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
 
       const firstColorAttachment = [
         ...renderPassDescription.colorAttachments,
