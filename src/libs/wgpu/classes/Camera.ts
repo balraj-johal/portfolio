@@ -2,14 +2,14 @@ import { mat4 } from "gl-matrix";
 import { Controller } from "ez_canvas_controller";
 import { ArcballCamera } from "arcball_camera";
 
-import { API } from "./types";
-import { FLOAT_LENGTH } from ".";
+import { FLOAT_LENGTH_BYTES } from "../utils/math";
+import { API } from "../types";
 
 interface CameraProperties {
   canvas: HTMLCanvasElement;
 }
 
-export default class Camera {
+export class Camera {
   canvas: HTMLCanvasElement;
   camera: unknown;
 
@@ -67,7 +67,7 @@ export default class Camera {
 
   createBuffer(api: API) {
     return api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH,
+      size: 16 * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
   }
@@ -81,7 +81,7 @@ export default class Camera {
     );
 
     const upload = api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH,
+      size: 16 * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.COPY_SRC,
       mappedAtCreation: true,
     });

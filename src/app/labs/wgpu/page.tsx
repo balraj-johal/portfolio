@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { notFound } from "next/navigation";
 
 import { SearchParams } from "@/types/routing";
-import WebGPUExploration from "@/libs/wgpu";
+import WebGPUExploration from "@/app/labs/wgpu";
 
 import css from "./style.module.scss";
 

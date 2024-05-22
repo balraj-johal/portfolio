@@ -1,5 +1,5 @@
-import { API } from "./types";
-import { FLOAT_LENGTH } from ".";
+import { FLOAT_LENGTH_BYTES } from "../../../../libs/wgpu/utils/math";
+import { API } from "../../../../libs/wgpu/types";
 
 export default class Triangle {
   api: API;
@@ -14,7 +14,7 @@ export default class Triangle {
   private createDataBuffer() {
     // checked
     const buffer = this.api.device.createBuffer({
-      size: 3 * 2 * 4 * FLOAT_LENGTH, // 3 verts with 4 floats per "channel", with 2 channels?
+      size: 3 * 2 * 4 * FLOAT_LENGTH_BYTES, // 3 verts with 4 floats per "channel", with 2 channels?
       usage: GPUBufferUsage.VERTEX,
       mappedAtCreation: true, // See docs.md, Mapped Data Buffer
     });

@@ -1,10 +1,10 @@
-import { API } from "./types";
+import { API } from "../types";
 
 export interface WebGPUInstanceProperties {
   canvas: HTMLCanvasElement;
 }
 
-export default class WebGPUInstance {
+export class WebGPUInstance {
   canvas: HTMLCanvasElement;
   rendering = true;
 
