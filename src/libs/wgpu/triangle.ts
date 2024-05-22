@@ -1,4 +1,5 @@
 import { API } from "./types";
+import { FLOAT_LENGTH } from ".";
 
 export default class Triangle {
   api: API;
@@ -11,16 +12,17 @@ export default class Triangle {
   }
 
   private createDataBuffer() {
+    // checked
     const buffer = this.api.device.createBuffer({
-      size: 3 * 4 * 4 * 2, // 3 verts with 4 floats per "channel", with 2 channels?
+      size: 3 * 2 * 4 * FLOAT_LENGTH, // 3 verts with 4 floats per "channel", with 2 channels?
       usage: GPUBufferUsage.VERTEX,
       mappedAtCreation: true, // See docs.md, Mapped Data Buffer
     });
 
-    const mappedBuffer: ArrayBuffer = buffer.getMappedRange();
+    const mappedBufferRange: ArrayBuffer = buffer.getMappedRange();
 
     // create a view of the mapped ArrayBuffer such that we can set the typed floats easily
-    const float32BufferView = new Float32Array(mappedBuffer);
+    const float32BufferView = new Float32Array(mappedBufferRange);
 
     // Interleaved positions and colors
     float32BufferView.set([

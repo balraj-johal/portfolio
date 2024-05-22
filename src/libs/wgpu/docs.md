@@ -24,12 +24,30 @@ Essentially, the swap chain is a list of frameBuffers that ping-pong/swap their 
 
 # What does texture.createView do?
 
+Think returns a specific view or section of the resource defined in the texture.
+
 # Why do we need to update the color attachment's view each frame?
 
 # What the fuck are the rest of the attachment config options?
 
+# What is a command queue?
+
+https://eliemichel.github.io/LearnWebGPU/getting-started/the-command-queue.html
+
+A command queue is used to batch the dispatched instructions from the CPU (which is the content timeline), then send then to the GPU (which is the queue timeline).
+
 # What is a command encoder?
+
+A command encode is used to ensode instructions into the command queue.
 
 # Why does it need to get created and binned each frame?
 
 I think this is the nature of wgpu, quick and throw away create and destroys
+
+# Uniform Buffers vs Storage Buffers
+
+Uniform buffers are used to store small to medium size buffers of constant data to shaders, whereas storage buffers are for large or shader writable data buffers.
+
+# Bind groups
+
+A bind group is a way to bundle together various resources so that they can be easily and efficiently accessed by shaders during GPU operations. The bind group layout defines the structure, the bind group itself holds the actual resources, and shaders use these resources as defined by the layout.
