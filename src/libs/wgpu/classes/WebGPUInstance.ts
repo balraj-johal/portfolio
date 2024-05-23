@@ -7,6 +7,9 @@ export interface WebGPUInstanceProperties {
 export class WebGPUInstance {
   private readonly cleanupCallbacks: Array<() => void> = [];
 
+  preferredFormat = navigator.gpu.getPreferredCanvasFormat();
+  dpr = Math.min(window.devicePixelRatio, 2);
+  currentCanvasDimensions = { width: 0, height: 0 };
   canvas: HTMLCanvasElement;
   rendering = true;
   api?: API;
@@ -17,14 +20,34 @@ export class WebGPUInstance {
     this.setupIntersectionObserver();
   }
 
-  private setupCanvas() {
+  setupCanvas() {
+    const { targetWidth, targetHeight } = this.getTargetCanvasSize();
+
+    this.currentCanvasDimensions.width = targetWidth;
+    this.canvas.width = targetWidth;
+    this.currentCanvasDimensions.height = targetHeight;
+    this.canvas.height = targetHeight;
+  }
+
+  getTargetCanvasSize() {
     const canvasParent = this.canvas.parentElement;
     if (!canvasParent)
       throw new Error("No canvas parent present to set size from");
 
     const { clientWidth, clientHeight } = canvasParent;
-    this.canvas.width = clientWidth;
-    this.canvas.height = clientHeight;
+    return {
+      targetWidth: clientWidth * this.dpr,
+      targetHeight: clientHeight * this.dpr,
+    };
+  }
+
+  hasResized() {
+    const { targetWidth, targetHeight } = this.getTargetCanvasSize();
+
+    return (
+      this.currentCanvasDimensions.width !== targetWidth ||
+      this.currentCanvasDimensions.height !== targetHeight
+    );
   }
 
   private setupIntersectionObserver() {
@@ -45,19 +68,9 @@ export class WebGPUInstance {
    * https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html
    * https://eliemichel.github.io/LearnWebGPU/basic-3d-rendering/some-interaction/resizing-window.html
    */
-  private setupResizeHandler() {
-    const handleResize = () => {
-      this.setupCanvas();
-    };
-
-    window.addEventListener("resize", handleResize);
-    this.cleanupCallbacks.push(() =>
-      window.removeEventListener("resize", handleResize),
-    );
-  }
 
   async initializeContext(
-    configuration: Omit<GPUCanvasConfiguration, "device">,
+    configuration: Omit<GPUCanvasConfiguration, "device" | "format">,
   ) {
     const api: Partial<API> = {};
 
@@ -86,10 +99,24 @@ export class WebGPUInstance {
       api.context = context;
     }
 
-    api.context.configure({ ...configuration, device: device });
-
     // following assertion is only acceptible as all properties have been checked above
     this.api = api as Required<API>;
+
+    this.configureContext(configuration);
+  }
+
+  configureContext(
+    configuration: Omit<GPUCanvasConfiguration, "device" | "format">,
+  ) {
+    if (!this.api) {
+      throw new Error("No WebGPU API ready");
+    }
+
+    this.api.context.configure({
+      ...configuration,
+      format: this.preferredFormat,
+      device: this.api.device,
+    });
   }
 
   cleanup() {

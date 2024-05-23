@@ -9,13 +9,14 @@ import {
 import shader from "./shaders/triangle.wgsl";
 import Triangle from "./classes/Triangle";
 
-const SWAP_CHAIN_TEXTURE_FORMAT: GPUTextureFormat = "bgra8unorm";
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
 
 export default class WebGPUExploration extends WebGPUInstance {
   shaderModule?: GPUShaderModule;
+
+  depthStencilTexture?: GPUTexture;
 
   private camera;
 
@@ -66,7 +67,7 @@ export default class WebGPUExploration extends WebGPUInstance {
    */
   private createFragmentState(shaderModule: GPUShaderModule): GPUFragmentState {
     const target: GPUColorTargetState = {
-      format: SWAP_CHAIN_TEXTURE_FORMAT,
+      format: this.preferredFormat,
     };
 
     return {
@@ -103,16 +104,15 @@ export default class WebGPUExploration extends WebGPUInstance {
     });
   }
 
-  // TODO: create depth and stencil texture?
-  private createDepthTexture() {
+  private createDepthStencilTexture() {
     if (!this.api) {
       throw new Error("No WebGPU API ready");
     }
 
     return this.api.device.createTexture({
       size: {
-        width: this.canvas.width,
-        height: this.canvas.height,
+        width: this.currentCanvasDimensions.width,
+        height: this.currentCanvasDimensions.height,
         depthOrArrayLayers: 1,
       },
       format: DEPTH_TEXTURE_FORMAT,
@@ -143,7 +143,7 @@ export default class WebGPUExploration extends WebGPUInstance {
 
   /** WTF */
   private createRenderPassDescription(
-    depthTexture: GPUTexture,
+    depthStencilTexture: GPUTexture,
   ): GPURenderPassDescriptor {
     const colorAttachment: GPURenderPassColorAttachment = {
       // view will be updated to the current render target each frame
@@ -154,7 +154,7 @@ export default class WebGPUExploration extends WebGPUInstance {
     };
     const depthStencilAttachment: GPURenderPassDepthStencilAttachment = {
       // view will be set to the current render target each frame
-      view: depthTexture.createView(),
+      view: depthStencilTexture.createView(),
       depthLoadOp: "clear",
       depthClearValue: 1.0,
       depthStoreOp: "store",
@@ -169,9 +169,27 @@ export default class WebGPUExploration extends WebGPUInstance {
     };
   }
 
+  handleWindowResize() {
+    this.depthStencilTexture = this.createDepthStencilTexture();
+  }
+
+  private createOutputRenderTarget() {
+    if (!this.api) {
+      throw new Error("No WebGPU API ready");
+    }
+
+    return this.api.device.createTexture({
+      size: [
+        this.currentCanvasDimensions.width,
+        this.currentCanvasDimensions.height,
+      ],
+      format: this.preferredFormat,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+  }
+
   async start() {
     await this.initializeContext({
-      format: SWAP_CHAIN_TEXTURE_FORMAT,
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
@@ -184,7 +202,11 @@ export default class WebGPUExploration extends WebGPUInstance {
     const vertexState = this.createVertexState(this.shaderModule);
     const fragmentState = this.createFragmentState(this.shaderModule);
 
-    const depthTexture = this.createDepthTexture();
+    this.depthStencilTexture = this.createDepthStencilTexture();
+    let renderPassDescription = this.createRenderPassDescription(
+      this.depthStencilTexture,
+    );
+
     const bindGroupLayout = this.createBindGroupLayout();
     const renderPipelineLayout = this.api.device.createPipelineLayout({
       bindGroupLayouts: [bindGroupLayout],
@@ -196,8 +218,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     );
 
     // Render Pass!
-    const renderPassDescription =
-      this.createRenderPassDescription(depthTexture);
 
     // create view parameters
     const viewParametersBuffer = this.camera.createBuffer(this.api);
@@ -214,6 +234,21 @@ export default class WebGPUExploration extends WebGPUInstance {
       }
 
       const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
+
+      if (this.hasResized()) {
+        this.setupCanvas();
+
+        this.depthStencilTexture?.destroy();
+
+        this.depthStencilTexture = this.createDepthStencilTexture();
+        renderPassDescription = this.createRenderPassDescription(
+          this.depthStencilTexture,
+        );
+
+        this.configureContext({
+          usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        });
+      }
 
       const firstColorAttachment = [
         ...renderPassDescription.colorAttachments,
