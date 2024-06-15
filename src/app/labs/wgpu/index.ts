@@ -1,3 +1,4 @@
+import { uploadGlb } from "@/libs/wgpu/classes/gltf";
 import { FLOAT_LENGTH_BYTES } from "@/libs/wgpu";
 import {
   checkShaderModuleCompilation,
@@ -227,6 +228,10 @@ export default class WebGPUExploration extends WebGPUInstance {
     });
 
     const triangle = new Triangle(this.api);
+
+    const res = await fetch("/assets/avocado.glb");
+    const meshBuffer = await res.arrayBuffer();
+    uploadGlb(meshBuffer, this.api.device);
 
     const render = () => {
       if (!this.api) {

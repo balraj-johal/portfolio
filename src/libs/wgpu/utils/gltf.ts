@@ -1,5 +1,4 @@
-import { GLTFBufferView } from "../classes/gltf/glb/GLTFBufferView";
-import { GLTFBuffer } from "../classes/gltf/glb/GLTFBuffer";
+import { GLTFComponentType, GLTFType } from "../types";
 
 const BINARY_GLTF_MAGIC = 0x46546c67;
 
@@ -18,6 +17,7 @@ export function validateGlbJsonHeader(header: Uint32Array) {
     );
   }
 }
+
 export function validateGlbBinaryHeader(header: Uint32Array) {
   if (header[1] != 0x004e4942) {
     throw Error(
@@ -26,7 +26,7 @@ export function validateGlbBinaryHeader(header: Uint32Array) {
   }
 }
 
-const readGlbJsonHeader = (mappedBuffer: ArrayBuffer) => {
+export function readGlbJsonHeader(mappedBuffer: ArrayBuffer) {
   const jsonHeader = new Uint32Array(mappedBuffer, 0, 5);
   validateGlbJsonHeader(jsonHeader);
 
@@ -34,7 +34,7 @@ const readGlbJsonHeader = (mappedBuffer: ArrayBuffer) => {
   const chunkLength = jsonHeader[3];
 
   return {
-    json: JSON.parse(
+    header: JSON.parse(
       new TextDecoder("utf-8").decode(
         new Uint8Array(mappedBuffer, byteOffset, chunkLength),
       ),
@@ -42,40 +42,170 @@ const readGlbJsonHeader = (mappedBuffer: ArrayBuffer) => {
     byteOffset: byteOffset,
     chunkLength: chunkLength,
   };
-};
+}
 
-const readGlbBinaryHeader = (mappedBuffer: ArrayBuffer, offset: number) => {
+export function readGlbBinaryHeader(mappedBuffer: ArrayBuffer, offset: number) {
   const binaryHeader = new Uint32Array(mappedBuffer, offset, 2);
   validateGlbBinaryHeader(binaryHeader);
 
   return binaryHeader;
-};
+}
 
-export function uploadGLB(buffer: GPUBuffer, device: GPUDevice) {
-  const mappedBuffer = buffer.getMappedRange();
-  const {
-    json,
-    byteOffset: jsonByteOffset,
-    chunkLength: jsonChunkLength,
-  } = readGlbJsonHeader(mappedBuffer);
-
-  const binaryHeader = readGlbBinaryHeader(
-    mappedBuffer,
-    jsonByteOffset + jsonChunkLength,
-  );
-
-  const binaryChunk = new GLTFBuffer(
-    mappedBuffer,
-    8 + jsonByteOffset + jsonChunkLength,
-    binaryHeader[0],
-  );
-
-  console.log(json, device, binaryChunk);
-
-  const bufferViews: GLTFBufferView[] = [];
-  for (const bufferView of json.bufferViews) {
-    bufferViews.push(new GLTFBufferView(binaryChunk, bufferView));
+export function getGltfTypeSize(
+  componentType: GLTFComponentType,
+  type: GLTFType,
+) {
+  let componentSize = 0;
+  switch (componentType) {
+    case GLTFComponentType.BYTE:
+      componentSize = 1;
+      break;
+    case GLTFComponentType.UNSIGNED_BYTE:
+      componentSize = 1;
+      break;
+    case GLTFComponentType.SHORT:
+      componentSize = 2;
+      break;
+    case GLTFComponentType.UNSIGNED_SHORT:
+      componentSize = 2;
+      break;
+    case GLTFComponentType.INT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.UNSIGNED_INT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.FLOAT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.DOUBLE:
+      componentSize = 8;
+      break;
+    default:
+      throw Error("Unrecognized GLTF Component Type?");
   }
+  return gltfTypeToNumber(type) * componentSize;
+}
 
-  // buffer.unmap();
+export function parseGltfType(type: string) {
+  switch (type) {
+    case "SCALAR":
+      return GLTFType.SCALAR;
+    case "VEC2":
+      return GLTFType.VEC2;
+    case "VEC3":
+      return GLTFType.VEC3;
+    case "VEC4":
+      return GLTFType.VEC4;
+    case "MAT2":
+      return GLTFType.MAT2;
+    case "MAT3":
+      return GLTFType.MAT3;
+    case "MAT4":
+      return GLTFType.MAT4;
+    default:
+      throw Error(`Unhandled glTF Type ${type}`);
+  }
+}
+
+export function gltfTypeToNumber(type: GLTFType) {
+  switch (type) {
+    case GLTFType.SCALAR:
+      return 1;
+    case GLTFType.VEC2:
+      return 2;
+    case GLTFType.VEC3:
+      return 3;
+    case GLTFType.VEC4:
+    case GLTFType.MAT2:
+      return 4;
+    case GLTFType.MAT3:
+      return 9;
+    case GLTFType.MAT4:
+      return 16;
+    default:
+      throw Error(`Invalid glTF Type ${type}`);
+  }
+}
+
+// Note: only returns non-normalized type names,
+// so byte/ubyte = sint8/uint8, not snorm8/unorm8, same for ushort
+export function gltfVertexType(
+  componentType: GLTFComponentType,
+  type: GLTFType,
+) {
+  const typeString = (() => {
+    switch (componentType) {
+      case GLTFComponentType.BYTE:
+        return "sint8";
+      case GLTFComponentType.UNSIGNED_BYTE:
+        return "uint8";
+      case GLTFComponentType.SHORT:
+        return "sint16";
+      case GLTFComponentType.UNSIGNED_SHORT:
+        return "uint16";
+      case GLTFComponentType.INT:
+        return "int32";
+      case GLTFComponentType.UNSIGNED_INT:
+        return "uint32";
+      case GLTFComponentType.FLOAT:
+        return "float32";
+      default:
+        throw Error(`Unrecognized or unsupported glTF type ${componentType}`);
+    }
+  })();
+
+  switch (gltfTypeToNumber(type)) {
+    case 1:
+      return typeString;
+    case 2:
+      return typeString + "x2";
+    case 3:
+      return typeString + "x3";
+    case 4:
+      return typeString + "x4";
+    default:
+      throw Error(`Invalid number of components for gltfType: ${type}`);
+  }
+}
+
+export function gltfTypeSize(componentType: GLTFComponentType, type: GLTFType) {
+  let componentSize = 0;
+  switch (componentType) {
+    case GLTFComponentType.BYTE:
+      componentSize = 1;
+      break;
+    case GLTFComponentType.UNSIGNED_BYTE:
+      componentSize = 1;
+      break;
+    case GLTFComponentType.SHORT:
+      componentSize = 2;
+      break;
+    case GLTFComponentType.UNSIGNED_SHORT:
+      componentSize = 2;
+      break;
+    case GLTFComponentType.INT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.UNSIGNED_INT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.FLOAT:
+      componentSize = 4;
+      break;
+    case GLTFComponentType.DOUBLE:
+      componentSize = 8;
+      break;
+    default:
+      throw Error("Unrecognized GLTF Component Type?");
+  }
+  return gltfTypeToNumber(type) * componentSize;
+}
+
+export class GLTFBuffer {
+  buffer: Uint8Array;
+
+  constructor(buffer: ArrayBuffer, offset: number, size: number) {
+    this.buffer = new Uint8Array(buffer, offset, size);
+  }
 }
