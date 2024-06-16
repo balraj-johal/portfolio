@@ -133,7 +133,7 @@ export function gltfTypeToNumber(type: GLTFType) {
 export function gltfVertexType(
   componentType: GLTFComponentType,
   type: GLTFType,
-) {
+): GPUVertexFormat | GPUIndexFormat {
   const typeString = (() => {
     switch (componentType) {
       case GLTFComponentType.BYTE:
@@ -155,15 +155,17 @@ export function gltfVertexType(
     }
   })();
 
+  // TODO: bad type assertion here! There's some values that can be returned from this
+  // type that aren't actually valid in the GPUVertexFormat type, e.g. 'uint8' alone
   switch (gltfTypeToNumber(type)) {
     case 1:
-      return typeString;
+      return typeString as GPUVertexFormat;
     case 2:
-      return typeString + "x2";
+      return (typeString + "x2") as GPUVertexFormat;
     case 3:
-      return typeString + "x3";
+      return (typeString + "x3") as GPUVertexFormat;
     case 4:
-      return typeString + "x4";
+      return (typeString + "x4") as GPUVertexFormat;
     default:
       throw Error(`Invalid number of components for gltfType: ${type}`);
   }
@@ -200,12 +202,4 @@ export function gltfTypeSize(componentType: GLTFComponentType, type: GLTFType) {
       throw Error("Unrecognized GLTF Component Type?");
   }
   return gltfTypeToNumber(type) * componentSize;
-}
-
-export class GLTFBuffer {
-  buffer: Uint8Array;
-
-  constructor(buffer: ArrayBuffer, offset: number, size: number) {
-    this.buffer = new Uint8Array(buffer, offset, size);
-  }
 }

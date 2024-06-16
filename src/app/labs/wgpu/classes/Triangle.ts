@@ -1,11 +1,11 @@
 import { FLOAT_LENGTH_BYTES } from "../../../../libs/wgpu/utils/math";
-import { API } from "../../../../libs/wgpu/types";
+import { WebGpuApi } from "../../../../libs/wgpu/types";
 
 export default class Triangle {
-  api: API;
+  api: WebGpuApi;
   dataBuffer?: GPUBuffer;
 
-  constructor(api: API) {
+  constructor(api: WebGpuApi) {
     this.api = api;
 
     this.createDataBuffer();

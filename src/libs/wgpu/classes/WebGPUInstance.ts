@@ -1,4 +1,4 @@
-import { API } from "../types";
+import { WebGpuApi } from "../types";
 
 export interface WebGPUInstanceProperties {
   canvas: HTMLCanvasElement;
@@ -12,7 +12,7 @@ export class WebGPUInstance {
   currentCanvasDimensions = { width: 0, height: 0 };
   canvas: HTMLCanvasElement;
   rendering = true;
-  api?: API;
+  api?: WebGpuApi;
 
   constructor(properties: WebGPUInstanceProperties) {
     this.canvas = properties.canvas;
@@ -72,7 +72,7 @@ export class WebGPUInstance {
   async initializeContext(
     configuration: Omit<GPUCanvasConfiguration, "device" | "format">,
   ) {
-    const api: Partial<API> = {};
+    const api: Partial<WebGpuApi> = {};
 
     if (navigator.gpu === undefined) {
       return alert("WebGPU is not supported.");
@@ -100,7 +100,7 @@ export class WebGPUInstance {
     }
 
     // following assertion is only acceptible as all properties have been checked above
-    this.api = api as Required<API>;
+    this.api = api as Required<WebGpuApi>;
 
     this.configureContext(configuration);
   }

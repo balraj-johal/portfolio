@@ -92,4 +92,14 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
       }),
     );
   }
+
+  // upload everything required to the GPU
+  for (const bufferView of preparedBufferViews) {
+    if (bufferView.needsUpload) {
+      bufferView.upload(device);
+    }
+  }
+
+  // return GLTF Meshes?
+  return meshes;
 }

@@ -1,4 +1,4 @@
-export type API = {
+export type WebGpuApi = {
   adapter: GPUAdapter;
   device: GPUDevice;
   context: GPUCanvasContext;

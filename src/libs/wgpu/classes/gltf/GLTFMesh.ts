@@ -1,3 +1,4 @@
+import { WebGpuApi } from "../../types";
 import { GLTFPrimitive } from "./GLTFPrimitive";
 
 /**
@@ -18,12 +19,33 @@ export class GLTFMesh {
   }) {
     this.name = name;
     this.primitives = primitives;
-    console.log(this);
   }
 
-  // TODO:
-  buildRenderPipeline() {}
+  async buildRenderPipeline(config: {
+    api: WebGpuApi;
+    shaderModule: GPUShaderModule;
+    depthFormat: GPUTextureFormat;
+    colorFormat: GPUTextureFormat;
+    uniformsBindGroupLayout: GPUBindGroupLayout;
+  }): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      for (const primitive of this.primitives) {
+        try {
+          await primitive.buildRenderPipeline(config);
+        } catch (error) {
+          reject(error);
+        }
+      }
+      resolve();
+    });
+  }
 
-  // TODO:
-  render() {}
+  render(config: {
+    renderPassEncoder: GPURenderPassEncoder;
+    uniformsBindGroup: GPUBindGroup;
+  }) {
+    for (const primitive of this.primitives) {
+      primitive.render(config);
+    }
+  }
 }

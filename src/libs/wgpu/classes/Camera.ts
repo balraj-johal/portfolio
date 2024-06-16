@@ -3,10 +3,11 @@ import { Controller } from "ez_canvas_controller";
 import { ArcballCamera } from "arcball_camera";
 
 import { FLOAT_LENGTH_BYTES } from "../utils/math";
-import { API } from "../types";
+import { WebGpuApi } from "../types";
 
 interface CameraProperties {
   canvas: HTMLCanvasElement;
+  initialPosition?: [number, number, number];
 }
 
 export class Camera {
@@ -19,18 +20,23 @@ export class Camera {
   constructor(properties: CameraProperties) {
     this.canvas = properties.canvas;
 
-    this.camera = this.buildCamera();
+    this.camera = this.buildCamera(properties);
   }
 
-  private buildCamera() {
+  private buildCamera(properties: CameraProperties) {
     const width = this.canvas.width;
     const height = this.canvas.height;
 
+    const initialPosition = properties.initialPosition ?? [0, 0, 3];
+
     // Create an Arcball camera and view projection matrix
-    const camera = new ArcballCamera([0, 0, 3], [0, 0, 0], [0, 1, 0], 0.5, [
-      width,
-      height,
-    ]);
+    const camera = new ArcballCamera(
+      initialPosition,
+      [0, 0, 0],
+      [0, 1, 0],
+      0.5,
+      [width, height],
+    );
 
     // Create a perspective projection matrix
     this.cameraProjection = mat4.perspective(
@@ -65,14 +71,14 @@ export class Camera {
     return camera;
   }
 
-  createBuffer(api: API) {
+  createBuffer(api: WebGpuApi) {
     return api.device.createBuffer({
       size: 16 * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
   }
 
-  getUpdatedBuffer(api: API) {
+  getUpdatedBuffer(api: WebGpuApi) {
     this.cameraProjectionView = mat4.mul(
       this.cameraProjectionView,
       this.cameraProjection,
