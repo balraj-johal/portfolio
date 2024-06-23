@@ -11,7 +11,7 @@ import shader from "./shaders/shader.wgsl";
 
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
-const AVOCADO_FILE_PATH = "/assets/avocado.glb";
+const MODEL_FILE_PATH = "/assets/avocado.glb";
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
 
@@ -42,7 +42,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     return shaderModule;
   }
 
-  private createBindGroupLayout() {
+  private createViewParametersBindGroupLayout() {
     if (!this.api) throw new Error("No WebGPU API ready");
 
     return this.api.device.createBindGroupLayout({
@@ -77,18 +77,30 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     const colorAttachment: GPURenderPassColorAttachment = {
       // view will be updated to the current render target each frame
       view: null as unknown as GPUTextureView,
+      // on load the attachment is cleared
       loadOp: "clear",
+      // with the following clear colour (rgba)
       clearValue: [0.3, 0.3, 0.3, 1],
+      // and then on completion of the render pass, the result is
+      // stored into this attachment
       storeOp: "store",
     };
+
     const depthStencilAttachment: GPURenderPassDepthStencilAttachment = {
       // view will be set to the current render target each frame
       view: depthStencilTexture.createView(),
+      // each run of the render pass, the depth texture is cleared
       depthLoadOp: "clear",
+      // with a completely white colour
       depthClearValue: 1.0,
+      // and once the render pass has completed, the result is stored into the depth texture
       depthStoreOp: "store",
+      // then the pass moves onto the stencil data
       stencilLoadOp: "clear",
+      // which is cleared with total black
       stencilClearValue: 0,
+      // and again, once the pass has completed, the output is stored into
+      // this attachment
       stencilStoreOp: "store",
     };
 
@@ -98,6 +110,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     };
   }
 
+  /** On resize, each texture needs to be destroyed and recreated. */
   handleWindowResize() {
     this.depthStencilTexture = this.createDepthStencilTexture();
   }
@@ -112,16 +125,16 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       this.depthStencilTexture,
     );
 
-    const bindGroupLayout = this.createBindGroupLayout();
-
     // create view parameters
+    const viewParameterBindGroupLayout =
+      this.createViewParametersBindGroupLayout();
     const viewParametersBuffer = this.camera.createBuffer(this.api);
     const viewParameterBindGroup = this.api.device.createBindGroup({
-      layout: bindGroupLayout,
+      layout: viewParameterBindGroupLayout,
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
-    const res = await fetch(AVOCADO_FILE_PATH);
+    const res = await fetch(MODEL_FILE_PATH);
     const meshBuffer = await res.arrayBuffer();
     const meshes = uploadGlb(meshBuffer, this.api.device);
 
@@ -133,7 +146,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
           shaderModule: this.shaderModule,
           colorFormat: this.preferredFormat,
           depthFormat: DEPTH_TEXTURE_FORMAT,
-          uniformsBindGroupLayout: bindGroupLayout,
+          uniformsBindGroupLayout: viewParameterBindGroupLayout,
         }),
       );
     }
@@ -162,7 +175,11 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
         });
       }
 
-      // TODO:: properly figure out what this does
+      // Update the main colour attachment's contents with the next
+      // available texture in the swap chain.
+      //
+      // The colour attachment itself is updated, so the render pass
+      // description can be reused rather than recreated each time for no reason
       const firstColorAttachment = [
         ...renderPassDescription.colorAttachments,
       ][0];
@@ -172,7 +189,11 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
           .createView();
       }
 
+      // prep the commmand encoder
       const commandEncoder = this.api.device.createCommandEncoder();
+
+      // copy the contents of the updated camera buffer into the
+      // view parameters uniform buffer
       commandEncoder.copyBufferToBuffer(
         cameraBuffer,
         0,
