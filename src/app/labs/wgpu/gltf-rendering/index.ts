@@ -11,7 +11,10 @@ import shader from "./shaders/shader.wgsl";
 
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
-const MODEL_FILE_PATH = "/assets/avocado.glb";
+enum Model {
+  AVOCADO = "/assets/avocado.glb",
+  ENGINE = "/assets/2CylinderEngine.glb",
+}
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
 
@@ -27,6 +30,8 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     this.camera = new Camera({
       canvas: this.canvas,
       initialPosition: [0, 0, 0.25],
+      nearPlane: 0.0001,
+      farPlane: 500,
     });
   }
 
@@ -134,7 +139,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
-    const res = await fetch(MODEL_FILE_PATH);
+    const res = await fetch(Model.AVOCADO);
     const meshBuffer = await res.arrayBuffer();
     const meshes = uploadGlb(meshBuffer, this.api.device);
 

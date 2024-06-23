@@ -8,6 +8,8 @@ import { WebGpuApi } from "../types";
 interface CameraProperties {
   canvas: HTMLCanvasElement;
   initialPosition?: [number, number, number];
+  nearPlane?: number;
+  farPlane?: number;
 }
 
 export class Camera {
@@ -28,6 +30,8 @@ export class Camera {
     const height = this.canvas.height;
 
     const initialPosition = properties.initialPosition ?? [0, 0, 3];
+    const nearPlane = properties.nearPlane ?? 0.1;
+    const farPlane = properties.farPlane ?? 100;
 
     // Create an Arcball camera and view projection matrix
     const camera = new ArcballCamera(
@@ -43,8 +47,8 @@ export class Camera {
       mat4.create(),
       (50 * Math.PI) / 180.0,
       width / height,
-      0.1,
-      100,
+      nearPlane,
+      farPlane,
     );
 
     // Matrix which will store the computed projection * view matrix
