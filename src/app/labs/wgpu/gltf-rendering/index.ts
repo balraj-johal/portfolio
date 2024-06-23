@@ -29,9 +29,9 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
 
     this.camera = new Camera({
       canvas: this.canvas,
-      initialPosition: [0, 0, 0.25],
-      nearPlane: 0.0001,
-      farPlane: 500,
+      initialPosition: [0, 0, 500],
+      nearPlane: 0.1,
+      farPlane: 10500,
     });
   }
 
@@ -139,7 +139,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
-    const res = await fetch(Model.AVOCADO);
+    const res = await fetch(Model.ENGINE);
     const meshBuffer = await res.arrayBuffer();
     const meshes = uploadGlb(meshBuffer, this.api.device);
 
