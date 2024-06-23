@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,14 +21,15 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
+    },
+    "types": ["@webgpu/types"]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "ts-node": {
+    "esm": true,
+    "compilerOptions": {
+      "module": "nodenext"
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],  
-  "ts-node": {
-      "esm": true,
-      "compilerOptions": {
-        "module": "nodenext",
-      }
-    },
   "exclude": ["node_modules"]
 }

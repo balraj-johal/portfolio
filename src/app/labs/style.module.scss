@@ -1,0 +1,14 @@
+@use "../../theme/layout" as layout;
+
+.BlogPostsWrapper {
+  @include layout.page-container();
+  padding-top: 4rem;
+  row-gap: 2rem;
+
+  h1 {
+    width: calc(100vw - 2 * var(--container-padding));
+    @media (min-width: 768px) {
+      width: 47.5vw;
+    }
+  }
+}
