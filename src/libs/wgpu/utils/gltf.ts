@@ -1,3 +1,4 @@
+import { GltfJsonHeader } from "../types/gltf";
 import { GLTFComponentType, GLTFType } from "../types";
 
 const BINARY_GLTF_MAGIC = 0x46546c67;
@@ -38,7 +39,7 @@ export function readGlbJsonHeader(mappedBuffer: ArrayBuffer) {
       new TextDecoder("utf-8").decode(
         new Uint8Array(mappedBuffer, byteOffset, chunkLength),
       ),
-    ),
+    ) as GltfJsonHeader,
     byteOffset: byteOffset,
     chunkLength: chunkLength,
   };

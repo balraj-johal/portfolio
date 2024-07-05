@@ -61,8 +61,11 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     binaryHeader[0],
   );
 
+  console.log(header.scenes);
+
   // prepare all the buffer views for uploading to the GPU
   const preparedBufferViews: GLTFBufferView[] = [];
+  if (!header.bufferViews) throw new Error("No buffer views in gltf");
   for (const gltfBufferView of header.bufferViews) {
     preparedBufferViews.push(new GLTFBufferView(binaryChunk, gltfBufferView));
   }
@@ -74,12 +77,14 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
 
   const accessors: GLTFAccessor[] = [];
   // TODO: handle errors if the GLB has an accessor that isn't supported in this engine
+  if (!header.accessors) throw new Error("No accessors in gltf");
   for (const gltfAccessor of header.accessors) {
     const accessorBufferView = preparedBufferViews[gltfAccessor.bufferView];
     accessors.push(new GLTFAccessor(accessorBufferView, gltfAccessor));
   }
 
   const meshes: GLTFMesh[] = [];
+  if (!header.meshes) throw new Error("No meshes in gltf");
   for (const mesh of header.meshes) {
     const primitives: GLTFPrimitive[] = [];
     for (const primitive of mesh.primitives) {
