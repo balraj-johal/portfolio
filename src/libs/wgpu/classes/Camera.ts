@@ -18,14 +18,16 @@ export class Camera {
 
   private cameraProjection = mat4.create();
   private cameraProjectionView = mat4.create();
+  private properties: CameraProperties;
 
   constructor(properties: CameraProperties) {
     this.canvas = properties.canvas;
+    this.properties = properties;
 
-    this.camera = this.buildCamera(properties);
+    this.build(properties);
   }
 
-  private buildCamera(properties: CameraProperties) {
+  private build(properties: CameraProperties) {
     const width = this.canvas.width;
     const height = this.canvas.height;
 
@@ -72,7 +74,14 @@ export class Camera {
     };
     controller.registerForCanvas(this.canvas);
 
-    return camera;
+    this.camera = camera;
+  }
+
+  reproject() {
+    // TODO: this is really laggy and shit.
+    // I reckon I need to learn how to build a camera controller from scratch,
+    // and give that new version a native reprojection function.
+    this.build(this.properties);
   }
 
   createBuffer(api: WebGpuApi) {

@@ -156,6 +156,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       // on resize
       if (this.hasResized()) {
         this.setupCanvas();
+        this.camera.reproject();
 
         // destroy and recreate depth/stencil texture
         this.depthStencilTexture?.destroy();
