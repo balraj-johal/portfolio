@@ -34,6 +34,7 @@ const flattenSceneTreeTransforms = (
     mat4.multiply(nodeFinalMatrix, nodeFinalMatrix, nodeUnflattenedMatrix);
   }
 
+  // lookup mesh class with the node index
   const targetMesh = node.mesh ? meshes[node.mesh] : undefined;
 
   // add node to flattened array
@@ -45,19 +46,21 @@ const flattenSceneTreeTransforms = (
     }),
   );
 
-  // end recursion
-  if (!node.children) return;
-  for (const childNodeIndex of node.children) {
-    const childNode = getNodeFromHeader(jsonHeader, childNodeIndex);
-    // console.log("recursing on node index", childNodeIndex);
-    // flattenSceneTreeTransforms(childNode, nodeFinalMatrix);
-    flattenSceneTreeTransforms(
-      jsonHeader,
-      meshes,
-      flattenedNodes,
-      childNode,
-      nodeFinalMatrix,
-    );
+  // continue recursion if node has children
+  if (node.children) {
+    for (const childNodeIndex of node.children) {
+      const childNode = getNodeFromHeader(jsonHeader, childNodeIndex);
+      flattenSceneTreeTransforms(
+        jsonHeader,
+        meshes,
+        flattenedNodes,
+        childNode,
+        nodeFinalMatrix,
+      );
+    }
+  } else {
+    // end recursion
+    return;
   }
 };
 
@@ -132,7 +135,6 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
   const flattenedTreeNodes: GLTFNode[] = [];
   const defaultSceneIndex = jsonHeader.scene || 0;
   const defaultSceneData = jsonHeader.scenes[defaultSceneIndex];
-  // console.log(jsonHeader.scenes);
 
   for (const sceneRootNodeIndex of defaultSceneData.nodes) {
     const sceneRootNode = getNodeFromHeader(jsonHeader, sceneRootNodeIndex);
@@ -145,8 +147,5 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     );
   }
 
-  console.log("flattened tree nodes", flattenedTreeNodes);
-
-  // create scene class
   return new GLTFScene({ flattenedNodes: flattenedTreeNodes });
 }

@@ -170,25 +170,6 @@ export default class WebGPUExploration extends WebGPUInstance {
     };
   }
 
-  handleWindowResize() {
-    this.depthStencilTexture = this.createDepthStencilTexture();
-  }
-
-  private createOutputRenderTarget() {
-    if (!this.api) {
-      throw new Error("No WebGPU API ready");
-    }
-
-    return this.api.device.createTexture({
-      size: [
-        this.currentCanvasDimensions.width,
-        this.currentCanvasDimensions.height,
-      ],
-      format: this.preferredFormat,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
-    });
-  }
-
   async start() {
     await this.initializeContext({
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
@@ -255,9 +236,8 @@ export default class WebGPUExploration extends WebGPUInstance {
         });
       }
 
-      const firstColorAttachment = [
-        ...renderPassDescription.colorAttachments,
-      ][0];
+      const colorAttachments = [...renderPassDescription.colorAttachments];
+      const firstColorAttachment = colorAttachments[0];
 
       if (firstColorAttachment != null) {
         firstColorAttachment.view = this.api.context

@@ -114,13 +114,6 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     };
   }
 
-  /** On resize, each texture needs to be destroyed and recreated. */
-  handleWindowResize() {
-    this.depthStencilTexture = this.createDepthStencilTexture();
-
-    // TODO: reproject camera?
-  }
-
   async start() {
     await this.initializeContext({ usage: GPUTextureUsage.RENDER_ATTACHMENT });
     if (!this.api) throw new Error("No WebGPU API ready");
@@ -180,9 +173,8 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       //
       // The colour attachment itself is updated, so the render pass
       // description can be reused rather than recreated each time for no reason
-      const firstColorAttachment = [
-        ...renderPassDescription.colorAttachments,
-      ][0];
+      const colorAttachments = [...renderPassDescription.colorAttachments];
+      const firstColorAttachment = colorAttachments[0];
       if (firstColorAttachment != null) {
         firstColorAttachment.view = this.api.context
           .getCurrentTexture()
