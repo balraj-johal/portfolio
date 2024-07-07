@@ -40,12 +40,14 @@ export class GLTFPrimitive {
     depthFormat,
     colorFormat,
     uniformsBindGroupLayout,
+    nodeParametersBindGroupLayout,
   }: {
     api: WebGpuApi;
     shaderModule: GPUShaderModule;
     depthFormat: GPUTextureFormat;
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
+    nodeParametersBindGroupLayout: GPUBindGroupLayout;
   }) {
     // defines the properties of the positions attribute
 
@@ -91,7 +93,10 @@ export class GLTFPrimitive {
     }
 
     const renderPipelineLayout = api.device.createPipelineLayout({
-      bindGroupLayouts: [uniformsBindGroupLayout],
+      bindGroupLayouts: [
+        uniformsBindGroupLayout,
+        nodeParametersBindGroupLayout,
+      ],
     });
 
     this.renderPipeline = await api.device.createRenderPipelineAsync({
@@ -109,19 +114,12 @@ export class GLTFPrimitive {
     return this.renderPipeline;
   }
 
-  render({
-    renderPassEncoder,
-    uniformsBindGroup,
-  }: {
-    renderPassEncoder: GPURenderPassEncoder;
-    uniformsBindGroup: GPUBindGroup;
-  }) {
+  render({ renderPassEncoder }: { renderPassEncoder: GPURenderPassEncoder }) {
     if (!this.renderPipeline) {
       throw new Error("No render pipline to render from GLTFPrimitive");
     }
 
     renderPassEncoder.setPipeline(this.renderPipeline);
-    renderPassEncoder.setBindGroup(0, uniformsBindGroup);
 
     if (!this.positionsAccessor.bufferView.gpuBuffer) {
       throw new Error("No gpu buffer in positions accessor buffer view");

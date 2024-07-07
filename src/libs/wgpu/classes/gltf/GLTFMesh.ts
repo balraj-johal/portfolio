@@ -1,22 +1,21 @@
 import { WebGpuApi } from "../../types";
 import { GLTFPrimitive } from "./GLTFPrimitive";
 
+type Properties = {
+  name?: string;
+  primitives: GLTFPrimitive[];
+};
+
 /**
  * @description A GLTFMesh describes a single mesh in a gltf file.
  *              This mesh can have multiple primitives ("sub meshes").
  *
  * NOTE: only supports single embedded binary */
 export class GLTFMesh {
-  name?: string;
-  primitives: GLTFPrimitive[] = [];
+  private readonly name?: string;
+  private readonly primitives: GLTFPrimitive[] = [];
 
-  constructor({
-    name,
-    primitives,
-  }: {
-    name?: string;
-    primitives: GLTFPrimitive[];
-  }) {
+  constructor({ name, primitives }: Properties) {
     this.name = name;
     this.primitives = primitives;
   }
@@ -27,6 +26,7 @@ export class GLTFMesh {
     depthFormat: GPUTextureFormat;
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
+    nodeParametersBindGroupLayout: GPUBindGroupLayout;
   }): Promise<void> {
     return new Promise(async (resolve, reject) => {
       for (const primitive of this.primitives) {
@@ -40,10 +40,7 @@ export class GLTFMesh {
     });
   }
 
-  render(config: {
-    renderPassEncoder: GPURenderPassEncoder;
-    uniformsBindGroup: GPUBindGroup;
-  }) {
+  render(config: { renderPassEncoder: GPURenderPassEncoder }) {
     for (const primitive of this.primitives) {
       primitive.render(config);
     }

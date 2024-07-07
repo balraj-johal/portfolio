@@ -7,7 +7,7 @@ import {
   WebGPUInstanceProperties,
 } from "@/libs/wgpu";
 
-import shader from "./shaders/shader.wgsl";
+import shader from "./shaders/gltf-default.wgsl";
 
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
@@ -75,7 +75,6 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     });
   }
 
-  /** TODO: explain */
   private createRenderPassDescription(
     depthStencilTexture: GPUTexture,
   ): GPURenderPassDescriptor {
@@ -118,6 +117,8 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
   /** On resize, each texture needs to be destroyed and recreated. */
   handleWindowResize() {
     this.depthStencilTexture = this.createDepthStencilTexture();
+
+    // TODO: reproject camera?
   }
 
   async start() {
@@ -139,28 +140,24 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
+    // load and process model
     const res = await fetch(Model.ENGINE);
-    const meshBuffer = await res.arrayBuffer();
-    const meshes = uploadGlb(meshBuffer, this.api.device);
+    const modelBuffer = await res.arrayBuffer();
+    const scene = uploadGlb(modelBuffer, this.api.device);
 
-    const buildMeshRenderPipelinePromises: Promise<void>[] = [];
-    for (const mesh of meshes) {
-      buildMeshRenderPipelinePromises.push(
-        mesh.buildRenderPipeline({
-          api: this.api,
-          shaderModule: this.shaderModule,
-          colorFormat: this.preferredFormat,
-          depthFormat: DEPTH_TEXTURE_FORMAT,
-          uniformsBindGroupLayout: viewParameterBindGroupLayout,
-        }),
-      );
-    }
-    await Promise.all(buildMeshRenderPipelinePromises);
+    // build model render pipeline
+    await scene.buildRenderPipelines({
+      api: this.api,
+      shaderModule: this.shaderModule,
+      colorFormat: this.preferredFormat,
+      depthFormat: DEPTH_TEXTURE_FORMAT,
+      uniformsBindGroupLayout: viewParameterBindGroupLayout,
+    });
 
     const render = () => {
       if (!this.api) throw new Error("No WebGPU API ready");
 
-      // update camera buffers  to passas uniforms
+      // update camera buffers to pass as uniforms
       const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
 
       // on resize
@@ -175,9 +172,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
         );
 
         // reconfigure webgpu context with correct size
-        this.configureContext({
-          usage: GPUTextureUsage.RENDER_ATTACHMENT,
-        });
+        this.configureContext({ usage: GPUTextureUsage.RENDER_ATTACHMENT });
       }
 
       // Update the main colour attachment's contents with the next
@@ -210,12 +205,10 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       // start render pass
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
 
-      for (const mesh of meshes) {
-        mesh.render({
-          renderPassEncoder: renderPass,
-          uniformsBindGroup: viewParameterBindGroup,
-        });
-      }
+      scene.render({
+        renderPassEncoder: renderPass,
+        uniformsBindGroup: viewParameterBindGroup,
+      });
 
       // end render pass
       renderPass.end();

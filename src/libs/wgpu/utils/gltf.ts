@@ -35,13 +35,13 @@ export function readGlbJsonHeader(mappedBuffer: ArrayBuffer) {
   const chunkLength = jsonHeader[3];
 
   return {
-    header: JSON.parse(
+    jsonHeader: JSON.parse(
       new TextDecoder("utf-8").decode(
         new Uint8Array(mappedBuffer, byteOffset, chunkLength),
       ),
     ) as GltfJsonHeader,
-    byteOffset: byteOffset,
-    chunkLength: chunkLength,
+    jsonByteOffset: byteOffset,
+    jsonChunkLength: chunkLength,
   };
 }
 

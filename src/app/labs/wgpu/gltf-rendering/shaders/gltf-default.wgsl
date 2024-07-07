@@ -7,19 +7,28 @@ struct VertexOutput {
   @location(0) world_position: vec3<f32>
 }
 
-// //TODO: maybe better named Uniform Buffer Layout? or Bind Group Layout?
 struct ViewParameters {
   view_projection: mat4x4<f32>
+}
+
+struct NodeParameters {
+  transform: mat4x4<f32>
 }
 
 @group(0) @binding(0)
 var<uniform> view_parameters: ViewParameters;
 
+@group(1) @binding(0)
+var<uniform> node_parameters: NodeParameters;
+
 @vertex
 fn vertex_main(vert: VertexInput) -> VertexOutput {
   var out: VertexOutput;
 
-  out.position = view_parameters.view_projection * vec4<f32>(vert.position, 1.0);
+  out.position =
+      view_parameters.view_projection *
+      node_parameters.transform *
+      vec4<f32>(vert.position, 1.0);
   out.world_position = vert.position.xyz;
 
   return out;
