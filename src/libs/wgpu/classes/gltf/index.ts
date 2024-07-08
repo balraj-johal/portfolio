@@ -25,9 +25,6 @@ const flattenSceneTreeTransforms = (
   node: GltfNode,
   parentTransform: mat4,
 ) => {
-  // console.log("node", node);
-
-  // TODO: flatten this node's transform
   const nodeFinalMatrix = mat4.clone(parentTransform);
   const nodeUnflattenedMatrix = getNodeTransformMatrix(node);
   if (nodeUnflattenedMatrix) {
@@ -35,7 +32,7 @@ const flattenSceneTreeTransforms = (
   }
 
   // lookup mesh class with the node index
-  const targetMesh = node.mesh ? meshes[node.mesh] : undefined;
+  const targetMesh = node.mesh !== undefined ? meshes[node.mesh] : undefined;
 
   // add node to flattened array
   flattenedNodes.push(
