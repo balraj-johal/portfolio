@@ -1,5 +1,10 @@
 import { GltfJsonHeader } from "../types/gltf";
-import { GLTFComponentType, GLTFType } from "../types";
+import {
+  GLTFComponentType,
+  GLTFTextureFilter,
+  GLTFTextureWrap,
+  GLTFType,
+} from "../types";
 
 const BINARY_GLTF_MAGIC = 0x46546c67;
 
@@ -169,6 +174,43 @@ export function gltfVertexType(
       return (typeString + "x4") as GPUVertexFormat;
     default:
       throw Error(`Invalid number of components for gltfType: ${type}`);
+  }
+}
+
+export function gltfTextureFilterMode(filter: GLTFTextureFilter) {
+  switch (filter) {
+    case GLTFTextureFilter.NEAREST_MIPMAP_NEAREST:
+    case GLTFTextureFilter.NEAREST_MIPMAP_LINEAR:
+    case GLTFTextureFilter.NEAREST:
+      return "nearest" as GPUFilterMode;
+    case GLTFTextureFilter.LINEAR_MIPMAP_NEAREST:
+    case GLTFTextureFilter.LINEAR_MIPMAP_LINEAR:
+    case GLTFTextureFilter.LINEAR:
+      return "linear" as GPUFilterMode;
+  }
+}
+
+export function gltfTextureMipMapMode(filter: GLTFTextureFilter) {
+  switch (filter) {
+    case GLTFTextureFilter.NEAREST_MIPMAP_NEAREST:
+    case GLTFTextureFilter.LINEAR_MIPMAP_NEAREST:
+    case GLTFTextureFilter.NEAREST:
+      return "nearest" as GPUMipmapFilterMode;
+    case GLTFTextureFilter.LINEAR_MIPMAP_LINEAR:
+    case GLTFTextureFilter.NEAREST_MIPMAP_LINEAR:
+    case GLTFTextureFilter.LINEAR:
+      return "linear" as GPUMipmapFilterMode;
+  }
+}
+
+export function gltfAddressMode(mode: GLTFTextureWrap) {
+  switch (mode) {
+    case GLTFTextureWrap.REPEAT:
+      return "repeat" as GPUAddressMode;
+    case GLTFTextureWrap.CLAMP_TO_EDGE:
+      return "clamp-to-edge" as GPUAddressMode;
+    case GLTFTextureWrap.MIRRORED_REPEAT:
+      return "mirror-repeat" as GPUAddressMode;
   }
 }
 
