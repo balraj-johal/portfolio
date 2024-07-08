@@ -2,7 +2,7 @@
 
 import { ReadonlyVec3, mat4 } from "gl-matrix";
 
-import { GLTFFilterType, GLTFWrapType } from ".";
+import { GLTFTextureFilter, GLTFTextureWrap } from ".";
 
 export enum SupportedMimeType {
   JPEG = "image/jpeg",
@@ -44,10 +44,10 @@ export type GltfImageType = {
 };
 
 export type GltfSamplerType = {
-  magFilter: GLTFFilterType;
-  minFilter: GLTFFilterType;
-  wrapS: GLTFWrapType;
-  wrapT: GLTFWrapType;
+  magFilter: GLTFTextureFilter;
+  minFilter: GLTFTextureFilter;
+  wrapS: GLTFTextureWrap;
+  wrapT: GLTFTextureWrap;
 };
 
 export type GltfScene = {
