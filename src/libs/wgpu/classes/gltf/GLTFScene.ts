@@ -28,7 +28,6 @@ export class GLTFScene {
         try {
           if (node.hasMesh) {
             await node.buildRenderPipeline(config);
-            // console.log("node", node, " has had its render pipeline built.");
           }
         } catch (error) {
           reject(error);
