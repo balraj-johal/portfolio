@@ -24,6 +24,9 @@ export enum GLTFComponentType {
   DOUBLE = 5130,
 }
 
+export type GLTFFilterType = number;
+export type GLTFWrapType = number;
+
 export enum GLTFType {
   SCALAR = 0,
   VEC2 = 1,

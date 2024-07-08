@@ -2,6 +2,17 @@
 
 import { ReadonlyVec3, mat4 } from "gl-matrix";
 
+import { GLTFFilterType, GLTFWrapType } from ".";
+
+export enum SupportedMimeType {
+  JPEG = "image/jpeg",
+  PNG = "image/png",
+  WEBP = "image/webp",
+  // TODO: confirm support here
+  // seems ok: https://github.com/KhronosGroup/KTX-Specification/issues/18
+  KTX2 = "image/ktx2",
+}
+
 /** Simple skeleton type that describes which properties can be expected
  *  on a gltf header. */
 export interface GltfJsonHeader {
@@ -11,12 +22,33 @@ export interface GltfJsonHeader {
   buffers?: Record<string, any>[];
   cameras?: Record<string, any>[];
   materials?: Record<string, any>[];
+  textures?: GltfTextureType[];
+  images?: any[];
+  samplers?: GltfSamplerType[];
   meshes?: Record<string, any>[];
   nodes?: GltfNode[];
   /** Default scene */
   scene?: number;
   scenes?: GltfScene[];
 }
+
+export type GltfTextureType = {
+  source: number;
+  sampler: number;
+};
+
+/** NOTE: does not support URI's */
+export type GltfImageType = {
+  bufferView: number;
+  mimeType: SupportedMimeType;
+};
+
+export type GltfSamplerType = {
+  magFilter: GLTFFilterType;
+  minFilter: GLTFFilterType;
+  wrapS: GLTFWrapType;
+  wrapT: GLTFWrapType;
+};
 
 export type GltfScene = {
   nodes: number[];

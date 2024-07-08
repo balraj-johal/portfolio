@@ -14,6 +14,7 @@ const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 enum Model {
   AVOCADO = "/assets/avocado.glb",
   ENGINE = "/assets/2CylinderEngine.glb",
+  DUCKY = "/assets/ducky.glb",
 }
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
@@ -29,9 +30,9 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
 
     this.camera = new Camera({
       canvas: this.canvas,
-      initialPosition: [0, 0, 500],
-      nearPlane: 0.1,
-      farPlane: 10500,
+      initialPosition: [0, 0, 5],
+      nearPlane: 0.01,
+      farPlane: 10,
     });
   }
 
@@ -134,7 +135,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     });
 
     // load and process model
-    const res = await fetch(Model.ENGINE);
+    const res = await fetch(Model.DUCKY);
     const modelBuffer = await res.arrayBuffer();
     const scene = uploadGlb(modelBuffer, this.api.device);
 

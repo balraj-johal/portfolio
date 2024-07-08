@@ -2,10 +2,13 @@ import { mat4 } from "gl-matrix";
 
 import { readGlbJsonHeader, readGlbBinaryHeader } from "../../utils/gltf";
 import { GltfJsonHeader, GltfNode } from "../../types/gltf";
+import { GLTFTexture } from "./GLTFTexture";
 import { GLTFScene } from "./GLTFScene";
+import { GLTFSampler } from "./GLTFSampler";
 import { GLTFPrimitive, buildPrimitiveClass } from "./GLTFPrimitive";
 import { GLTFNode, getNodeTransformMatrix } from "./GLTFNode";
 import { GLTFMesh } from "./GLTFMesh";
+import { GLTFImage } from "./GLTFImage";
 import { GLTFBufferView } from "./GLTFBufferView";
 import { GLTFBuffer } from "./GLTFBuffer";
 import { GLTFAccessor } from "./GLTFAccessor";
@@ -66,6 +69,8 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
   const { jsonHeader, jsonByteOffset, jsonChunkLength } =
     readGlbJsonHeader(buffer);
 
+  console.log(jsonHeader);
+
   // parse the .glb's binary header
   const binaryHeader = readGlbBinaryHeader(
     buffer,
@@ -80,6 +85,32 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     binaryHeader[0],
   );
 
+  // prepare all the texture samplers
+  const samplers: GLTFSampler[] = [];
+  if (jsonHeader.samplers) {
+    for (const sampler of jsonHeader.samplers) {
+      samplers.push(new GLTFSampler(sampler));
+    }
+  }
+
+  // prepare all the gltf's images
+  const images: GLTFImage[] = [];
+  if (jsonHeader.images) {
+    for (const image of jsonHeader.images) {
+      images.push(new GLTFImage(image));
+    }
+  }
+
+  // prepare all the gltf's textures
+  const textures: GLTFTexture[] = [];
+  if (jsonHeader.textures) {
+    for (const { source, sampler } of jsonHeader.textures) {
+      textures.push(
+        new GLTFTexture({ image: images[source], sampler: samplers[sampler] }),
+      );
+    }
+  }
+
   // prepare all the buffer views for uploading to the GPU
   const preparedBufferViews: GLTFBufferView[] = [];
   if (!jsonHeader.bufferViews) throw new Error("No buffer views in gltf");
@@ -88,7 +119,7 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     preparedBufferViews.push(new GLTFBufferView(binaryChunk, gltfBufferView));
   }
 
-  // upload prepares views to the GPU
+  // upload prepared views to the GPU
   for (const preparedBufferView of preparedBufferViews) {
     if (preparedBufferView.needsUpload) preparedBufferView.upload(device);
   }
