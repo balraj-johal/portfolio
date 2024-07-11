@@ -2,7 +2,7 @@ import { GLTFComponentType, GLTFType } from "@/libs/wgpu/types";
 
 import {
   getGltfTypeSize,
-  gltfVertexType as getGltfVertexType,
+  getGltfVertexType as getGltfVertexType,
   parseGltfType,
 } from "../../utils/gltf";
 import { GLTFBufferView } from "./GLTFBufferView";

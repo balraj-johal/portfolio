@@ -136,7 +136,7 @@ export function gltfTypeToNumber(type: GLTFType) {
 
 // Note: only returns non-normalized type names,
 // so byte/ubyte = sint8/uint8, not snorm8/unorm8, same for ushort
-export function gltfVertexType(
+export function getGltfVertexType(
   componentType: GLTFComponentType,
   type: GLTFType,
 ): GPUVertexFormat | GPUIndexFormat {
@@ -177,40 +177,44 @@ export function gltfVertexType(
   }
 }
 
-export function gltfTextureFilterMode(filter: GLTFTextureFilter) {
+export function getGltfTextureFilterMode(
+  filter: GLTFTextureFilter,
+): GPUFilterMode {
   switch (filter) {
     case GLTFTextureFilter.NEAREST_MIPMAP_NEAREST:
     case GLTFTextureFilter.NEAREST_MIPMAP_LINEAR:
     case GLTFTextureFilter.NEAREST:
-      return "nearest" as GPUFilterMode;
+      return "nearest";
     case GLTFTextureFilter.LINEAR_MIPMAP_NEAREST:
     case GLTFTextureFilter.LINEAR_MIPMAP_LINEAR:
     case GLTFTextureFilter.LINEAR:
-      return "linear" as GPUFilterMode;
+      return "linear";
   }
 }
 
-export function gltfTextureMipMapMode(filter: GLTFTextureFilter) {
+export function getGltfTextureMipMapMode(
+  filter: GLTFTextureFilter,
+): GPUMipmapFilterMode {
   switch (filter) {
     case GLTFTextureFilter.NEAREST_MIPMAP_NEAREST:
     case GLTFTextureFilter.LINEAR_MIPMAP_NEAREST:
     case GLTFTextureFilter.NEAREST:
-      return "nearest" as GPUMipmapFilterMode;
+      return "nearest";
     case GLTFTextureFilter.LINEAR_MIPMAP_LINEAR:
     case GLTFTextureFilter.NEAREST_MIPMAP_LINEAR:
     case GLTFTextureFilter.LINEAR:
-      return "linear" as GPUMipmapFilterMode;
+      return "linear";
   }
 }
 
-export function gltfAddressMode(mode: GLTFTextureWrap) {
+export function getGltfAddressMode(mode: GLTFTextureWrap): GPUAddressMode {
   switch (mode) {
     case GLTFTextureWrap.REPEAT:
-      return "repeat" as GPUAddressMode;
+      return "repeat";
     case GLTFTextureWrap.CLAMP_TO_EDGE:
-      return "clamp-to-edge" as GPUAddressMode;
+      return "clamp-to-edge";
     case GLTFTextureWrap.MIRRORED_REPEAT:
-      return "mirror-repeat" as GPUAddressMode;
+      return "mirror-repeat";
   }
 }
 

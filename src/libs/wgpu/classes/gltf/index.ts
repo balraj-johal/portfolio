@@ -6,9 +6,10 @@ import { GLTFTexture } from "./GLTFTexture";
 import { GLTFScene } from "./GLTFScene";
 import { GLTFSampler } from "./GLTFSampler";
 import { GLTFPrimitive, buildPrimitiveClass } from "./GLTFPrimitive";
+import { GltfPbrMaterial } from "./GltfPbrMaterial";
 import { GLTFNode, getNodeTransformMatrix } from "./GLTFNode";
 import { GLTFMesh } from "./GLTFMesh";
-import { GLTFImage } from "./GLTFImage";
+import { GLTFImage, ImageUsage } from "./GLTFImage";
 import { GLTFBufferView } from "./GLTFBufferView";
 import { GLTFBuffer } from "./GLTFBuffer";
 import { GLTFAccessor } from "./GLTFAccessor";
@@ -85,32 +86,6 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     binaryHeader[0],
   );
 
-  // prepare all the texture samplers
-  const samplers: GLTFSampler[] = [];
-  if (jsonHeader.samplers) {
-    for (const sampler of jsonHeader.samplers) {
-      samplers.push(new GLTFSampler(sampler));
-    }
-  }
-
-  // prepare all the gltf's images
-  const images: GLTFImage[] = [];
-  if (jsonHeader.images) {
-    for (const image of jsonHeader.images) {
-      images.push(new GLTFImage(image));
-    }
-  }
-
-  // prepare all the gltf's textures
-  const textures: GLTFTexture[] = [];
-  if (jsonHeader.textures) {
-    for (const { source, sampler } of jsonHeader.textures) {
-      textures.push(
-        new GLTFTexture({ image: images[source], sampler: samplers[sampler] }),
-      );
-    }
-  }
-
   // prepare all the buffer views for uploading to the GPU
   const preparedBufferViews: GLTFBufferView[] = [];
   if (!jsonHeader.bufferViews) throw new Error("No buffer views in gltf");
@@ -155,6 +130,55 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
   for (const bufferView of preparedBufferViews) {
     if (bufferView.needsUpload) {
       bufferView.upload(device);
+    }
+  }
+  // prepare all the texture samplers
+  const samplers: GLTFSampler[] = [];
+  if (jsonHeader.samplers) {
+    for (const sampler of jsonHeader.samplers) {
+      samplers.push(new GLTFSampler(sampler));
+    }
+  }
+
+  // prepare all the gltf's images
+  const images: GLTFImage[] = [];
+  if (jsonHeader.images) {
+    for (const image of jsonHeader.images) {
+      images.push(
+        new GLTFImage({
+          image,
+          bufferView: preparedBufferViews[image.bufferView],
+          usage: ImageUsage.BASE_COLOR,
+        }),
+      );
+    }
+  }
+
+  // prepare all the gltf's textures
+  const textures: GLTFTexture[] = [];
+  if (jsonHeader.textures) {
+    for (const { source, sampler } of jsonHeader.textures) {
+      const preparedSampler = (() => {
+        if (sampler) {
+          return samplers[sampler];
+        } else {
+          const defaultSampler = new GLTFSampler();
+          samplers.push(defaultSampler);
+          return defaultSampler;
+        }
+      })();
+
+      textures.push(
+        new GLTFTexture({ image: images[source], sampler: preparedSampler }),
+      );
+    }
+  }
+
+  // prepare all the gltf's materials
+  const materials: GltfPbrMaterial[] = [];
+  if (jsonHeader.materials) {
+    for (const material of jsonHeader.materials) {
+      materials.push(new GltfPbrMaterial(material));
     }
   }
 
