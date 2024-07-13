@@ -1,15 +1,21 @@
 import { mat4 } from "gl-matrix";
 
 import { readGlbJsonHeader, readGlbBinaryHeader } from "../../utils/gltf";
-import { GltfJsonHeader, GltfNode } from "../../types/gltf";
-import { GLTFTexture } from "./GLTFTexture";
+import {
+  GltfJsonHeader,
+  GltfNode,
+  GltfTextureList,
+  MaterialTextureConfiguration,
+} from "../../types/gltf";
+import { WebGpuApi } from "../../types";
+import { GLTFTexture, TEXTURE_USAGE_FROM_NAME } from "./GLTFTexture";
 import { GLTFScene } from "./GLTFScene";
 import { GLTFSampler } from "./GLTFSampler";
 import { GLTFPrimitive, buildPrimitiveClass } from "./GLTFPrimitive";
-import { GltfPbrMaterial } from "./GltfPbrMaterial";
+import { GltfPbrMaterial, SupportedTexture } from "./GltfPbrMaterial";
 import { GLTFNode, getNodeTransformMatrix } from "./GLTFNode";
 import { GLTFMesh } from "./GLTFMesh";
-import { GLTFImage, ImageUsage } from "./GLTFImage";
+import { GLTFImage } from "./GLTFImage";
 import { GLTFBufferView } from "./GLTFBufferView";
 import { GLTFBuffer } from "./GLTFBuffer";
 import { GLTFAccessor } from "./GLTFAccessor";
@@ -65,12 +71,14 @@ const flattenSceneTreeTransforms = (
   }
 };
 
-export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
+export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
+  const { device } = api;
+
   // parse the .glb's json header
   const { jsonHeader, jsonByteOffset, jsonChunkLength } =
     readGlbJsonHeader(buffer);
 
-  console.log(jsonHeader);
+  console.log("jsonHeader", jsonHeader);
 
   // parse the .glb's binary header
   const binaryHeader = readGlbBinaryHeader(
@@ -148,7 +156,6 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
         new GLTFImage({
           image,
           bufferView: preparedBufferViews[image.bufferView],
-          usage: ImageUsage.BASE_COLOR,
         }),
       );
     }
@@ -174,11 +181,51 @@ export function uploadGlb(buffer: ArrayBuffer, device: GPUDevice) {
     }
   }
 
+  // create GPU samplers
+  for (const sampler of samplers) {
+    sampler.create(api);
+  }
+
   // prepare all the gltf's materials
   const materials: GltfPbrMaterial[] = [];
   if (jsonHeader.materials) {
     for (const material of jsonHeader.materials) {
-      materials.push(new GltfPbrMaterial(material));
+      const getMaterialTextureEntries = () => {
+        const pbrMetallicRoughnessEntries = Object.entries(
+          material.pbrMetallicRoughness,
+        );
+        const baseEntries = Object.entries(material);
+        // @ts-expect-error TODO: fix fucky types here
+        const entries = [...baseEntries].concat(pbrMetallicRoughnessEntries);
+
+        return entries.filter(([key]) => key.includes("Texture")) as [
+          string,
+          MaterialTextureConfiguration,
+        ][];
+      };
+
+      const getMaterialTextureList = (
+        entries: [string, MaterialTextureConfiguration][],
+      ): GltfTextureList => {
+        return [...entries].map(([name, config]) => {
+          const preparedClass = textures[config.index];
+          return [name, preparedClass];
+        });
+      };
+
+      const setMaterialTextureImageUsages = (textureList: GltfTextureList) => {
+        for (const [name, preparedTexture] of textureList) {
+          preparedTexture.setImageUsage(
+            TEXTURE_USAGE_FROM_NAME[name as SupportedTexture],
+          );
+        }
+      };
+
+      const entries = getMaterialTextureEntries();
+      const textureList = getMaterialTextureList(entries);
+      setMaterialTextureImageUsages(textureList);
+
+      materials.push(new GltfPbrMaterial(material, textureList));
     }
   }
 

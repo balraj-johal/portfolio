@@ -2,6 +2,7 @@
 
 import { ReadonlyVec3, mat4 } from "gl-matrix";
 
+import { GLTFTexture } from "../classes/gltf/GLTFTexture";
 import { GLTFTextureFilter, GLTFTextureWrap } from ".";
 
 export enum SupportedMimeType {
@@ -21,7 +22,7 @@ export interface GltfJsonHeader {
   bufferViews?: Record<string, any>[];
   buffers?: Record<string, any>[];
   cameras?: Record<string, any>[];
-  materials?: Record<string, any>[];
+  materials?: GltfMaterialHeader[];
   textures?: GltfTextureType[];
   images?: any[];
   samplers?: GltfSamplerType[];
@@ -31,6 +32,35 @@ export interface GltfJsonHeader {
   scene?: number;
   scenes?: GltfScene[];
 }
+
+export type MaterialTextureConfiguration = {
+  index: number;
+  texCoord?: number;
+};
+
+export type Array3 = readonly [number, number, number];
+export type Array4 = readonly [number, number, number, number];
+
+export type GltfMaterialHeader = {
+  name?: string;
+  emissiveFactor?: Array3;
+  emissiveTexture?: MaterialTextureConfiguration;
+  occlusionTexture?: MaterialTextureConfiguration & {
+    strength: number;
+  };
+  normalTexture?: MaterialTextureConfiguration & {
+    scale: number;
+  };
+  pbrMetallicRoughness: {
+    baseColorTexture?: MaterialTextureConfiguration;
+    baseColorFactor?: Array4;
+    metallicRoughnessTexture?: MaterialTextureConfiguration;
+    metallicFactor?: number;
+    roughnessFactor?: number;
+  };
+};
+
+export type GltfTextureList = [string, GLTFTexture][];
 
 export type GltfTextureType = {
   source: number;

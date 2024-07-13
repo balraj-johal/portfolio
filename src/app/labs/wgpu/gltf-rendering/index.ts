@@ -137,7 +137,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     // load and process model
     const res = await fetch(Model.DUCKY);
     const modelBuffer = await res.arrayBuffer();
-    const scene = uploadGlb(modelBuffer, this.api.device);
+    const scene = uploadGlb(modelBuffer, this.api);
 
     // build model render pipeline
     await scene.buildRenderPipelines({

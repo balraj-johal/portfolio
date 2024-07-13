@@ -212,7 +212,7 @@ export default class WebGPUExploration extends WebGPUInstance {
 
     const res = await fetch("/assets/avocado.glb");
     const meshBuffer = await res.arrayBuffer();
-    uploadGlb(meshBuffer, this.api.device);
+    uploadGlb(meshBuffer, this.api);
 
     const render = () => {
       if (!this.api) {

@@ -1,9 +1,19 @@
 import { GLTFSampler } from "./GLTFSampler";
-import { GLTFImage } from "./GLTFImage";
+import { SupportedTexture } from "./GltfPbrMaterial";
+import { GLTFImage, ImageUsage } from "./GLTFImage";
 
 type GLTFResolvedTextureType = {
   sampler: GLTFSampler;
   image: GLTFImage;
+};
+
+/** An object mapping a texture to its image usage  */
+export const TEXTURE_USAGE_FROM_NAME: Record<SupportedTexture, ImageUsage> = {
+  [SupportedTexture.BaseColor]: ImageUsage.BASE_COLOR,
+  [SupportedTexture.MetallicRoughness]: ImageUsage.METALLIC_ROUGHNESS,
+  [SupportedTexture.Normal]: ImageUsage.NORMAL,
+  [SupportedTexture.Occlusion]: ImageUsage.OCCLUSION,
+  [SupportedTexture.Emissive]: ImageUsage.EMISSION,
 };
 
 /**
@@ -17,6 +27,9 @@ export class GLTFTexture {
   constructor(resolvedTexture: GLTFResolvedTextureType) {
     this.sampler = resolvedTexture.sampler;
     this.image = resolvedTexture.image;
-    console.log(this);
+  }
+
+  setImageUsage(usage: ImageUsage) {
+    this.image.setUsage(usage);
   }
 }

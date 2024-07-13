@@ -19,6 +19,8 @@ export class GLTFSampler {
   addressModeU: GPUAddressMode = DEFAULT_ADDRESS_MODE_U;
   addressModeV: GPUAddressMode = DEFAULT_ADDRESS_MODE_V;
 
+  gpuSampler?: GPUSampler;
+
   constructor(sampler?: GltfSamplerType) {
     if (!sampler) return;
 
@@ -29,6 +31,11 @@ export class GLTFSampler {
   }
 
   create(api: WebGpuApi) {
+    if (this.gpuSampler) {
+      // TODO: find a way to add label here
+      console.warn("Sampler was already created.");
+    }
+
     const descriptor: GPUSamplerDescriptor = {
       magFilter: this.magFilter,
       minFilter: this.minFilter,
@@ -37,6 +44,6 @@ export class GLTFSampler {
       mipmapFilter: this.mipMapFilter,
     };
 
-    api.device.createSampler(descriptor);
+    this.gpuSampler = api.device.createSampler(descriptor);
   }
 }
