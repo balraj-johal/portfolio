@@ -7,11 +7,11 @@ import {
   GltfTextureList,
   MaterialTextureConfiguration,
 } from "../../types/gltf";
-import { WebGpuApi } from "../../types";
+import { GLTFRenderMode, WebGpuApi } from "../../types";
 import { GLTFTexture, TEXTURE_USAGE_FROM_NAME } from "./GLTFTexture";
 import { GLTFScene } from "./GLTFScene";
 import { GLTFSampler } from "./GLTFSampler";
-import { GLTFPrimitive, buildPrimitiveClass } from "./GLTFPrimitive";
+import { GLTFPrimitive, SupportedPrimitiveAttribute } from "./GLTFPrimitive";
 import { GltfPbrMaterial, SupportedTexture } from "./GltfPbrMaterial";
 import { GLTFNode, getNodeTransformMatrix } from "./GLTFNode";
 import { GLTFMesh } from "./GLTFMesh";
@@ -19,6 +19,69 @@ import { GLTFImage } from "./GLTFImage";
 import { GLTFBufferView } from "./GLTFBufferView";
 import { GLTFBuffer } from "./GLTFBuffer";
 import { GLTFAccessor } from "./GLTFAccessor";
+
+export function buildPrimitiveClass(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  primitiveData: any,
+  accessors: GLTFAccessor[],
+  materials: GltfPbrMaterial[],
+): GLTFPrimitive {
+  // determine primitive's render mode
+  const mode = primitiveData.mode ?? GLTFRenderMode.TRIANGLES;
+  if (
+    mode != GLTFRenderMode.TRIANGLES &&
+    mode != GLTFRenderMode.TRIANGLE_STRIP
+  ) {
+    throw Error(`Currently Unsupported primitive mode ${mode}`);
+  }
+
+  // Find the vertex indices accessor if provided
+  const indices = accessors[primitiveData.indices];
+
+  const getAttributeAccessor = (target: SupportedPrimitiveAttribute) => {
+    const match = Object.entries(primitiveData.attributes).find(
+      ([attribute]) => {
+        return attribute === target;
+      },
+    );
+
+    if (!match) return undefined;
+    // TODO: fix fucky type
+    const accessor = accessors[match[1] as number];
+    return accessor;
+  };
+
+  const positions: GLTFAccessor | undefined = getAttributeAccessor(
+    SupportedPrimitiveAttribute.POSITION,
+  );
+  const normals: GLTFAccessor | undefined = getAttributeAccessor(
+    SupportedPrimitiveAttribute.NORMAL,
+  );
+  const texCoord0: GLTFAccessor | undefined = getAttributeAccessor(
+    SupportedPrimitiveAttribute.TEXCOORD_0,
+  );
+
+  if (!positions) {
+    throw new Error("No positions accessor present building GLTFPrimitive");
+  }
+
+  // TODO: this is hardcoding an error whenever there's no tex coords.
+  if (!texCoord0) {
+    throw new Error("No texCoord0 accessor present building GLTFPrimitive");
+  }
+
+  const material = materials[primitiveData.material];
+  console.log(material);
+
+  return new GLTFPrimitive({
+    material,
+    mode,
+    positions,
+    normals,
+    texCoords: [texCoord0],
+    indices,
+  });
+}
 
 const getNodeFromHeader = (jsonHeader: GltfJsonHeader, index: number) => {
   if (!jsonHeader.nodes) throw new Error("No nodes in gltf");
@@ -71,9 +134,7 @@ const flattenSceneTreeTransforms = (
   }
 };
 
-export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
-  const { device } = api;
-
+export async function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
   // parse the .glb's json header
   const { jsonHeader, jsonByteOffset, jsonChunkLength } =
     readGlbJsonHeader(buffer);
@@ -104,7 +165,7 @@ export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
 
   // upload prepared views to the GPU
   for (const preparedBufferView of preparedBufferViews) {
-    if (preparedBufferView.needsUpload) preparedBufferView.upload(device);
+    if (preparedBufferView.needsUpload) preparedBufferView.upload(api.device);
   }
 
   // create class representations of GLTF accessors
@@ -116,30 +177,6 @@ export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
     accessors.push(new GLTFAccessor(accessorBufferView, gltfAccessor));
   }
 
-  // generate array of meshes present in GLTF
-  const meshes: GLTFMesh[] = [];
-  if (!jsonHeader.meshes) throw new Error("No meshes in gltf");
-
-  for (const mesh of jsonHeader.meshes) {
-    // build each meshes primitives (read: "submesh")
-    const primitives: GLTFPrimitive[] = [];
-    for (const primitive of mesh.primitives) {
-      primitives.push(buildPrimitiveClass(primitive, accessors));
-    }
-    meshes.push(
-      new GLTFMesh({
-        name: mesh.name,
-        primitives: primitives,
-      }),
-    );
-  }
-
-  // upload everything required to the GPU
-  for (const bufferView of preparedBufferViews) {
-    if (bufferView.needsUpload) {
-      bufferView.upload(device);
-    }
-  }
   // prepare all the texture samplers
   const samplers: GLTFSampler[] = [];
   if (jsonHeader.samplers) {
@@ -179,11 +216,6 @@ export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
         new GLTFTexture({ image: images[source], sampler: preparedSampler }),
       );
     }
-  }
-
-  // create GPU samplers
-  for (const sampler of samplers) {
-    sampler.create(api);
   }
 
   // prepare all the gltf's materials
@@ -228,6 +260,57 @@ export function uploadGlb(buffer: ArrayBuffer, api: WebGpuApi) {
       materials.push(new GltfPbrMaterial(material, textureList));
     }
   }
+
+  // generate array of meshes present in GLTF
+  const meshes: GLTFMesh[] = [];
+  if (!jsonHeader.meshes) throw new Error("No meshes in gltf");
+
+  for (const mesh of jsonHeader.meshes) {
+    // build each meshes primitives (read: "submesh")
+    const primitives: GLTFPrimitive[] = [];
+    for (const primitive of mesh.primitives) {
+      const preparedPrimitiveClass = buildPrimitiveClass(
+        primitive,
+        accessors,
+        materials,
+      );
+      primitives.push(preparedPrimitiveClass);
+    }
+    meshes.push(
+      new GLTFMesh({
+        name: mesh.name,
+        primitives: primitives,
+      }),
+    );
+  }
+
+  // ---- UPLOAD EVERYTHING TO GPU
+
+  // upload buffer views
+  for (const bufferView of preparedBufferViews) {
+    if (bufferView.needsUpload) {
+      bufferView.upload(api.device);
+    }
+  }
+
+  // create and upload GPU images
+  for (const image of images) {
+    await image.createImageBitmapFromBufferView();
+    image.createGpuTexture(api);
+    image.upload(api);
+  }
+
+  // create and upload GPU samplers
+  for (const sampler of samplers) {
+    sampler.create(api);
+  }
+
+  // upload material bind groups
+  for (const material of materials) {
+    material.upload(api);
+  }
+
+  // ---- PROCESS SCENE
 
   // flatten every node's transforms in the default scene
   if (!jsonHeader.scenes) throw new Error("No scenes in gltf");

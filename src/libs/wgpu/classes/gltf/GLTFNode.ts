@@ -97,6 +97,7 @@ export class GLTFNode {
 
     const nodeParametersBindGroupLayout =
       config.api.device.createBindGroupLayout({
+        label: "node parameters bind group layout",
         entries: [
           {
             binding: 0,

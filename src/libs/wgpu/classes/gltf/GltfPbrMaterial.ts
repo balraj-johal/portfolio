@@ -175,13 +175,13 @@ export class GltfPbrMaterial {
     const bufferType: GPUBufferBindingType = "uniform";
     const sharedEntryConfig = {
       visibility: GPUShaderStage.FRAGMENT,
-      buffer: {
-        type: bufferType,
-      },
     };
 
     const materialParameterEntry: GPUBindGroupLayoutEntry = {
       binding: 0,
+      buffer: {
+        type: bufferType,
+      },
       ...sharedEntryConfig,
     };
     entries.push(materialParameterEntry);
@@ -189,10 +189,12 @@ export class GltfPbrMaterial {
     const createEntriesForTexture = (type: SupportedTexture) => {
       const textureEntry: GPUBindGroupLayoutEntry = {
         binding: BINDING_NUMBER_BY_TEXTURE_TYPE[type],
+        texture: {},
         ...sharedEntryConfig,
       };
       const samplerEntry: GPUBindGroupLayoutEntry = {
         binding: BINDING_NUMBER_BY_TEXTURE_TYPE[type] + 1,
+        sampler: {},
         ...sharedEntryConfig,
       };
 
@@ -205,6 +207,7 @@ export class GltfPbrMaterial {
     }
 
     return api.device.createBindGroupLayout({
+      label: "material bind group layout",
       entries: entries,
     });
   };
@@ -259,6 +262,7 @@ export class GltfPbrMaterial {
     }
 
     return api.device.createBindGroup({
+      label: "GltfPbrMaterial bind group",
       layout: bindGroupLayout,
       entries,
     });

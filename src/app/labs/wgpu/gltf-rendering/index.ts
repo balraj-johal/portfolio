@@ -52,6 +52,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     if (!this.api) throw new Error("No WebGPU API ready");
 
     return this.api.device.createBindGroupLayout({
+      label: "view parameters bind group layout",
       entries: [
         {
           binding: 0,
@@ -137,7 +138,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     // load and process model
     const res = await fetch(Model.DUCKY);
     const modelBuffer = await res.arrayBuffer();
-    const scene = uploadGlb(modelBuffer, this.api);
+    const scene = await uploadGlb(modelBuffer, this.api);
 
     // build model render pipeline
     await scene.buildRenderPipelines({
@@ -198,6 +199,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
 
       // start render pass
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
+      renderPass.label = "index.ts gltf-rendering render pass";
 
       scene.render({
         renderPassEncoder: renderPass,

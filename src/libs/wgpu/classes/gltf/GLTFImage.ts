@@ -48,16 +48,15 @@ export class GLTFImage {
     this.mimeType = image.mimeType;
 
     this.imageSize = [1, 1, 1];
-
-    this.createImageBitmapFromBufferView(bufferView);
   }
 
   /** Process buffer view into an ImageBitmap of the specified format.
    *
    * TODO: how will this react to a bufferView with mimeType ktx2?
    */
-  async createImageBitmapFromBufferView(bufferView: GLTFBufferView) {
-    const blob = new Blob([bufferView.view], { type: this.mimeType });
+  async createImageBitmapFromBufferView() {
+    console.log("creating bitmap");
+    const blob = new Blob([this.bufferView.view], { type: this.mimeType });
     this.bitmap = await createImageBitmap(blob);
     this.imageSize = [this.bitmap.width, this.bitmap.height, 1];
   }
@@ -96,6 +95,7 @@ export class GLTFImage {
     );
 
     this.gpuTextureView = this.gpuTexture.createView();
+    this.gpuTextureView.label = "GLTFImage GpuTextureView";
   }
 
   private isMimeTypeValid(type: string) {
