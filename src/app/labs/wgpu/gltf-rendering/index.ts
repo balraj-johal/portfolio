@@ -1,3 +1,5 @@
+import GUI from "lil-gui";
+
 import { uploadGlb } from "@/libs/wgpu/classes/gltf";
 import { FLOAT_LENGTH_BYTES } from "@/libs/wgpu";
 import {
@@ -30,6 +32,9 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
   depthStencilTexture?: GPUTexture;
 
   private camera;
+  private lightingConfig = {
+    lightPosition: { x: 1, y: 1, z: 1 },
+  };
 
   constructor(properties: WebGPUExplorationProperties) {
     super(properties);
@@ -40,6 +45,12 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       nearPlane: 0.01,
       farPlane: 10,
     });
+
+    const gui = new GUI();
+    gui.add(this.lightingConfig.lightPosition, "x");
+    gui.add(this.lightingConfig.lightPosition, "y");
+    gui.add(this.lightingConfig.lightPosition, "z");
+    gui.onChange((e) => console.log(e));
   }
 
   private async newShaderModule(shader: string) {
@@ -158,10 +169,8 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     const render = () => {
       if (!this.api) throw new Error("No WebGPU API ready");
 
-      // update camera buffers to pass as uniforms
-      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
+      // ---- HANDLE RESIZE
 
-      // on resize
       if (this.hasResized()) {
         this.setupCanvas();
         this.camera.reproject();
@@ -193,8 +202,11 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       // prep the commmand encoder
       const commandEncoder = this.api.device.createCommandEncoder();
 
+      // ---- UPDATE BUFFERS HERE
+
       // copy the contents of the updated camera buffer into the
       // view parameters uniform buffer
+      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
       commandEncoder.copyBufferToBuffer(
         cameraBuffer,
         0,
@@ -203,7 +215,8 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
         16 * FLOAT_LENGTH_BYTES,
       );
 
-      // start render pass
+      // ---- RENDER PASS
+
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
       renderPass.label = "index.ts gltf-rendering render pass";
 
@@ -212,8 +225,9 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
         uniformsBindGroup: viewParameterBindGroup,
       });
 
-      // end render pass
       renderPass.end();
+
+      // ---- END RENDER PASS
 
       // submit commands to GPU to render
       this.api.device.queue.submit([commandEncoder.finish()]);
