@@ -7,6 +7,7 @@ import {
   WebGPUInstanceProperties,
 } from "@/libs/wgpu";
 
+import phongShader from "./shaders/gltf-phong.wgsl";
 import shader from "./shaders/gltf-default.wgsl";
 
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
@@ -16,6 +17,11 @@ enum Model {
   ENGINE = "/assets/2CylinderEngine.glb",
   DUCKY = "/assets/ducky.glb",
 }
+
+const SHADERS = {
+  default: shader,
+  phong: phongShader,
+};
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
 
@@ -120,7 +126,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     await this.initializeContext({ usage: GPUTextureUsage.RENDER_ATTACHMENT });
     if (!this.api) throw new Error("No WebGPU API ready");
 
-    this.shaderModule = await this.newShaderModule(shader);
+    this.shaderModule = await this.newShaderModule(SHADERS.phong);
     this.depthStencilTexture = this.createDepthStencilTexture();
     let renderPassDescription = this.createRenderPassDescription(
       this.depthStencilTexture,
