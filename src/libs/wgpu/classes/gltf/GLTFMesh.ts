@@ -26,6 +26,7 @@ export class GLTFMesh {
     depthFormat: GPUTextureFormat;
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
+    lightingBindGroupLayout: GPUBindGroupLayout;
     nodeParametersBindGroupLayout: GPUBindGroupLayout;
   }): Promise<void> {
     return new Promise(async (resolve, reject) => {

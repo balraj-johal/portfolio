@@ -77,6 +77,7 @@ export class GLTFPrimitive {
     colorFormat,
     uniformsBindGroupLayout,
     nodeParametersBindGroupLayout,
+    lightingBindGroupLayout,
   }: {
     api: WebGpuApi;
     shaderModule: GPUShaderModule;
@@ -84,10 +85,8 @@ export class GLTFPrimitive {
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
     nodeParametersBindGroupLayout: GPUBindGroupLayout;
+    lightingBindGroupLayout: GPUBindGroupLayout;
   }) {
-    // TODO: something here is fucking broken!!!
-    // it's a validation issue, so something in my descriptors when I've modified to add the tex coordinates
-
     const vertexBufferLayouts: GPUVertexBufferLayout[] = [];
     // defines the properties of the positions attribute
     // Note: We do not pass the positions.byteOffset here, as its
@@ -106,7 +105,6 @@ export class GLTFPrimitive {
     vertexBufferLayouts.push(positionVertexBufferLayout);
 
     if (this.texCoordsAccessors) {
-      console.log(this.texCoordsAccessors);
       const texCoord0Attribute: GPUVertexAttribute = {
         format: this.texCoordsAccessors[0].vertexType as GPUVertexFormat, // "float32x2"
         offset: 0,
@@ -120,7 +118,6 @@ export class GLTFPrimitive {
     }
 
     if (this.normalsAccessor) {
-      console.log(this.normalsAccessor);
       const normalAttribute: GPUVertexAttribute = {
         format: this.normalsAccessor.vertexType as GPUVertexFormat, // "float32x3"
         offset: 0,
@@ -159,6 +156,7 @@ export class GLTFPrimitive {
         .vertexType as GPUIndexFormat;
     }
 
+    // WARNING! be careful that the order of bind groups here matches their assignment
     const bindGroupLayouts: GPUBindGroupLayout[] = [];
     bindGroupLayouts.push(uniformsBindGroupLayout);
     bindGroupLayouts.push(nodeParametersBindGroupLayout);
@@ -172,6 +170,7 @@ export class GLTFPrimitive {
       }
       bindGroupLayouts.push(bindGroupLayout);
     }
+    bindGroupLayouts.push(lightingBindGroupLayout);
 
     const renderPipelineLayout = api.device.createPipelineLayout({
       bindGroupLayouts,

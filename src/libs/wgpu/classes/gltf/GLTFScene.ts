@@ -22,6 +22,7 @@ export class GLTFScene {
     depthFormat: GPUTextureFormat;
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
+    lightingBindGroupLayout: GPUBindGroupLayout;
   }): Promise<void> {
     return new Promise(async (resolve, reject) => {
       for (const node of this.flattenedNodes) {

@@ -1,7 +1,8 @@
 import GUI from "lil-gui";
+import { vec3 } from "gl-matrix";
 
 import { uploadGlb } from "@/libs/wgpu/classes/gltf";
-import { FLOAT_LENGTH_BYTES } from "@/libs/wgpu";
+import { alignTo, FLOAT_LENGTH_BYTES } from "@/libs/wgpu";
 import {
   checkShaderModuleCompilation,
   WebGPUInstance,
@@ -152,6 +153,26 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
+    // create lighting uniforms
+    const lightingBindGroupLayout = this.api.device.createBindGroupLayout({
+      label: "lighting bind group layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.FRAGMENT,
+          buffer: { type: "uniform" },
+        },
+      ],
+    });
+    const lightingBuffer = this.api.device.createBuffer({
+      size: alignTo(3 * FLOAT_LENGTH_BYTES, 16),
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const lightingBindGroup = this.api.device.createBindGroup({
+      layout: lightingBindGroupLayout,
+      entries: [{ binding: 0, resource: { buffer: lightingBuffer } }],
+    });
+
     // load and process model
     const res = await fetch(Model.DUCKY);
     const modelBuffer = await res.arrayBuffer();
@@ -164,6 +185,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       colorFormat: this.preferredFormat,
       depthFormat: DEPTH_TEXTURE_FORMAT,
       uniformsBindGroupLayout: viewParameterBindGroupLayout,
+      lightingBindGroupLayout,
     });
 
     const render = () => {
@@ -215,10 +237,33 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
         16 * FLOAT_LENGTH_BYTES,
       );
 
+      // copy the contents of the updated lighting buffer into the
+      // view parameters uniform buffer
+      const newLightingBuffer = this.api.device.createBuffer({
+        size: alignTo(3 * FLOAT_LENGTH_BYTES, 16),
+        usage: GPUBufferUsage.COPY_SRC,
+        mappedAtCreation: true,
+      });
+      const map = new Float32Array(newLightingBuffer.getMappedRange());
+      const lightingVec3 = vec3.create();
+      lightingVec3[0] = this.lightingConfig.lightPosition.x;
+      lightingVec3[1] = this.lightingConfig.lightPosition.y;
+      lightingVec3[2] = this.lightingConfig.lightPosition.z;
+      map.set(lightingVec3);
+      newLightingBuffer.unmap();
+      commandEncoder.copyBufferToBuffer(
+        newLightingBuffer,
+        0,
+        lightingBuffer,
+        0,
+        alignTo(3 * FLOAT_LENGTH_BYTES, 16),
+      );
+
       // ---- RENDER PASS
 
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
       renderPass.label = "index.ts gltf-rendering render pass";
+      renderPass.setBindGroup(3, lightingBindGroup);
 
       scene.render({
         renderPassEncoder: renderPass,

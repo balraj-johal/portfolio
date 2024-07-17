@@ -256,6 +256,7 @@ export default class WebGPUExploration extends WebGPUInstance {
 
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
       renderPass.setPipeline(renderPipeline);
+      // TODO: is this doin shit?
       renderPass.setBindGroup(0, viewParameterBindGroup);
 
       if (triangle.dataBuffer) {

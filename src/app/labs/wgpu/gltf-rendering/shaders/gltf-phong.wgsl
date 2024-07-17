@@ -28,6 +28,10 @@ struct NodeParameters {
   transform: mat4x4<f32>,
 };
 
+struct LightingParameters {
+  light_position: vec3<f32>,
+};
+
 @group(0) @binding(0)
 var<uniform> view_parameters: ViewParameters;
 
@@ -40,6 +44,9 @@ var<uniform> material_parameters: MaterialParameters;
 var base_color_texture: texture_2d<f32>;
 @group(2) @binding(2)
 var base_color_sampler: sampler;
+
+@group(3) @binding(0)
+var<uniform> lighting_parameters: LightingParameters;
 
 // see: https://github.com/Twinklebear/webgpu-0-to-gltf/blob/main/5-textures-ts/src/gltf_prim.wgsl#L45-L50
 fn linear_to_srgb(x: f32) -> f32 {
@@ -76,11 +83,12 @@ struct FragmentOutput {
 fn fragment_main(in: VertexOutput) -> FragmentOutput {
   var out: FragmentOutput;
 
-  let ambient_contribution = 0.1;
-  let diffuse_contribution = 1.0;
+  let ambient_contribution = 0.4;
+  let diffuse_contribution = 0.6;
 
   let light_color = vec3<f32>(1.0, 1.0, 1.0);
-  let light_position = vec3<f32>(10.0, 20.0, 20.0);
+  let light_position = lighting_parameters.light_position;
+  // let light_position = vec3<f32>(10.0, 20.0, 20.0);
 
   // calculated mesh normal from world position
   // let dx = dpdx(in.world_position);
@@ -98,7 +106,7 @@ fn fragment_main(in: VertexOutput) -> FragmentOutput {
 
   // calculate dot product of light to normal
   let normalisedNormal = normalize(in.normal);
-  let lightDirection = light_position - in.world_position;
+  let lightDirection = normalize(light_position - in.world_position);
   let diffuse = max(dot(normalisedNormal, lightDirection), 0.0);
 
   let ambient_color = ambient_contribution * light_color;

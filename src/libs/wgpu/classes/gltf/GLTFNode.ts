@@ -80,6 +80,7 @@ export class GLTFNode {
     depthFormat: GPUTextureFormat;
     colorFormat: GPUTextureFormat;
     uniformsBindGroupLayout: GPUBindGroupLayout;
+    lightingBindGroupLayout: GPUBindGroupLayout;
   }): Promise<void> {
     // create the buffer to pass the node's transform data to the GPU with
     this.nodeParametersBuffer = config.api.device.createBuffer({
