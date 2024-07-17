@@ -104,11 +104,10 @@ export class Camera {
       usage: GPUBufferUsage.COPY_SRC,
       mappedAtCreation: true,
     });
-    {
-      const map = new Float32Array(upload.getMappedRange());
-      map.set(this.cameraProjectionView);
-      upload.unmap();
-    }
+
+    const map = new Float32Array(upload.getMappedRange());
+    map.set(this.cameraProjectionView);
+    upload.unmap();
 
     return upload;
   }
