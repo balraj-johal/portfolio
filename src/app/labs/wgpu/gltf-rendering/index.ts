@@ -12,6 +12,7 @@ import {
 
 import phongShader from "./shaders/gltf-phong.wgsl";
 import shader from "./shaders/gltf-default.wgsl";
+import blinnPhongShader from "./shaders/gltf-blinn-phong.wgsl";
 
 const DEPTH_TEXTURE_FORMAT: GPUTextureFormat = "depth24plus-stencil8";
 
@@ -24,6 +25,7 @@ enum Model {
 const SHADERS = {
   default: shader,
   phong: phongShader,
+  blinnPhong: blinnPhongShader,
 };
 
 interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
@@ -149,7 +151,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     await this.initializeContext({ usage: GPUTextureUsage.RENDER_ATTACHMENT });
     if (!this.api) throw new Error("No WebGPU API ready");
 
-    this.shaderModule = await this.newShaderModule(SHADERS.phong);
+    this.shaderModule = await this.newShaderModule(SHADERS.blinnPhong);
     this.depthStencilTexture = this.createDepthStencilTexture();
     let renderPassDescription = this.createRenderPassDescription(
       this.depthStencilTexture,

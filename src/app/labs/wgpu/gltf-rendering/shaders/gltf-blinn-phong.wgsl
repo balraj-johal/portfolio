@@ -91,7 +91,9 @@ fn fragment_main(in: VertexOutput) -> FragmentOutput {
 
   let ambient_strength = 0.4;
   let diffuse_strength = 0.6;
-  let specular_strength = 0.5;
+  let specular_strength = 0.2;
+
+  let shininess = 8.0;
 
   let light_color = vec3<f32>(1.0, 1.0, 1.0);
   let light_position = lighting_parameters.light_position;
@@ -114,11 +116,11 @@ fn fragment_main(in: VertexOutput) -> FragmentOutput {
   let normalized_normal = normalize(in.normal);
   let light_direction = normalize(light_position - in.world_position);
   let view_direction = normalize(view_parameters.camera_position - in.world_position);
-  let reflection_direction = normalize(reflect(-light_direction, normalized_normal));
+  let halfway_direction = normalize(view_direction + light_direction);
 
   // calculate lighting
   let diffuse = max(dot(normalized_normal, light_direction), 0.0);
-  let specular = pow(max(dot(view_direction, reflection_direction), 0.0), 32);
+  let specular = pow(max(dot(normalized_normal, halfway_direction), 0.0), shininess);
 
   let ambient_color = ambient_strength * light_color;
   let diffuse_color = diffuse_strength * diffuse * light_color;
