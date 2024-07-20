@@ -53,7 +53,6 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     gui.add(this.lightingConfig.lightPosition, "x");
     gui.add(this.lightingConfig.lightPosition, "y");
     gui.add(this.lightingConfig.lightPosition, "z");
-    gui.onChange((e) => console.log(e));
   }
 
   private async newShaderModule(shader: string) {
