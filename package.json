@@ -15,10 +15,15 @@
     "@phntms/css-components": "^0.4.0",
     "@studio-freight/react-lenis": "^0.0.46",
     "@vercel/analytics": "^1.2.2",
+    "arcball_camera": "1.0.1",
+    "ez_canvas_controller": "1.0.0",
     "framer-motion": "^11.0.14",
+    "gl-matrix": "^3.3.0",
     "gsap": "^3.12.5",
+    "lil-gui": "^0.19.2",
     "next": "^14.2.2",
     "prism-react-renderer": "^2.3.1",
+    "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "usehooks-ts": "^3.0.1"
@@ -29,6 +34,7 @@
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "@webgpu/types": "^0.1.40",
     "contentful": "^10.8.2",
     "contentful-management": "^11.23.1",
     "contentful-typescript-codegen": "^3.4.0",
@@ -43,6 +49,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.34.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.5.3"
   }
 }
