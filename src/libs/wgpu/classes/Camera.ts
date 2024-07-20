@@ -86,12 +86,16 @@ export class Camera {
 
   createBuffer(api: WebGpuApi) {
     return api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH_BYTES,
+      size: (16 + 4) * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
   }
 
   getUpdatedBuffer(api: WebGpuApi) {
+    // @ts-expect-error arcball totally untyped smh
+    const position = this.camera.eyePos();
+
+    // TODO:
     this.cameraProjectionView = mat4.mul(
       this.cameraProjectionView,
       this.cameraProjection,
@@ -100,13 +104,14 @@ export class Camera {
     );
 
     const upload = api.device.createBuffer({
-      size: 16 * FLOAT_LENGTH_BYTES,
+      size: (16 + 4) * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.COPY_SRC,
       mappedAtCreation: true,
     });
 
     const map = new Float32Array(upload.getMappedRange());
-    map.set(this.cameraProjectionView);
+    map.set(this.cameraProjectionView, 0);
+    map.set(position, 16);
     upload.unmap();
 
     return upload;

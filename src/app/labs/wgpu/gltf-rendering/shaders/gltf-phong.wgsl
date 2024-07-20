@@ -22,6 +22,7 @@ struct MaterialParameters {
 
 struct ViewParameters {
   view_projection: mat4x4<f32>,
+  camera_position: vec3<f32>,
 };
 
 struct NodeParameters {
@@ -60,15 +61,20 @@ fn vec3_linear_to_srgb(linear: vec3<f32>) -> vec3<f32> {
   return vec3<f32>(linear_to_srgb(linear.x), linear_to_srgb(linear.y), linear_to_srgb(linear.z));
 };
 
+fn get_debug_color(input: vec3<f32>) -> vec4<f32> {
+  return vec4<f32>(input, 1.0);
+};
+
 @vertex
 fn vertex_main(vert: VertexInput) -> VertexOutput {
   var out: VertexOutput;
 
-  out.position =
-      view_parameters.view_projection *
-      node_parameters.transform *
-      vec4<f32>(vert.position, 1.0);
-  out.world_position = vert.position.xyz;
+  let model_vertex_position = vec4<f32>(vert.position, 1.0);
+  let world_position = node_parameters.transform * model_vertex_position;
+  let final_position = view_parameters.view_projection * world_position;
+
+  out.position = final_position;
+  out.world_position = world_position.xyz;
   out.tex_coord_0 = vert.tex_coord_0;
   out.normal = vert.normal;
 
@@ -83,12 +89,12 @@ struct FragmentOutput {
 fn fragment_main(in: VertexOutput) -> FragmentOutput {
   var out: FragmentOutput;
 
-  let ambient_contribution = 0.4;
-  let diffuse_contribution = 0.6;
+  let ambient_strength = 0.4;
+  let diffuse_strength = 0.6;
+  let specular_strength = 0.5;
 
   let light_color = vec3<f32>(1.0, 1.0, 1.0);
   let light_position = lighting_parameters.light_position;
-  // let light_position = vec3<f32>(10.0, 20.0, 20.0);
 
   // calculated mesh normal from world position
   // let dx = dpdx(in.world_position);
@@ -98,23 +104,28 @@ fn fragment_main(in: VertexOutput) -> FragmentOutput {
   // out.color = colorRepresentationOfNormal;
 
   // get texture color in srgb space
-  // TODO: confirm I need to perform the linear to srgb conversion
+  // TODO: confirm I need to perform the linear to srgb conversion, as
   //       isn't the format of the texture set in GLTFTexture?
   let base_color: vec4<f32> = textureSample(base_color_texture, base_color_sampler, in.tex_coord_0);
   let adjusted_color = base_color * material_parameters.base_color_factor;
-  let srgb_color = vec4<f32>(vec3_linear_to_srgb(adjusted_color.xyz), adjusted_color.w);
+  let model_color = vec4<f32>(vec3_linear_to_srgb(adjusted_color.xyz), adjusted_color.w);
 
-  // calculate dot product of light to normal
-  let normalisedNormal = normalize(in.normal);
-  let lightDirection = normalize(light_position - in.world_position);
-  let diffuse = max(dot(normalisedNormal, lightDirection), 0.0);
+  // calculate diffuse
+  let normalized_normal = normalize(in.normal);
+  let light_direction = normalize(light_position - in.world_position);
+  let diffuse = max(dot(normalized_normal, light_direction), 0.0);
 
-  let ambient_color = ambient_contribution * light_color;
-  let diffuse_color = diffuse_contribution * diffuse * light_color;
+  // calculate specular
+  let view_direction = normalize(view_parameters.camera_position - in.world_position);
+  let reflection_direction = normalize(reflect(-light_direction, normalized_normal));
+  let specular = pow(max(dot(view_direction, reflection_direction), 0.0), 32);
 
-  let final_lighting_color = ambient_color + diffuse_color;
+  let ambient_color = ambient_strength * light_color;
+  let diffuse_color = diffuse_strength * diffuse * light_color;
+  let specular_color = specular_strength * specular * light_color;
+  let final_lighting_color = ambient_color + diffuse_color + specular_color;
 
-  let result = vec4<f32>(final_lighting_color * srgb_color.xyz, srgb_color.w);
+  let result = vec4<f32>(final_lighting_color * model_color.xyz, model_color.w);
 
   out.color = result;
   return out;

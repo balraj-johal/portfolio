@@ -66,19 +66,30 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     return shaderModule;
   }
 
-  private createViewParametersBindGroupLayout() {
+  private createViewParametersBindGroup() {
     if (!this.api) throw new Error("No WebGPU API ready");
 
-    return this.api.device.createBindGroupLayout({
+    const viewParameterBindGroupLayout = this.api.device.createBindGroupLayout({
       label: "view parameters bind group layout",
       entries: [
         {
           binding: 0,
-          visibility: GPUShaderStage.VERTEX,
+          visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
           buffer: { type: "uniform" },
         },
       ],
     });
+    const viewParametersBuffer = this.camera.createBuffer(this.api);
+    const viewParameterBindGroup = this.api.device.createBindGroup({
+      layout: viewParameterBindGroupLayout,
+      entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
+    });
+
+    return {
+      viewParametersBuffer,
+      viewParameterBindGroup,
+      viewParameterBindGroupLayout,
+    };
   }
 
   private createDepthStencilTexture() {
@@ -145,13 +156,11 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     );
 
     // create view parameters
-    const viewParameterBindGroupLayout =
-      this.createViewParametersBindGroupLayout();
-    const viewParametersBuffer = this.camera.createBuffer(this.api);
-    const viewParameterBindGroup = this.api.device.createBindGroup({
-      layout: viewParameterBindGroupLayout,
-      entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
-    });
+    const {
+      viewParameterBindGroup,
+      viewParameterBindGroupLayout,
+      viewParametersBuffer,
+    } = this.createViewParametersBindGroup();
 
     // create lighting uniforms
     const lightingBindGroupLayout = this.api.device.createBindGroupLayout({
@@ -228,13 +237,13 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
 
       // copy the contents of the updated camera buffer into the
       // view parameters uniform buffer
-      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
+      const cameraTransferBuffer = this.camera.getUpdatedBuffer(this.api);
       commandEncoder.copyBufferToBuffer(
-        cameraBuffer,
+        cameraTransferBuffer,
         0,
         viewParametersBuffer,
         0,
-        16 * FLOAT_LENGTH_BYTES,
+        (16 + 4) * FLOAT_LENGTH_BYTES,
       );
 
       // copy the contents of the updated lighting buffer into the
@@ -277,7 +286,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
       // submit commands to GPU to render
       this.api.device.queue.submit([commandEncoder.finish()]);
 
-      cameraBuffer.destroy();
+      cameraTransferBuffer.destroy();
 
       // request render of next frame
       requestAnimationFrame(render);
