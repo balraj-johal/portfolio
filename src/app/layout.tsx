@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
 import RootBody from "@/components/RootBody";
-import Main from "@/components/Main";
 
 import "@/theme/globals.scss";
 import "@/theme/spacing.scss";
@@ -56,9 +55,7 @@ export default function RootLayout({
       />
       <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
       <RootBody>
-        <Main>
-          <Suspense>{children}</Suspense>
-        </Main>
+        <Suspense>{children}</Suspense>
         <Analytics />
       </RootBody>
     </html>

@@ -162,42 +162,14 @@
 
           &:hover,
           &:focus-visible {
-            .RolesPanel ul {
+            .Oneliner {
               opacity: 1;
-
-              li {
-                opacity: 1;
-                transition-delay: calc(var(--stagger) * var(--index));
-                transform: translateX(0px);
-                transition:
-                  opacity 75ms,
-                  transform 50ms ease-out;
-              }
             }
           }
 
-          .RolesPanel {
+          .Oneliner {
             grid-column: span 2;
-
-            ul {
-              display: flex;
-              gap: 1ch;
-              opacity: 0;
-
-              li {
-                font-size: 14px;
-                opacity: 0;
-
-                --stagger: 25ms;
-                transform-origin: left;
-                transform: translateX(-2px);
-                padding-inline: 1px;
-
-                &:last-of-type {
-                  padding-bottom: 1rem;
-                }
-              }
-            }
+            opacity: 0;
           }
 
           h3 {

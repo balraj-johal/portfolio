@@ -10,7 +10,13 @@ interface Props {
 
 const RootBody = ({ children }: Props) => {
   return (
-    <ReactLenis root>
+    <ReactLenis
+      root
+      options={{
+        easing: (time: number) => 1 - Math.pow(1 - time, 4),
+        duration: 0.7,
+      }}
+    >
       <RootBodyElement>{children}</RootBodyElement>
     </ReactLenis>
   );

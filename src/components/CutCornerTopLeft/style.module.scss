@@ -1,0 +1,29 @@
+.Container {
+  background-color: white;
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 var(--border-radius) 0;
+  height: fit-content;
+  width: fit-content;
+}
+
+.BevelBottomLeft,
+.BevelTopRight {
+  width: var(--border-radius);
+  height: var(--border-radius);
+  position: absolute;
+
+  svg {
+    display: block;
+  }
+}
+
+.BevelTopRight {
+  top: 0;
+  left: 100%;
+}
+
+.BevelBottomLeft {
+  top: 100%;
+  left: 0;
+}

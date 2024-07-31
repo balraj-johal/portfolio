@@ -1,0 +1,21 @@
+.CarouselContainer {
+  overflow: scroll hidden;
+  height: calc(100% + 20px);
+}
+
+.CarouselTrack {
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: repeat(var(--items), 1fr);
+  width: calc(100% * var(--items) + 1rem * (var(--items) - 1));
+
+  //TODO: not sure about this one...
+  height: calc(100% - 4px);
+  column-gap: 1rem;
+}
+
+.CarouselItem {
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}

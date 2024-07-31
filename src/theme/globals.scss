@@ -4,11 +4,21 @@
 
 :root {
   --border-radius: 4px;
+  --spacer-0: 2px;
+  --spacer-1: 4px;
+  --spacer-2: 8px;
+  --spacer-3: 12px;
+  --spacer-4: 16px;
+  --spacer-5: 24px;
+  --spacer-6: 32px;
+  --spacer-7: 48px;
+  --spacer-8: 56px;
 }
 
 html,
 body {
   width: 100%;
+  height: 100%;
 }
 
 html {
@@ -17,6 +27,22 @@ html {
 
 body {
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-block: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-proto-mono);
+  letter-spacing: var(--proto-mono-letter-spacing);
 }
 
 .visually-hidden {
