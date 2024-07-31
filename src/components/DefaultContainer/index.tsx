@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Main = ({ children, ...rest }: Props) => {
+const DefaultContainer = ({ children, ...rest }: Props) => {
   return (
     <MainElement contained {...rest}>
       {children}
@@ -14,4 +14,4 @@ const Main = ({ children, ...rest }: Props) => {
   );
 };
 
-export default Main;
+export default DefaultContainer;

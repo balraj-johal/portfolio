@@ -139,13 +139,16 @@ export interface IProfessionalWorkFields {
   /** Media */
   image?: Asset | undefined;
 
-  /** FWA Winner */
-  fwaWinner?: boolean | undefined;
+  /** Media Poster */
+  mediaPoster?: Asset | undefined;
 
   /** Roles */
   roles?: string[] | undefined;
 
-  /** isPublic */
+  /** Stack I Used */
+  stackIUsed?: string[] | undefined;
+
+  /** Is this public? */
   isPublic: boolean;
 }
 
