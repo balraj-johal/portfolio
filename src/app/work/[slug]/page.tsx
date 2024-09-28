@@ -56,12 +56,6 @@ export default async function Work({ params }: Props) {
   return (
     <main className={css.Container}>
       <section className={css.MediaContainer}>
-        {/* <Carousel>
-          <Media key={1} content={image} poster={mediaPoster} />
-          <Media key={2} content={image} poster={mediaPoster} />
-          <Media key={3} content={image} poster={mediaPoster} />
-          <Media key={4} content={image} poster={mediaPoster} />
-        </Carousel> */}
         <Carousel>
           <Media key={1} content={image} poster={mediaPoster} />
           <Media key={2} content={image} poster={mediaPoster} />

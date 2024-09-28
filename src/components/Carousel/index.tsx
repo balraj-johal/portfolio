@@ -9,10 +9,16 @@ interface Props {
 }
 
 const Carousel = ({ children, ...rest }: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const wasLastScrollALoopRef = useRef(false);
 
-  const handleScroll = (e: React.UIEvent) => {
-    const { target } = e;
+  const childrenAsArray = Children.toArray(children);
+  const numberOfItems = childrenAsArray.length;
+
+  const handleScroll = (event: React.UIEvent) => {
+    const { target } = event;
+
     if (!(target instanceof HTMLElement)) return;
     const { scrollLeft, clientWidth, scrollWidth } = target;
 
@@ -29,17 +35,17 @@ const Carousel = ({ children, ...rest }: Props) => {
     }
   };
 
-  const childrenAsArray = Children.toArray(children);
-  const style = { "--items": childrenAsArray.length } as CSSProperties;
+  const style = { "--items": numberOfItems } as CSSProperties;
 
   return (
     <div
+      ref={containerRef}
       className={css.CarouselContainer}
       style={style}
       onScroll={handleScroll}
       {...rest}
     >
-      <div className={css.CarouselTrack}>
+      <div ref={trackRef} className={css.CarouselTrack}>
         {childrenAsArray.map((item, index) => (
           <div className={css.CarouselItem} key={index}>
             {item}

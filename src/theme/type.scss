@@ -2,7 +2,7 @@
   --heading-main-size: clamp(44px, 14vw, 64px);
 
   @media (min-width: 768px) {
-    --heading-main-size: clamp(64px, 4vw, 96px);
+    --heading-main-size: clamp(64px, 4.75vw, 96px);
   }
 
   --proto-mono-letter-spacing: -0.075em;
@@ -27,6 +27,7 @@ h1 {
 .heading-main {
   font-size: var(--heading-main-size);
   margin-block: 0;
+  margin-left: -0.07em;
 }
 
 p {
