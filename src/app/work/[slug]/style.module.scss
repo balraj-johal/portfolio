@@ -1,8 +1,5 @@
-.Container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+.WorkStudyContainer {
+  display: grid;
 
   @media (min-width: 1440px) {
     max-width: 1440px;
@@ -17,10 +14,14 @@
   .MediaContainer {
     border-radius: var(--border-radius);
     overflow: hidden;
-    max-height: calc(60vh);
-    max-height: calc(60lvh);
+    height: calc(55vh);
+    height: calc(55svh);
     margin: var(--spacer-3);
     position: relative;
+
+    @media (min-width: 768px) {
+      margin-top: 2rem;
+    }
 
     video,
     img {
@@ -47,6 +48,9 @@
       grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
+      height: fit-content;
+      row-gap: 5vh;
+      row-gap: 5svh;
 
       @media (min-width: 768px) {
         grid-column: 1 / 6;
@@ -126,7 +130,7 @@
         grid-column: 1 / -1;
         overflow-y: auto;
         margin-top: -1px;
-        padding-bottom: 4em;
+        padding-bottom: 7em;
 
         @media (min-width: 768px) {
           grid-column: 2 / 7;

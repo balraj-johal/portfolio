@@ -54,7 +54,7 @@ export default async function Work({ params }: Props) {
   if (!image || !entry) notFound();
 
   return (
-    <main className={css.Container}>
+    <main className={css.WorkStudyContainer}>
       <section className={css.MediaContainer}>
         <Carousel>
           <Media key={1} content={image} poster={mediaPoster} />
