@@ -4,6 +4,7 @@ import { findEntryBySlug } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import utilCss from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
+import { WORK_STUDY_CAROUSEL_ENABLED } from "@/config/flags";
 import VerticalList from "@/components/VerticalList";
 import Media from "@/components/Media";
 import Carousel from "@/components/Carousel";
@@ -58,9 +59,13 @@ export default async function Work({ params }: Props) {
       <section className={css.MediaContainer}>
         <Carousel>
           <Media key={1} content={image} poster={mediaPoster} />
-          <Media key={2} content={image} poster={mediaPoster} />
-          <Media key={3} content={image} poster={mediaPoster} />
-          <Media key={4} content={image} poster={mediaPoster} />
+          {WORK_STUDY_CAROUSEL_ENABLED && (
+            <>
+              <Media key={2} content={image} poster={mediaPoster} />
+              <Media key={3} content={image} poster={mediaPoster} />
+              <Media key={4} content={image} poster={mediaPoster} />
+            </>
+          )}
         </Carousel>
         <BackLink href="/">
           <BackLinkCutCorner>
