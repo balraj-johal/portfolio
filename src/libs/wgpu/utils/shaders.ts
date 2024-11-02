@@ -1,3 +1,5 @@
+import type { WebGpuApi } from "../types";
+
 export async function checkShaderModuleCompilation(module: GPUShaderModule) {
   const info = await module.getCompilationInfo();
 
@@ -20,4 +22,14 @@ export async function checkShaderModuleCompilation(module: GPUShaderModule) {
   } else {
     console.log("Shader compilation succeeded.");
   }
+}
+
+export async function createShaderModule(
+  api: WebGpuApi,
+  descriptor: GPUShaderModuleDescriptor,
+) {
+  const shaderModule = api.device.createShaderModule(descriptor);
+  await checkShaderModuleCompilation(shaderModule);
+
+  return shaderModule;
 }
