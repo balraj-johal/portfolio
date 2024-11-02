@@ -30,7 +30,7 @@ export default class WebGPUExploration extends WebGPUInstance {
   }
 
   /**
-   * Defines the connection between vertexinput buffers and the shader itself.
+   * Defines the connection between vertex input buffers and the shader itself.
    *
    * i.e., stuff like what format each input is in, how to parse the inputs, which location
    */

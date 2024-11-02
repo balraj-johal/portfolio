@@ -12,8 +12,19 @@ const COMPUTE_INPUT = new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 //   const WORKGROUP_SIZE_MAX = [4, 4, 4]; // NOTE: Temp values
 // }
 
+// TODO: get this data into a vertex buffer, which is then rendered.
+
 const NUMBER_VERTICES_MAX = 4;
 const NUMBER_INDICES_MAX = 6;
+
+const INDICES = [
+  0,
+  1,
+  3, // Tri 1
+  1,
+  3,
+  2, // Tri 2
+];
 
 export default class WebGPUExplorationCompute extends WebGPUInstance {
   constructor(properties: WebGPUExplorationProperties) {
@@ -75,12 +86,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
     });
 
-    const render = async () => {
-      if (!this.api) throw new Error("No WebGPU API ready");
-
-      // prep the commmand encoder
-      const commandEncoder = this.api.device.createCommandEncoder();
-
+    const performComputePass = (commandEncoder: GPUCommandEncoder) => {
       const computePass = commandEncoder.beginComputePass({
         label: "compute pass",
       });
@@ -98,6 +104,15 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
         0,
         computeResults.size,
       );
+    };
+
+    const render = async () => {
+      if (!this.api) throw new Error("No WebGPU API ready");
+
+      // prep the commmand encoder
+      const commandEncoder = this.api.device.createCommandEncoder();
+
+      performComputePass(commandEncoder);
 
       // submit commands to GPU to render
       this.api.device.queue.submit([commandEncoder.finish()]);
