@@ -238,7 +238,7 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
 
       // copy the contents of the updated camera buffer into the
       // view parameters uniform buffer
-      const cameraTransferBuffer = this.camera.getUpdatedBuffer(this.api);
+      const cameraTransferBuffer = this.camera.updateBuffer(this.api);
       commandEncoder.copyBufferToBuffer(
         cameraTransferBuffer,
         0,

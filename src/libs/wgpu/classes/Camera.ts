@@ -2,7 +2,7 @@ import { mat4 } from "gl-matrix";
 import { Controller } from "ez_canvas_controller";
 import { ArcballCamera } from "arcball_camera";
 
-import { FLOAT_LENGTH_BYTES } from "../utils/math";
+import { alignTo, FLOAT_LENGTH_BYTES } from "../utils/math";
 import { WebGpuApi } from "../types";
 
 interface CameraProperties {
@@ -13,9 +13,10 @@ interface CameraProperties {
 }
 
 export class Camera {
-  canvas: HTMLCanvasElement;
-  camera: unknown;
+  camera: typeof ArcballCamera;
+  buffer?: GPUBuffer;
 
+  private canvas: HTMLCanvasElement;
   private cameraProjection = mat4.create();
   private cameraProjectionView = mat4.create();
   private properties: CameraProperties;
@@ -85,35 +86,32 @@ export class Camera {
   }
 
   createBuffer(api: WebGpuApi) {
-    return api.device.createBuffer({
+    this.buffer = api.device.createBuffer({
       size: (16 + 4) * FLOAT_LENGTH_BYTES,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
+
+    return this.buffer;
   }
 
-  getUpdatedBuffer(api: WebGpuApi) {
-    // @ts-expect-error arcball totally untyped smh
+  updateBuffer(api: WebGpuApi) {
+    if (!this.buffer) throw new Error("No camera buffer to update.");
+
     const position = this.camera.eyePos();
 
     // TODO:
     this.cameraProjectionView = mat4.mul(
       this.cameraProjectionView,
       this.cameraProjection,
-      // @ts-expect-error ArcballCamera is untyped
       this.camera.camera,
     );
 
-    const upload = api.device.createBuffer({
-      size: (16 + 4) * FLOAT_LENGTH_BYTES,
-      usage: GPUBufferUsage.COPY_SRC,
-      mappedAtCreation: true,
-    });
+    const data = new Float32Array(alignTo(20, FLOAT_LENGTH_BYTES));
+    data.set(this.cameraProjectionView, 0);
+    data.set(position, 16);
 
-    const map = new Float32Array(upload.getMappedRange());
-    map.set(this.cameraProjectionView, 0);
-    map.set(position, 16);
-    upload.unmap();
+    api.device.queue.writeBuffer(this.buffer, 0, data);
 
-    return upload;
+    return this.buffer;
   }
 }

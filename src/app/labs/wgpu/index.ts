@@ -219,7 +219,7 @@ export default class WebGPUExploration extends WebGPUInstance {
         throw new Error("No WebGPU API ready");
       }
 
-      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
+      const cameraBuffer = this.camera.updateBuffer(this.api);
 
       if (this.hasResized()) {
         this.setupCanvas();

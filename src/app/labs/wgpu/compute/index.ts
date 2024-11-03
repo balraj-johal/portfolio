@@ -252,7 +252,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       entries: [{ binding: 0, resource: { buffer: viewParametersBuffer } }],
     });
 
-    const performRenderPass = (commandEncoder: GPUCommandEncoder) => {
+    const performRenderPass = async (commandEncoder: GPUCommandEncoder) => {
       if (!this.api) throw new Error("No WebGPU API ready");
 
       if (this.hasResized()) {
@@ -278,21 +278,13 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
           .createView();
       }
 
-      const cameraBuffer = this.camera.getUpdatedBuffer(this.api);
-      commandEncoder.copyBufferToBuffer(
-        cameraBuffer,
-        0,
-        viewParametersBuffer,
-        0,
-        16 * FLOAT_LENGTH_BYTES,
-      );
+      this.camera.updateBuffer(this.api);
 
       commandEncoder.copyBufferToBuffer(
         computeOutputBuffer,
         0,
         meshVertexBuffer,
         0,
-        // vertexLength,
         vertexLength,
       );
 
@@ -301,11 +293,9 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       // TODO: is this doin shit?
       renderPass.setBindGroup(0, viewParameterBindGroup);
 
-      // TODO: get data buffer from compute shader
       renderPass.setVertexBuffer(0, meshVertexBuffer);
       renderPass.setIndexBuffer(meshIndexBuffer, "uint16");
       renderPass.drawIndexed(6);
-      // renderPass.draw(4, 1, 0, 0);
 
       renderPass.end();
     };
