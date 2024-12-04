@@ -55,6 +55,16 @@ export default async function Main({
             <li>
               <a
                 className={css.InvertOnHover}
+                href="https://bsky.app/profile/balrajjohal.bsky.social"
+                aria-label="bluesky"
+                target="_blank"
+              >
+                Bsky
+              </a>
+            </li>
+            <li>
+              <a
+                className={css.InvertOnHover}
                 href="https://www.linkedin.com/in/balraj-johal/"
                 target="_blank"
               >
