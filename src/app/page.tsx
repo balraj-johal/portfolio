@@ -8,6 +8,7 @@ import {
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
 import { BLOG_HAS_SOME_PUBLISHED_ENTRIES } from "@/content/blog-meta";
+import { WORK_STUDY_PAGE_ENABLED } from "@/config/flags";
 import Media from "@/components/Media";
 import FaviconSwitcher from "@/components/FaviconSwitcher";
 import DefaultContainer from "@/components/DefaultContainer";
@@ -130,17 +131,35 @@ const SelectedWorkItem = ({
   const fields = entry.fields as unknown as IProfessionalWorkFields;
 
   if (fields.isPublic || showAll) {
+    const href = WORK_STUDY_PAGE_ENABLED
+      ? `work/${fields.slug}`
+      : fields.linkToWork;
+
+    if (href) {
+      return (
+        <li>
+          <a href={href}>
+            {fields.image && (
+              <div className={css.MediaContainer} aria-hidden>
+                <Media content={fields.image} first={first} />
+              </div>
+            )}
+            <h3>{fields.title}</h3>
+            <div className={css.Oneliner}>{fields.oneLiner}</div>
+          </a>
+        </li>
+      );
+    }
+
     return (
       <li>
-        <a href={`work/${fields.slug}`}>
-          {fields.image && (
-            <div className={css.MediaContainer} aria-hidden>
-              <Media content={fields.image} first={first} />
-            </div>
-          )}
-          <h3>{fields.title}</h3>
-          <div className={css.Oneliner}>{fields.oneLiner}</div>
-        </a>
+        {fields.image && (
+          <div className={css.MediaContainer} aria-hidden>
+            <Media content={fields.image} first={first} />
+          </div>
+        )}
+        <h3>{fields.title}</h3>
+        <div className={css.Oneliner}>{fields.oneLiner}</div>
       </li>
     );
   }
