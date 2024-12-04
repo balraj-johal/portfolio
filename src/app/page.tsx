@@ -136,31 +136,17 @@ const SelectedWorkItem = ({
       ? `work/${fields.slug}`
       : fields.linkToWork;
 
-    if (href) {
-      return (
-        <li>
-          <a href={href}>
-            {fields.image && (
-              <div className={css.MediaContainer} aria-hidden>
-                <Media content={fields.image} first={first} />
-              </div>
-            )}
-            <h3>{fields.title}</h3>
-            <div className={css.Oneliner}>{fields.oneLiner}</div>
-          </a>
-        </li>
-      );
-    }
-
     return (
       <li>
-        {fields.image && (
-          <div className={css.MediaContainer} aria-hidden>
-            <Media content={fields.image} first={first} />
-          </div>
-        )}
-        <h3>{fields.title}</h3>
-        <div className={css.Oneliner}>{fields.oneLiner}</div>
+        <a href={href}>
+          {fields.image && (
+            <div className={css.MediaContainer} aria-hidden>
+              <Media content={fields.image} first={first} />
+            </div>
+          )}
+          <h3>{fields.title}</h3>
+          <div className={css.Oneliner}>{fields.oneLiner}</div>
+        </a>
       </li>
     );
   }
