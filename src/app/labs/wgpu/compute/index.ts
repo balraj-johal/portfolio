@@ -3,7 +3,6 @@ import {
   Camera,
   createShaderModule,
   FLOAT_LENGTH_BYTES,
-  WebGpuApi,
 } from "@/libs/wgpu";
 import { WebGPUInstance, WebGPUInstanceProperties } from "@/libs/wgpu";
 
@@ -107,7 +106,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
     };
   }
 
-  private createDepthStencilTexture(api: WebGpuApi) {
+  private createDepthStencilTexture() {
     if (!this.api) throw new Error("No WebGPU API ready");
 
     return this.api.device.createTexture({
@@ -206,7 +205,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
     const vertexState = this.createVertexState(renderShaderModule);
     const fragmentState = this.createFragmentState(renderShaderModule);
 
-    let depthStencilTexture = this.createDepthStencilTexture(this.api);
+    let depthStencilTexture = this.createDepthStencilTexture();
     let renderPassDescription =
       this.createRenderPassDescription(depthStencilTexture);
 
@@ -260,7 +259,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
 
         depthStencilTexture?.destroy();
 
-        depthStencilTexture = this.createDepthStencilTexture(this.api);
+        depthStencilTexture = this.createDepthStencilTexture();
         renderPassDescription =
           this.createRenderPassDescription(depthStencilTexture);
 
