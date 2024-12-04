@@ -139,14 +139,23 @@ export interface IProfessionalWorkFields {
   /** Media */
   image?: Asset | undefined;
 
-  /** FWA Winner */
-  fwaWinner?: boolean | undefined;
+  /** Media Poster */
+  mediaPoster?: Asset | undefined;
 
   /** Roles */
   roles?: string[] | undefined;
 
-  /** isPublic */
+  /** Stack I Used */
+  stackIUsed?: string[] | undefined;
+
+  /** Is this public? */
   isPublic: boolean;
+
+  /** Client */
+  client?: string[] | undefined;
+
+  /** MediaCarousel */
+  mediaCarousel?: Asset[] | undefined;
 }
 
 export interface IProfessionalWork extends Entry<IProfessionalWorkFields> {
@@ -190,13 +199,39 @@ export interface ISelectedWorks extends Entry<ISelectedWorksFields> {
   };
 }
 
+export interface IVideoFields {
+  /** file */
+  file: Asset;
+
+  /** poster */
+  poster: Asset;
+}
+
+export interface IVideo extends Entry<IVideoFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "video";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export type CONTENT_TYPE =
   | "blog"
   | "blogPage"
   | "codeBlock"
   | "landingPageContent"
   | "professionalWork"
-  | "selectedWorks";
+  | "selectedWorks"
+  | "video";
 
 export type IEntry =
   | IBlog
@@ -204,7 +239,8 @@ export type IEntry =
   | ICodeBlock
   | ILandingPageContent
   | IProfessionalWork
-  | ISelectedWorks;
+  | ISelectedWorks
+  | IVideo;
 
 export type LOCALE_CODE = "en-US";
 

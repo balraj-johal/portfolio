@@ -1,7 +1,3 @@
-import Image from "next/image";
-import { AssetFile, AssetDetails } from "contentful";
-
-import { extendedStyle } from "@/utils/css";
 import { SearchParams } from "@/types/routing";
 import {
   IProfessionalWork,
@@ -12,7 +8,10 @@ import {
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
 import { BLOG_HAS_SOME_PUBLISHED_ENTRIES } from "@/content/blog-meta";
+import { WORK_STUDY_PAGE_ENABLED } from "@/config/flags";
+import Media from "@/components/Media";
 import FaviconSwitcher from "@/components/FaviconSwitcher";
+import DefaultContainer from "@/components/DefaultContainer";
 import CopyValueButton from "@/components/CopyValueButton";
 import BlogLinks from "@/components/Blog/BlogLinks";
 
@@ -31,90 +30,93 @@ export default async function Main({
   const selectedWorks = (selectedWorkEntries.fields as ISelectedWorksFields)
     .selections;
 
-  const showBlogLinks =
-    BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!searchParams.secret;
+  const { secret, all } = await searchParams;
+
+  const showBlogLinks = BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!secret;
 
   return (
-    <div className={css.Homepage}>
-      <FaviconSwitcher />
-      <header className={css.Header}>
-        <h1 className="heading-main">Balraj Johal</h1>
-        <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
-        <ul className={css.ContactMe}>
-          <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
-          <li>
+    <DefaultContainer>
+      <div className={css.Homepage}>
+        <FaviconSwitcher />
+        <header className={css.Header}>
+          <h1 className="heading-main">Balraj Johal</h1>
+          <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
+          <ul className={css.ContactMe}>
+            <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
+            <li>
+              <a
+                className={css.InvertOnHover}
+                href="https://twitter.com/BalrajJohal_"
+                target="_blank"
+              >
+                Twitter
+              </a>
+            </li>
+            <li>
+              <a
+                className={css.InvertOnHover}
+                href="https://www.linkedin.com/in/balraj-johal/"
+                target="_blank"
+              >
+                Linkedin
+              </a>
+            </li>
+            <li>
+              <CopyValueButton
+                className={css.InvertOnHover}
+                ariaLabel="Copy email"
+                value="workwithbalraj@gmail.com"
+              >
+                Email
+              </CopyValueButton>
+            </li>
+          </ul>
+        </header>
+
+        <section className={css.AboutMe}>
+          <p>Creative Developer</p>
+          <p>
+            Currently&nbsp;
             <a
-              className={css.InvertOnHover}
-              href="https://twitter.com/BalrajJohal_"
+              className={`${css.PhantomLink} ${css.InvertOnHover}`}
+              href="https://phantom.land"
               target="_blank"
             >
-              Twitter
+              @PHANTOM
             </a>
-          </li>
-          <li>
-            <a
-              className={css.InvertOnHover}
-              href="https://www.linkedin.com/in/balraj-johal/"
-              target="_blank"
-            >
-              Linkedin
-            </a>
-          </li>
-          <li>
-            <CopyValueButton
-              className={css.InvertOnHover}
-              ariaLabel="Copy email"
-              value="workwithbalraj@gmail.com"
-            >
-              Email
-            </CopyValueButton>
-          </li>
-        </ul>
-      </header>
-
-      <section className={css.AboutMe}>
-        <p>Creative Developer</p>
-        <p>
-          Currently&nbsp;
-          <a
-            className={`${css.PhantomLink} ${css.InvertOnHover}`}
-            href="https://phantom.land"
-            target="_blank"
-          >
-            @PHANTOM
-          </a>
-        </p>
-        <p>Based in London</p>
-      </section>
-
-      <section className={css.AccoladesSection}>
-        <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
-        <p>1x FWA Site of the Day</p>
-        <p>1x Lovie People&apos;s Choice</p>
-        <p>1x Lovie Silver</p>
-        <p>3x Awwwards Honorable Mention</p>
-      </section>
-
-      {showBlogLinks && (
-        <section className={css.BlogLinksSection}>
-          <BlogLinks />
+          </p>
+          <p>Based in London</p>
         </section>
-      )}
 
-      <section className={css.SelectedWork}>
-        <h2 className={cssUtils.ScreenReaderOnly}>Selected Works</h2>
-        <ul className={css.WorkList}>
-          {selectedWorks.map((entry, i) => (
-            <SelectedWorkItem
-              entry={entry}
-              showAll={!!searchParams.all}
-              first={i === 0}
-              key={i}
-            />
-          ))}
-        </ul>
-      </section>
-    </div>
+        <section className={css.AccoladesSection}>
+          <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
+          <p>1x FWA Site of the Day</p>
+          <p>1x Lovie People&apos;s Choice</p>
+          <p>1x Lovie Silver</p>
+          <p>3x Awwwards Honorable Mention</p>
+        </section>
+
+        {showBlogLinks && (
+          <section className={css.BlogLinksSection}>
+            <BlogLinks />
+          </section>
+        )}
+
+        <section className={css.SelectedWork}>
+          <h2 className={cssUtils.ScreenReaderOnly}>Selected Works</h2>
+          <ul className={css.WorkList}>
+            {selectedWorks.map((entry, i) => (
+              <SelectedWorkItem
+                entry={entry}
+                showAll={!!all}
+                key={entry.sys.id}
+                first={i === 0}
+              />
+            ))}
+          </ul>
+        </section>
+      </div>
+    </DefaultContainer>
   );
 }
 
@@ -128,85 +130,38 @@ const SelectedWorkItem = ({
   first: boolean;
 }) => {
   const fields = entry.fields as unknown as IProfessionalWorkFields;
-  const getListItemStyle = (index: number) => {
-    return extendedStyle({
-      "--index": `${index}`,
-    });
-  };
 
   if (fields.isPublic || showAll) {
+    const href = WORK_STUDY_PAGE_ENABLED
+      ? `work/${fields.slug}`
+      : fields.linkToWork;
+
+    if (href) {
+      return (
+        <li>
+          <a href={href}>
+            {fields.image && (
+              <div className={css.MediaContainer} aria-hidden>
+                <Media content={fields.image} first={first} />
+              </div>
+            )}
+            <h3>{fields.title}</h3>
+            <div className={css.Oneliner}>{fields.oneLiner}</div>
+          </a>
+        </li>
+      );
+    }
+
     return (
       <li>
-        <a
-          href={fields.linkToWork}
-          aria-label={`link to ${fields.title}`}
-          target="_blank"
-        >
-          {fields.image && (
-            <div className={css.MediaContainer}>
-              <Media
-                url={`https:${fields.image.fields.file?.url}`}
-                details={fields.image.fields.file?.details}
-                first={first}
-              />
-            </div>
-          )}
-          <h3>{fields.title}</h3>
-          {fields.roles && (
-            <div className={css.RolesPanel}>
-              <h4 className={cssUtils.ScreenReaderOnly}>
-                Roles on this project
-              </h4>
-              <ul>
-                {fields.roles.map((role, i) => (
-                  <li key={role} style={getListItemStyle(i)}>
-                    {role}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </a>
+        {fields.image && (
+          <div className={css.MediaContainer} aria-hidden>
+            <Media content={fields.image} first={first} />
+          </div>
+        )}
+        <h3>{fields.title}</h3>
+        <div className={css.Oneliner}>{fields.oneLiner}</div>
       </li>
     );
-  }
-};
-
-const SUPPORTED_FILE_TYPES = ["mp4", "webm"];
-
-const Media = ({
-  url,
-  first,
-  details,
-}: {
-  url: string;
-  first?: boolean;
-  details?: AssetFile | AssetDetails;
-}) => {
-  const isVideo = !!SUPPORTED_FILE_TYPES.find((filetype) =>
-    url.includes(filetype),
-  );
-
-  if (isVideo) {
-    return (
-      <video muted playsInline autoPlay loop>
-        <source src={url}></source>
-      </video>
-    );
-  }
-
-  const imageDetails = (details as AssetDetails)?.image;
-  if (imageDetails) {
-    return (
-      <Image
-        src={url}
-        width={imageDetails.width}
-        height={imageDetails.height}
-        priority={first}
-        alt=""
-      />
-    );
-  } else {
-    return <Image src={url} alt="" fill priority={first} />;
   }
 };

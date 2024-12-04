@@ -29,7 +29,9 @@ const ProfessionalEntryImages = ({
 
     window.addEventListener("scroll", handleScroll);
 
-    () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (

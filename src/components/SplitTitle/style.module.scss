@@ -1,0 +1,7 @@
+.Title {
+  font-size: var(--font-size);
+
+  &.IsLong {
+    font-size: var(--is-long-font-size);
+  }
+}

@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Metadata } from "next";
 
-import { SearchParams } from "@/types/routing";
+// import { SearchParams } from "@/types/routing";
 import { BLOG_ENTRIES } from "@/content/blog-meta";
 import BlogEntry from "@/components/Blog/BlogEntry";
 
@@ -27,9 +27,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page({ searchParams }: { searchParams: SearchParams }) {
-  if (!searchParams.secret) notFound();
-
+export default function Page() {
   return (
     <BlogEntry
       title={ENTRY.title}

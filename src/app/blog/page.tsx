@@ -1,6 +1,3 @@
-import { notFound } from "next/navigation";
-
-import { SearchParams } from "@/types/routing";
 import BlogLinks from "@/components/Blog/BlogLinks";
 
 import css from "./style.module.scss";
@@ -14,13 +11,7 @@ export async function generateMetadata() {
   };
 }
 
-export default async function BlogEntries({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  if (!searchParams.secret) notFound();
-
+export default function BlogEntries() {
   return (
     <section className={css.BlogPostsWrapper}>
       <h1 className="heading-main">Words</h1>
