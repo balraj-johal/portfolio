@@ -30,8 +30,9 @@ export default async function Main({
   const selectedWorks = (selectedWorkEntries.fields as ISelectedWorksFields)
     .selections;
 
-  const showBlogLinks =
-    BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!searchParams.secret;
+  const { secret, all } = await searchParams;
+
+  const showBlogLinks = BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!secret;
 
   return (
     <DefaultContainer>
@@ -107,7 +108,7 @@ export default async function Main({
             {selectedWorks.map((entry, i) => (
               <SelectedWorkItem
                 entry={entry}
-                showAll={!!searchParams.all}
+                showAll={!!all}
                 key={entry.sys.id}
                 first={i === 0}
               />

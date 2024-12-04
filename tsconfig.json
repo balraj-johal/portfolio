@@ -25,10 +25,10 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "ts-node": {
-      "esm": true,
-      "compilerOptions": {
-        "module": "nodenext",
-      }
-    },
+    "esm": true,
+    "compilerOptions": {
+      "module": "nodenext"
+    }
+  },
   "exclude": ["node_modules"]
 }

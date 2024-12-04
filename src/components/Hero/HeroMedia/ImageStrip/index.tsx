@@ -7,9 +7,9 @@ import { useAnimationFrame } from "framer-motion";
 import { ImageInfo } from "@/types/contentful";
 
 import HeroTitle from "../../HeroTitle";
-import { ClipPath } from "..";
 import { useImageStrip } from "./useImageStrip";
 import { ImageContainer, ImageStripWrapper, StripImage } from "./styles";
+import { ClipPath } from "..";
 
 const easeInCirc = (value: number) => {
   return 1 - Math.sqrt(1 - Math.pow(value, 2));

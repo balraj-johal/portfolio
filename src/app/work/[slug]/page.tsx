@@ -13,16 +13,19 @@ import { BackLink, BackLinkCutCorner, Title } from "./styles";
 import css from "./style.module.scss";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const CONTENT_TYPE = "professionalWork";
 
 export async function generateMetadata({ params }: Props) {
   const entries = await getContentByType(CONTENT_TYPE);
-  const entry = findEntryBySlug(entries, params.slug);
+
+  const { slug } = await params;
+
+  const entry = findEntryBySlug(entries, slug);
   return {
     title: entry?.fields.title,
     robots: {
@@ -40,7 +43,10 @@ export async function generateStaticParams() {
 
 export default async function Work({ params }: Props) {
   const entries = await getContentByType(CONTENT_TYPE);
-  const entry = findEntryBySlug(entries, params.slug);
+
+  const { slug } = await params;
+
+  const entry = findEntryBySlug(entries, slug);
 
   const {
     title,
