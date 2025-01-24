@@ -41,6 +41,11 @@ export class WebGPUInstance {
     };
   }
 
+  /** TODO: fix this
+   *
+   * https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html
+   * https://eliemichel.github.io/LearnWebGPU/basic-3d-rendering/some-interaction/resizing-window.html
+   */
   hasResized() {
     const { targetWidth, targetHeight } = this.getTargetCanvasSize();
 
@@ -62,12 +67,6 @@ export class WebGPUInstance {
       { threshold: [0] },
     ).observe(this.canvas);
   }
-
-  /** TODO: fix this
-   *
-   * https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html
-   * https://eliemichel.github.io/LearnWebGPU/basic-3d-rendering/some-interaction/resizing-window.html
-   */
 
   async initializeContext(
     configuration: Omit<GPUCanvasConfiguration, "device" | "format">,

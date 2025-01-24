@@ -41,7 +41,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
 
     this.camera = new Camera({
       canvas: this.canvas,
-      initialPosition: [0, 0, 5],
+      position: new Float32Array([0, 0, 5]),
       nearPlane: 0.01,
       farPlane: 10,
     });
@@ -271,13 +271,11 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       const colorAttachments = [...renderPassDescription.colorAttachments];
       const firstColorAttachment = colorAttachments[0];
 
-      if (firstColorAttachment != null) {
+      if (firstColorAttachment !== null) {
         firstColorAttachment.view = this.api.context
           .getCurrentTexture()
           .createView();
       }
-
-      this.camera.updateBuffer(this.api);
 
       commandEncoder.copyBufferToBuffer(
         computeOutputBuffer,
@@ -302,6 +300,9 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
     const render = async () => {
       if (!this.api) throw new Error("No WebGPU API ready");
 
+      this.camera.reproject();
+      this.camera.updateBuffer(this.api);
+
       // prep the commmand encoder
       const commandEncoder = this.api.device.createCommandEncoder();
 
@@ -311,7 +312,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       const range = computeResultsBuffer.getMappedRange();
       const result = new Float32Array(range).slice(0, 12);
       computeResultsBuffer.unmap();
-      console.log(result);
+      // console.log(result);
 
       // TODO: can we go straight buffer to buffer here?
       performRenderPass(commandEncoder);

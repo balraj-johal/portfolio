@@ -28,8 +28,6 @@ const SHADERS = {
   blinnPhong: blinnPhongShader,
 };
 
-interface WebGPUExplorationProperties extends WebGPUInstanceProperties {}
-
 export default class WebGPUExplorationGLTF extends WebGPUInstance {
   shaderModule?: GPUShaderModule;
   depthStencilTexture?: GPUTexture;
@@ -39,12 +37,12 @@ export default class WebGPUExplorationGLTF extends WebGPUInstance {
     lightPosition: { x: 1, y: 1, z: 1 },
   };
 
-  constructor(properties: WebGPUExplorationProperties) {
+  constructor(properties: WebGPUInstanceProperties) {
     super(properties);
 
     this.camera = new Camera({
       canvas: this.canvas,
-      initialPosition: [0, 0, 5],
+      position: new Float32Array([0, 0, 5]),
       nearPlane: 0.01,
       farPlane: 10,
     });
