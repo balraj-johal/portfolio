@@ -6,6 +6,10 @@ export function doArraysOverlap(first: unknown[], second: unknown[]) {
   return false;
 }
 
+export function toAllUpperCase(input: string[]) {
+  return input.map((value) => value.toUpperCase());
+}
+
 export function shuffle<T extends unknown[]>(input: T) {
   let currentIndex = input.length;
   const array = [...input];

@@ -1,6 +1,6 @@
 import input from "@/libs/controllers/input";
 import { Camera, CameraProperties } from "@/libs/wgpu/classes/camera";
-import { doArraysOverlap } from "@/utils/array";
+import { doArraysOverlap, toAllUpperCase } from "@/utils/array";
 
 enum Action {
   FORWARD = "forward",
@@ -13,31 +13,32 @@ enum Action {
 }
 
 const KEY_ACTION_MAP: Record<Action, string[]> = {
-  [Action.FORWARD]: ["W", "w", "ArrowUp"],
-  [Action.BACKWARD]: ["S", "s", "ArrowDown"],
-  [Action.STRAFE_LEFT]: ["A", "a", "ArrowLeft"],
-  [Action.STRAFE_RIGHT]: ["D", "d", "ArrowRight"],
+  [Action.FORWARD]: ["W", "ArrowUp"],
+  [Action.BACKWARD]: ["S", "ArrowDown"],
+  [Action.STRAFE_LEFT]: ["A", "ArrowLeft"],
+  [Action.STRAFE_RIGHT]: ["D", "ArrowRight"],
   [Action.SPRINT]: ["Shift"],
-  [Action.SINK]: ["Q", "q"],
-  [Action.FLOAT_UP]: ["E", "e"],
+  [Action.FLOAT_UP]: ["E"],
+  [Action.SINK]: ["Q"],
 };
 
 function getKeyboardActions(): Action[] {
   const actions: Action[] = [];
+  const pressedKeys = toAllUpperCase(Object.values(input.pressedKeys));
 
   for (const [action, map] of Object.entries(KEY_ACTION_MAP)) {
-    if (doArraysOverlap(map, input.pressedKeys)) {
-      actions.push(action as Action);
-    }
+    if (!doArraysOverlap(map, pressedKeys)) continue;
+    actions.push(action as Action);
   }
 
   return actions;
 }
 
+const SPEED_SCALAR = 0.001;
+
 export class FpsCamera extends Camera {
   private sprintScalar = 3;
-  private speedScalar = 0.001;
-  speed = 1;
+  private speed = 1;
 
   constructor(properties: CameraProperties) {
     super(properties);
@@ -47,8 +48,7 @@ export class FpsCamera extends Camera {
     const sprintSpeedInfluence = actions.includes(Action.SPRINT)
       ? this.sprintScalar
       : 1;
-
-    return sprintSpeedInfluence * this.speedScalar * this.speed;
+    return sprintSpeedInfluence * SPEED_SCALAR * this.speed;
   }
 
   private getVelocity(actions: Action[]) {

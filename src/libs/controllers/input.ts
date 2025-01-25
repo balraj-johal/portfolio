@@ -31,7 +31,6 @@ class InputController {
   private _pointerPosition: PositionInput = null;
   private _lastInputMethod = getInputMethodOnLoad();
 
-  // onAction = new Map<string, (action: Action[]) => void>();
   onKeyChange = new Map<string, (keys: KeysInput) => void>();
   onPositionChange = new Map<string, (position: PositionInput) => void>();
   onLastMethodChange = new Map<string, (method: InputMethod) => void>();
@@ -48,7 +47,6 @@ class InputController {
 
   set pressedKeys(value: KeysInput) {
     this._pressedKeys = value;
-    // this.executeOnActionCallbacks();
     this.executeOnKeyChangeCallbacks();
   }
 
@@ -59,7 +57,6 @@ class InputController {
   set pointerPosition(value: PositionInput) {
     this._pointerPosition = value;
     this.executeOnPositionChangeCallbacks();
-    // this.executeOnActionCallbacks();
   }
 
   get lastInputMethod() {
@@ -72,17 +69,6 @@ class InputController {
     this._lastInputMethod = value;
     document.body.dataset.lastInputMethod = value;
   }
-
-  // private executeOnActionCallbacks() {
-  //   for (const [_, callback] of this.onAction) {
-  //     callback(
-  //       getActionsFromInput({
-  //         keys: this.pressedKeys,
-  //         position: this.pointerPosition,
-  //       }),
-  //     );
-  //   }
-  // }
 
   private executeOnKeyChangeCallbacks() {
     for (const [_, callback] of this.onKeyChange) {
@@ -100,7 +86,7 @@ class InputController {
     if (repeat) return;
 
     this.lastInputMethod = InputMethod.KEYBOARD;
-    this.pressedKeys = [...this.pressedKeys, key];
+    this.pressedKeys = [...this.pressedKeys, key.toUpperCase()];
 
     log(`[INPUT]: key ${key} pressed`);
   };
@@ -126,7 +112,9 @@ class InputController {
 
   private releaseKey = ({ key: released }: KeyboardEvent) => {
     this.lastInputMethod = InputMethod.KEYBOARD;
-    this.pressedKeys = this.pressedKeys.filter((key) => key !== released);
+    this.pressedKeys = this.pressedKeys.filter(
+      (key) => key !== released.toUpperCase(),
+    );
 
     log(`[INPUT]: key ${released} released`);
   };
@@ -134,7 +122,7 @@ class InputController {
   private setup() {
     window.addEventListener("keydown", this.pressKey, { passive: true });
     window.addEventListener("keyup", this.releaseKey, { passive: true });
-    window.addEventListener("mousedown", this.updatePosition, {
+    window.addEventListener("pointerdown", this.updatePosition, {
       passive: true,
     });
     window.addEventListener("touchstart", this.updatePosition, {
@@ -147,7 +135,7 @@ class InputController {
   cleanup() {
     window.removeEventListener("keydown", this.pressKey);
     window.removeEventListener("keyup", this.releaseKey);
-    window.removeEventListener("mousedown", this.updatePosition);
+    window.removeEventListener("pointerdown", this.updatePosition);
     window.removeEventListener("touchstart", this.updatePosition);
     window.removeEventListener("mouseup", this.removePosition);
     window.removeEventListener("touchup", this.removePosition);
