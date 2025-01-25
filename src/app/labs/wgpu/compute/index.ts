@@ -1,10 +1,11 @@
 import {
   alignTo,
-  Camera,
   createShaderModule,
   FLOAT_LENGTH_BYTES,
+  WebGPUInstance,
+  WebGPUInstanceProperties,
 } from "@/libs/wgpu";
-import { WebGPUInstance, WebGPUInstanceProperties } from "@/libs/wgpu";
+import { FpsCamera } from "@/libs/wgpu/classes/camera/fps-camera";
 
 import { getComputeShader, getRenderShader } from "./shaders";
 
@@ -34,17 +35,15 @@ const INDICES = new Uint16Array([
 ]);
 
 export default class WebGPUExplorationCompute extends WebGPUInstance {
-  private camera;
+  private camera = new FpsCamera({
+    canvas: this.canvas,
+    position: new Float32Array([0, 0, 5]),
+    nearPlane: 0.01,
+    farPlane: 10,
+  });
 
   constructor(properties: WebGPUExplorationProperties) {
     super(properties);
-
-    this.camera = new Camera({
-      canvas: this.canvas,
-      position: new Float32Array([0, 0, 5]),
-      nearPlane: 0.01,
-      farPlane: 10,
-    });
   }
 
   private createVertexState(shaderModule: GPUShaderModule): GPUVertexState {
@@ -297,9 +296,16 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       renderPass.end();
     };
 
-    const render = async () => {
+    let lastTick = performance.now();
+
+    const tick = async () => {
       if (!this.api) throw new Error("No WebGPU API ready");
 
+      const now = performance.now();
+      const delta = performance.now() - lastTick;
+      lastTick = now;
+
+      this.camera.update(delta);
       this.camera.reproject();
       this.camera.updateBuffer(this.api);
 
@@ -321,9 +327,9 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       this.api.device.queue.submit([commandEncoder.finish()]);
 
       // request render of next frame
-      requestAnimationFrame(render);
+      requestAnimationFrame(tick);
     };
 
-    requestAnimationFrame(render);
+    requestAnimationFrame(tick);
   }
 }

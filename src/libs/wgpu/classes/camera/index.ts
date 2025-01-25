@@ -32,7 +32,7 @@ const DEFAULT_PROPERTIES = {
 
 const SCENE_ORIGIN_POSITION = new Float32Array([0, 0, 0]);
 
-interface CameraProperties {
+export interface CameraProperties {
   canvas: HTMLCanvasElement;
   position?: Float32Array;
   nearPlane?: number;
