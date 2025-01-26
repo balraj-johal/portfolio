@@ -1,7 +1,7 @@
 import { log } from "@/utils/logger";
 
-type PositionInput = { x: number; y: number } | null;
-type KeysInput = string[];
+export type PositionInput = { x: number; y: number } | null;
+export type KeysInput = string[];
 
 enum InputMethod {
   MOUSE = "mouse",
@@ -14,10 +14,6 @@ function getEventPosition(event: MouseEvent | Event): PositionInput {
     return { x: event.clientX, y: event.clientY };
   }
 
-  if (event instanceof MouseEvent) {
-    return { x: event.clientX, y: event.clientY };
-  }
-
   return null;
 }
 
@@ -27,12 +23,24 @@ function getInputMethodOnLoad() {
 }
 
 class InputController {
+  private eventController = new AbortController();
+  private readonly eventOptions: AddEventListenerOptions = {
+    passive: true,
+    signal: this.eventController.signal,
+  };
+
+  private _position: PositionInput = null;
+  private lastPosition: PositionInput = null;
+  private _clickedPosition: PositionInput = null;
   private _pressedKeys: KeysInput = [];
-  private _pointerPosition: PositionInput = null;
+
   private _lastInputMethod = getInputMethodOnLoad();
 
-  onKeyChange = new Map<string, (keys: KeysInput) => void>();
-  onPositionChange = new Map<string, (position: PositionInput) => void>();
+  positionDelta = { x: 0, y: 0 };
+
+  onMove = new Map<string, (position: PositionInput) => void>();
+  onClick = new Map<string, (position: PositionInput) => void>();
+  onKey = new Map<string, (keys: KeysInput) => void>();
   onLastMethodChange = new Map<string, (method: InputMethod) => void>();
 
   constructor() {
@@ -47,16 +55,32 @@ class InputController {
 
   set pressedKeys(value: KeysInput) {
     this._pressedKeys = value;
-    this.executeOnKeyChangeCallbacks();
+    this.executeOnKeyCallbacks();
   }
 
-  get pointerPosition() {
-    return this._pointerPosition;
+  get clickedPosition() {
+    return this._clickedPosition;
   }
 
-  set pointerPosition(value: PositionInput) {
-    this._pointerPosition = value;
-    this.executeOnPositionChangeCallbacks();
+  set clickedPosition(value: PositionInput) {
+    this._clickedPosition = value;
+    this.executeOnClickCallbacks();
+  }
+
+  get position() {
+    return this._position;
+  }
+
+  set position(newPosition: PositionInput) {
+    if (this.lastPosition && newPosition) {
+      this.positionDelta.x = newPosition.x - this.lastPosition.x;
+      this.positionDelta.y = newPosition.y - this.lastPosition.y;
+    }
+
+    this.lastPosition = this._position;
+    this._position = newPosition;
+
+    this.executeOnMoveCallbacks();
   }
 
   get lastInputMethod() {
@@ -70,15 +94,21 @@ class InputController {
     document.body.dataset.lastInputMethod = value;
   }
 
-  private executeOnKeyChangeCallbacks() {
-    for (const [_, callback] of this.onKeyChange) {
+  private executeOnKeyCallbacks() {
+    for (const [_, callback] of this.onKey) {
       callback(this._pressedKeys);
     }
   }
 
-  private executeOnPositionChangeCallbacks() {
-    for (const [_, callback] of this.onPositionChange) {
-      callback(this.pointerPosition);
+  private executeOnClickCallbacks() {
+    for (const [_, callback] of this.onClick) {
+      callback(this.clickedPosition);
+    }
+  }
+
+  private executeOnMoveCallbacks() {
+    for (const [_, callback] of this.onMove) {
+      callback(this.position);
     }
   }
 
@@ -91,21 +121,35 @@ class InputController {
     log(`[INPUT]: key ${key} pressed`);
   };
 
+  private updateLastInputFromPointer(event: MouseEvent | PointerEvent | Event) {
+    if (event instanceof PointerEvent) {
+      const isMouse = event.pointerType === "mouse";
+      this.lastInputMethod = isMouse ? InputMethod.MOUSE : InputMethod.TOUCH;
+    }
+  }
+
   private updatePosition = (event: MouseEvent | PointerEvent | Event) => {
     const position = getEventPosition(event);
     if (!position) return;
 
-    if (event instanceof PointerEvent) {
-      this.lastInputMethod =
-        event.pointerType === "mouse" ? InputMethod.MOUSE : InputMethod.TOUCH;
-    }
-    this.pointerPosition = position;
+    this.updateLastInputFromPointer(event);
+
+    this.position = position;
+  };
+
+  private updateClickPosition = (event: MouseEvent | PointerEvent | Event) => {
+    const position = getEventPosition(event);
+    if (!position) return;
+
+    this.updateLastInputFromPointer(event);
+
+    this.clickedPosition = position;
 
     log(`[INPUT]: pointer pressed at ${position.x}, ${position.y}`);
   };
 
   private removePosition = () => {
-    this.pointerPosition = null;
+    this.clickedPosition = null;
 
     log("[INPUT]: pointer released");
   };
@@ -120,25 +164,31 @@ class InputController {
   };
 
   private setup() {
-    window.addEventListener("keydown", this.pressKey, { passive: true });
-    window.addEventListener("keyup", this.releaseKey, { passive: true });
-    window.addEventListener("pointerdown", this.updatePosition, {
-      passive: true,
-    });
-    window.addEventListener("touchstart", this.updatePosition, {
-      passive: true,
-    });
-    window.addEventListener("mouseup", this.removePosition, { passive: true });
-    window.addEventListener("touchup", this.removePosition, { passive: true });
+    window.addEventListener("keydown", this.pressKey, this.eventOptions);
+    window.addEventListener("keyup", this.releaseKey, this.eventOptions);
+    window.addEventListener(
+      "pointerdown",
+      this.updateClickPosition,
+      this.eventOptions,
+    );
+    window.addEventListener(
+      "pointermove",
+      this.updatePosition,
+      this.eventOptions,
+    );
+    window.addEventListener(
+      "touchstart",
+      this.updateClickPosition,
+      this.eventOptions,
+    );
+    window.addEventListener("mouseup", this.removePosition, this.eventOptions);
+    window.addEventListener("touchup", this.removePosition, this.eventOptions);
   }
 
   cleanup() {
-    window.removeEventListener("keydown", this.pressKey);
-    window.removeEventListener("keyup", this.releaseKey);
-    window.removeEventListener("pointerdown", this.updatePosition);
-    window.removeEventListener("touchstart", this.updatePosition);
-    window.removeEventListener("mouseup", this.removePosition);
-    window.removeEventListener("touchup", this.removePosition);
+    this.eventController.abort();
+    this.eventController = new AbortController();
+    this.eventOptions.signal = this.eventController.signal;
   }
 }
 
