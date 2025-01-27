@@ -44,7 +44,17 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
 
   constructor(properties: WebGPUExplorationProperties) {
     super(properties);
+
+    this.setupPointerLockListener();
   }
+
+  private setupPointerLockListener() {
+    this.canvas.addEventListener("click", this.lockPointer);
+  }
+
+  private readonly lockPointer = async () => {
+    await this.canvas.requestPointerLock();
+  };
 
   private createVertexState(shaderModule: GPUShaderModule): GPUVertexState {
     const positionAttribute: GPUVertexAttribute = {
@@ -286,6 +296,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
 
       const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
       renderPass.setPipeline(renderPipeline);
+
       // TODO: is this doin shit?
       renderPass.setBindGroup(0, viewParameterBindGroup);
 
@@ -318,7 +329,6 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       const range = computeResultsBuffer.getMappedRange();
       const result = new Float32Array(range).slice(0, 12);
       computeResultsBuffer.unmap();
-      // console.log(result);
 
       // TODO: can we go straight buffer to buffer here?
       performRenderPass(commandEncoder);

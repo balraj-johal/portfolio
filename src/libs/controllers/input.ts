@@ -1,7 +1,5 @@
 import { log } from "@/utils/logger";
-
-export type PositionInput = { x: number; y: number } | null;
-export type KeysInput = string[];
+import type { PositionInput, KeysInput } from "@/libs/wgpu/types/input";
 
 enum InputMethod {
   MOUSE = "mouse",
@@ -25,12 +23,11 @@ function getInputMethodOnLoad() {
 class InputController {
   private eventController = new AbortController();
   private readonly eventOptions: AddEventListenerOptions = {
-    passive: true,
     signal: this.eventController.signal,
+    passive: true,
   };
 
   private _position: PositionInput = null;
-  private lastPosition: PositionInput = null;
   private _clickedPosition: PositionInput = null;
   private _pressedKeys: KeysInput = [];
 
@@ -72,12 +69,6 @@ class InputController {
   }
 
   set position(newPosition: PositionInput) {
-    if (this.lastPosition && newPosition) {
-      this.positionDelta.x = newPosition.x - this.lastPosition.x;
-      this.positionDelta.y = newPosition.y - this.lastPosition.y;
-    }
-
-    this.lastPosition = this._position;
     this._position = newPosition;
 
     this.executeOnMoveCallbacks();
@@ -128,13 +119,15 @@ class InputController {
     }
   }
 
-  private updatePosition = (event: MouseEvent | PointerEvent | Event) => {
+  private updatePosition = (event: MouseEvent) => {
     const position = getEventPosition(event);
     if (!position) return;
 
     this.updateLastInputFromPointer(event);
 
     this.position = position;
+    this.positionDelta.x = event.movementX;
+    this.positionDelta.y = event.movementY;
   };
 
   private updateClickPosition = (event: MouseEvent | PointerEvent | Event) => {
@@ -172,13 +165,8 @@ class InputController {
       this.eventOptions,
     );
     window.addEventListener(
-      "pointermove",
+      "mousemove",
       this.updatePosition,
-      this.eventOptions,
-    );
-    window.addEventListener(
-      "touchstart",
-      this.updateClickPosition,
       this.eventOptions,
     );
     window.addEventListener("mouseup", this.removePosition, this.eventOptions);

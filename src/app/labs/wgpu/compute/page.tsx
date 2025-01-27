@@ -15,6 +15,8 @@ export default function Page({ searchParams }: { searchParams: SearchParams }) {
   const loadedRef = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  console.log('render')
+
   useEffect(() => {
     if (loadedRef.current) return;
     loadedRef.current = true;
