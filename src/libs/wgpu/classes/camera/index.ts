@@ -127,6 +127,8 @@ export class Camera {
    * then updates the rotation matrix.
    */
   rotate(x: number, y: number, z: number) {
+    // TODO: rather than perform the rotations on each vector each time,
+    //       can I instead multiply the vector by the rotation matrix?
     // update direction vectors
     vec3.rotateX(this.forward, VEC_3_IDENTITY, x, this.forward);
     vec3.rotateY(this.forward, VEC_3_IDENTITY, y, this.forward);
@@ -139,15 +141,13 @@ export class Camera {
     const qx = quat.fromAxisAngle([1, 0, 0], x);
     const qy = quat.fromAxisAngle([0, 1, 0], y);
 
-    // apply compound rotation quaternion
-    const newRotation = quat.mul(qy, qx);
-    this.rotation = quat.mul(this.rotation, newRotation);
+    // TODO: why did this work??????
+    // apply each rotation quaternion in order independently
+    this.rotation = quat.mul(this.rotation, qx);
+    this.rotation = quat.mul(qy, this.rotation);
 
     // update rotation matrix
     this.rotationMatrix = mat4.fromQuat(this.rotation);
-
-    // const target = vec3.add(this.position, this.forward);
-    // this.rotationMatrix = mat4.lookAt(this.position, target, this.up);
   }
 
   translate(vector: Float32Array) {

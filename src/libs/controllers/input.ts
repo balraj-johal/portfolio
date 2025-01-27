@@ -33,12 +33,15 @@ class InputController {
 
   private _lastInputMethod = getInputMethodOnLoad();
 
-  positionDelta = { x: 0, y: 0 };
+  readonly positionDelta = { x: 0, y: 0 };
 
-  onMove = new Map<string, (position: PositionInput) => void>();
-  onClick = new Map<string, (position: PositionInput) => void>();
-  onKey = new Map<string, (keys: KeysInput) => void>();
-  onLastMethodChange = new Map<string, (method: InputMethod) => void>();
+  readonly onMove = new Map<string, (position: PositionInput) => void>();
+  readonly onClick = new Map<string, (position: PositionInput) => void>();
+  readonly onKey = new Map<string, (keys: KeysInput) => void>();
+  readonly onLastMethodChange = new Map<
+    string,
+    (method: InputMethod) => void
+  >();
 
   constructor() {
     this.setup();
@@ -119,7 +122,7 @@ class InputController {
     }
   }
 
-  private updatePosition = (event: MouseEvent) => {
+  private move = (event: MouseEvent) => {
     const position = getEventPosition(event);
     if (!position) return;
 
@@ -130,12 +133,11 @@ class InputController {
     this.positionDelta.y = event.movementY;
   };
 
-  private updateClickPosition = (event: MouseEvent | PointerEvent | Event) => {
+  private click = (event: MouseEvent | PointerEvent | Event) => {
     const position = getEventPosition(event);
     if (!position) return;
 
     this.updateLastInputFromPointer(event);
-
     this.clickedPosition = position;
 
     log(`[INPUT]: pointer pressed at ${position.x}, ${position.y}`);
@@ -159,16 +161,8 @@ class InputController {
   private setup() {
     window.addEventListener("keydown", this.pressKey, this.eventOptions);
     window.addEventListener("keyup", this.releaseKey, this.eventOptions);
-    window.addEventListener(
-      "pointerdown",
-      this.updateClickPosition,
-      this.eventOptions,
-    );
-    window.addEventListener(
-      "mousemove",
-      this.updatePosition,
-      this.eventOptions,
-    );
+    window.addEventListener("pointerdown", this.click, this.eventOptions);
+    window.addEventListener("mousemove", this.move, this.eventOptions);
     window.addEventListener("mouseup", this.removePosition, this.eventOptions);
     window.addEventListener("touchup", this.removePosition, this.eventOptions);
   }
