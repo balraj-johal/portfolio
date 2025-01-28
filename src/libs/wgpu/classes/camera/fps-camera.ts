@@ -38,6 +38,7 @@ export class FpsCamera extends Camera {
     super(properties);
 
     this.setup();
+    this.rotate(0, 0, 0);
   }
 
   private readonly handleLookMove = () => {

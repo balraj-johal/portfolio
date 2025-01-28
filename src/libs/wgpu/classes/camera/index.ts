@@ -129,7 +129,6 @@ export class Camera {
   rotate(x: number, y: number, z: number) {
     // TODO: rather than perform the rotations on each vector each time,
     //       can I instead multiply the vector by the rotation matrix?
-    // update direction vectors
     vec3.rotateX(this.forward, VEC_3_IDENTITY, x, this.forward);
     vec3.rotateY(this.forward, VEC_3_IDENTITY, y, this.forward);
     vec3.rotateX(this.right, VEC_3_IDENTITY, x, this.right);
