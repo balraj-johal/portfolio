@@ -1,3 +1,4 @@
+import { FpsCamera } from "@/libs/wgpu/classes/camera/fps-camera";
 import {
   alignTo,
   createShaderModule,
@@ -5,7 +6,6 @@ import {
   WebGPUInstance,
   WebGPUInstanceProperties,
 } from "@/libs/wgpu";
-import { FpsCamera } from "@/libs/wgpu/classes/camera/fps-camera";
 
 import { getComputeShader, getRenderShader } from "./shaders";
 
@@ -307,6 +307,55 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
       renderPass.end();
     };
 
+    const performWireframeRenderPass = async (
+      commandEncoder: GPUCommandEncoder,
+    ) => {
+      if (!this.api) throw new Error("No WebGPU API ready");
+
+      // if (this.hasResized()) {
+      //   this.setupCanvas();
+
+      //   depthStencilTexture?.destroy();
+
+      //   depthStencilTexture = this.createDepthStencilTexture();
+      //   renderPassDescription =
+      //     this.createRenderPassDescription(depthStencilTexture);
+
+      //   this.configureContext({
+      //     usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      //   });
+      // }
+
+      // const colorAttachments = [...renderPassDescription.colorAttachments];
+      // const firstColorAttachment = colorAttachments[0];
+
+      // if (firstColorAttachment !== null) {
+      //   firstColorAttachment.view = this.api.context
+      //     .getCurrentTexture()
+      //     .createView();
+      // }
+
+      // commandEncoder.copyBufferToBuffer(
+      //   computeOutputBuffer,
+      //   0,
+      //   meshVertexBuffer,
+      //   0,
+      //   vertexLength,
+      // );
+
+      const renderPass = commandEncoder.beginRenderPass(renderPassDescription);
+      renderPass.setPipeline(renderPipeline);
+
+      // TODO: is this doin shit?
+      renderPass.setBindGroup(0, viewParameterBindGroup);
+
+      renderPass.setVertexBuffer(0, meshVertexBuffer);
+      renderPass.setIndexBuffer(meshIndexBuffer, "uint16");
+      renderPass.drawIndexed(6);
+
+      renderPass.end();
+    };
+
     let lastTick = performance.now();
 
     const tick = async () => {
@@ -332,6 +381,7 @@ export default class WebGPUExplorationCompute extends WebGPUInstance {
 
       // TODO: can we go straight buffer to buffer here?
       performRenderPass(commandEncoder);
+      performWireframeRenderPass(commandEncoder);
 
       // submit commands to GPU to render
       this.api.device.queue.submit([commandEncoder.finish()]);
