@@ -1,9 +1,12 @@
+import Image from "next/image";
+
 import { SearchParams } from "@/types/routing";
-import {
+import type {
   IProfessionalWork,
   IProfessionalWorkFields,
   ISelectedWorks,
   ISelectedWorksFields,
+  IVideoFields,
 } from "@/types/generated/contentful";
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
@@ -15,6 +18,7 @@ import DefaultContainer from "@/components/DefaultContainer";
 import CopyValueButton from "@/components/CopyValueButton";
 import BlogLinks from "@/components/Blog/BlogLinks";
 
+import meImage from "../../public/assets/images/me.png";
 import css from "./page.module.scss";
 
 // TODO: fix bad type assertions in this file
@@ -35,76 +39,88 @@ export default async function Main({
   const showBlogLinks = BLOG_HAS_SOME_PUBLISHED_ENTRIES || !!secret;
 
   return (
-    <DefaultContainer>
+    <DefaultContainer contained={false}>
       <div className={css.Homepage}>
         <FaviconSwitcher />
-        <header className={css.Header}>
-          <h1 className="heading-main">Balraj Johal</h1>
-          <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
-          <ul className={css.ContactMe}>
-            <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
-            <li>
-              <a
-                className={css.InvertOnHover}
-                href="https://twitter.com/BalrajJohal_"
-                target="_blank"
-              >
-                Twitter
-              </a>
-            </li>
-            <li>
-              <a
-                className={css.InvertOnHover}
-                href="https://bsky.app/profile/balrajjohal.bsky.social"
-                aria-label="bluesky"
-                target="_blank"
-              >
-                Bsky
-              </a>
-            </li>
-            <li>
-              <a
-                className={css.InvertOnHover}
-                href="https://www.linkedin.com/in/balraj-johal/"
-                target="_blank"
-              >
-                Linkedin
-              </a>
-            </li>
-            <li>
-              <CopyValueButton
-                className={css.InvertOnHover}
-                ariaLabel="Copy email"
-                value="workwithbalraj@gmail.com"
-              >
-                Email
-              </CopyValueButton>
-            </li>
-          </ul>
-        </header>
+        <div className={css.DesktopSticky}>
+          <header className={css.Header}>
+            <h1 className="heading-main">
+              <span>Balraj</span>
+              <span className={css.AnimateWidth}>
+                <span>
+                  <span>
+                    <Image src={meImage} alt="" />
+                  </span>
+                </span>
+              </span>
+              <span>Johal</span>
+            </h1>
+            <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
+            <ul className={css.ContactMe}>
+              <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
+              <li>
+                <a
+                  className={css.InvertOnHover}
+                  href="https://twitter.com/BalrajJohal_"
+                  target="_blank"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a
+                  className={css.InvertOnHover}
+                  href="https://bsky.app/profile/balrajjohal.bsky.social"
+                  aria-label="bluesky"
+                  target="_blank"
+                >
+                  Bsky
+                </a>
+              </li>
+              <li>
+                <a
+                  className={css.InvertOnHover}
+                  href="https://www.linkedin.com/in/balraj-johal/"
+                  target="_blank"
+                >
+                  Linkedin
+                </a>
+              </li>
+              <li>
+                <CopyValueButton
+                  className={css.InvertOnHover}
+                  value="workwithbalraj@gmail.com"
+                  ariaLabel="Copy email"
+                >
+                  Email
+                </CopyValueButton>
+              </li>
+            </ul>
+          </header>
 
-        <section className={css.AboutMe}>
-          <p>Creative Developer</p>
-          <p>
-            Currently&nbsp;
-            <a
-              className={`${css.PhantomLink} ${css.InvertOnHover}`}
-              href="https://phantom.land"
-              target="_blank"
-            >
-              @PHANTOM
-            </a>
-          </p>
-          <p>Based in London</p>
-        </section>
+          <section className={css.AboutMe}>
+            <p>Creative Developer</p>
+            <p>
+              Currently&nbsp;
+              <a
+                className={`${css.PhantomLink} ${css.InvertOnHover}`}
+                href="https://phantom.land"
+                target="_blank"
+              >
+                @PHANTOM
+              </a>
+            </p>
+            <p>Based in London</p>
+          </section>
 
-        <section className={css.AccoladesSection}>
-          <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
-          <p>1x FWA Site of the Day</p>
-          <p>1x Lovie People&apos;s Choice</p>
-          <p>1x Lovie Silver</p>
-          <p>3x Awwwards Honorable Mention</p>
-        </section>
+          <section className={css.AccoladesSection}>
+            <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
+            <p>1x FWA Site of the Day</p>
+            <p>1x Lovie People&apos;s Choice</p>
+            <p>1x Lovie Silver</p>
+            <p>3x Awwwards Honorable Mention</p>
+          </section>
+        </div>
 
         {showBlogLinks && (
           <section className={css.BlogLinksSection}>
@@ -130,6 +146,21 @@ export default async function Main({
   );
 }
 
+function getMediaContent(fields: IProfessionalWorkFields) {
+  const imageFields = fields.image?.fields;
+
+  const heroVideoFields = fields.heroVideo?.fields as unknown as IVideoFields;
+  const videoFields = heroVideoFields
+    ? {
+        width: heroVideoFields.width,
+        height: heroVideoFields.height,
+        ...heroVideoFields.file.fields,
+      }
+    : null;
+
+  return videoFields ?? imageFields;
+}
+
 const SelectedWorkItem = ({
   entry,
   showAll,
@@ -141,23 +172,28 @@ const SelectedWorkItem = ({
 }) => {
   const fields = entry.fields as unknown as IProfessionalWorkFields;
 
-  if (fields.isPublic || showAll) {
-    const href = WORK_STUDY_PAGE_ENABLED
-      ? `work/${fields.slug}`
-      : fields.linkToWork;
-
-    return (
-      <li>
-        <a href={href}>
-          {fields.image && (
-            <div className={css.MediaContainer} aria-hidden>
-              <Media content={fields.image} first={first} />
-            </div>
-          )}
-          <h3>{fields.title}</h3>
-          <div className={css.Oneliner}>{fields.oneLiner}</div>
-        </a>
-      </li>
-    );
+  if (!fields.isPublic && !showAll) {
+    return null;
   }
+
+  const href = WORK_STUDY_PAGE_ENABLED
+    ? `work/${fields.slug}`
+    : fields.linkToWork;
+
+  const mediaContent = getMediaContent(fields);
+  if (!mediaContent) {
+    throw new Error(`Item ${fields.title} does not have media content.`);
+  }
+
+  return (
+    <li>
+      <a href={href}>
+        <div className={css.MediaContainer} aria-hidden>
+          <Media content={mediaContent} first={first} />
+        </div>
+        <h3>{fields.title}</h3>
+        <div className={css.Oneliner}>{fields.oneLiner}</div>
+      </a>
+    </li>
+  );
 };

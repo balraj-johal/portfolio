@@ -139,8 +139,8 @@ export interface IProfessionalWorkFields {
   /** Media */
   image?: Asset | undefined;
 
-  /** Media Poster */
-  mediaPoster?: Asset | undefined;
+  /** Hero Video */
+  heroVideo?: IVideo | undefined;
 
   /** Roles */
   roles?: string[] | undefined;
@@ -204,7 +204,13 @@ export interface IVideoFields {
   file: Asset;
 
   /** poster */
-  poster: Asset;
+  poster?: Asset | undefined;
+
+  /** width */
+  width: number;
+
+  /** height */
+  height: number;
 }
 
 export interface IVideo extends Entry<IVideoFields> {

@@ -13,6 +13,7 @@ const client = createClient({
 export const getContentByType = async (type: CONTENT_TYPE) => {
   const response = await client.getEntries({
     content_type: type,
+    include: 2,
   });
 
   return response.items;
@@ -21,6 +22,7 @@ export const getContentByType = async (type: CONTENT_TYPE) => {
 export const getContentByID = async (id: string) => {
   const response = await client.getEntries({
     "sys.id": id,
+    include: 2,
   });
 
   return response.items;

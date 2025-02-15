@@ -1,0 +1,16 @@
+.MediaContainer {
+  display: grid;
+
+  > * {
+    grid-area: 1 / 1;
+  }
+
+  video {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+
+    &[data-loaded="true"] {
+      opacity: 1;
+    }
+  }
+}

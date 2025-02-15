@@ -1,3 +1,5 @@
+@use "../theme/breakpoints" as breakpoints;
+
 @mixin inherit-grid-columns {
   display: grid;
   grid-column: 1 / -1;
@@ -16,5 +18,10 @@
   @media (min-width: 768px) {
     grid-column: 2 / 12;
     padding-bottom: 8rem;
+  }
+
+  @media (min-width: breakpoints.$xl) {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
   }
 }

@@ -48,15 +48,8 @@ export default async function Work({ params }: Props) {
 
   const entry = findEntryBySlug(entries, slug);
 
-  const {
-    title,
-    description,
-    image,
-    mediaPoster,
-    roles,
-    stackIUsed,
-    linkToWork,
-  } = entry?.fields as unknown as IProfessionalWorkFields;
+  const { title, description, image, roles, stackIUsed, linkToWork } =
+    entry?.fields as unknown as IProfessionalWorkFields;
 
   if (!image || !entry) notFound();
 
@@ -64,12 +57,12 @@ export default async function Work({ params }: Props) {
     <main className={css.WorkStudyContainer}>
       <section className={css.MediaContainer}>
         <Carousel>
-          <Media key={1} content={image} poster={mediaPoster} />
+          <Media key={1} content={image} />
           {WORK_STUDY_CAROUSEL_ENABLED && (
             <>
-              <Media key={2} content={image} poster={mediaPoster} />
-              <Media key={3} content={image} poster={mediaPoster} />
-              <Media key={4} content={image} poster={mediaPoster} />
+              <Media key={2} content={image} />
+              <Media key={3} content={image} />
+              <Media key={4} content={image} />
             </>
           )}
         </Carousel>
