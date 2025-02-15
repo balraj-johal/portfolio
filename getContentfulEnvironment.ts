@@ -1,7 +1,7 @@
 import { strict as assert } from "assert";
 
 import dotenv from "dotenv";
-import { createClient } from "contentful-management";
+import contentful from "contentful-management";
 
 dotenv.config({ path: ".env" });
 
@@ -16,7 +16,7 @@ assert(CONTENTFUL_SPACE_ID);
 assert(CONTENTFUL_ENVIRONMENT);
 
 const getContentfulEnvironment = async () => {
-  const contentfulClient = createClient({
+  const contentfulClient = contentful.createClient({
     accessToken: CONTENTFUL_MANAGEMENT_ACCESS_TOKEN,
   });
 
@@ -25,4 +25,4 @@ const getContentfulEnvironment = async () => {
     .then((space) => space.getEnvironment(CONTENTFUL_ENVIRONMENT));
 };
 
-module.exports = getContentfulEnvironment;
+export default getContentfulEnvironment;
