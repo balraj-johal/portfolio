@@ -1,12 +1,12 @@
 import Image from "next/image";
 
+import { getMediaContent } from "@/utils/contentful";
 import { SearchParams } from "@/types/routing";
 import type {
   IProfessionalWork,
   IProfessionalWorkFields,
   ISelectedWorks,
   ISelectedWorksFields,
-  IVideoFields,
 } from "@/types/generated/contentful";
 import cssUtils from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
@@ -144,21 +144,6 @@ export default async function Main({
       </div>
     </DefaultContainer>
   );
-}
-
-function getMediaContent(fields: IProfessionalWorkFields) {
-  const imageFields = fields.image?.fields;
-
-  const heroVideoFields = fields.heroVideo?.fields as unknown as IVideoFields;
-  const videoFields = heroVideoFields
-    ? {
-        width: heroVideoFields.width,
-        height: heroVideoFields.height,
-        ...heroVideoFields.file.fields,
-      }
-    : null;
-
-  return videoFields ?? imageFields;
 }
 
 const SelectedWorkItem = ({

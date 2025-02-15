@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { findEntryBySlug } from "@/utils/contentful";
+import { findEntryBySlug, getMediaContent } from "@/utils/contentful";
 import { IProfessionalWorkFields } from "@/types/generated/contentful";
 import utilCss from "@/theme/utils.module.scss";
 import { getContentByType } from "@/content/contentful";
@@ -42,27 +42,30 @@ export async function generateStaticParams() {
 }
 
 export default async function Work({ params }: Props) {
+  const { slug } = await params;
   const entries = await getContentByType(CONTENT_TYPE);
 
-  const { slug } = await params;
-
   const entry = findEntryBySlug(entries, slug);
+  if (!entry) notFound();
 
-  const { title, description, image, roles, stackIUsed, linkToWork } =
-    entry?.fields as unknown as IProfessionalWorkFields;
+  const fields = entry?.fields as unknown as IProfessionalWorkFields;
+  const { title, description, roles, stackIUsed, linkToWork } = fields;
 
-  if (!image || !entry) notFound();
+  const mediaContent = getMediaContent(fields);
+  if (!mediaContent) {
+    throw new Error(`Item ${fields.title} does not have media content.`);
+  }
 
   return (
     <main className={css.WorkStudyContainer}>
       <section className={css.MediaContainer}>
         <Carousel>
-          <Media key={1} content={image} />
+          <Media key={1} content={mediaContent} />
           {WORK_STUDY_CAROUSEL_ENABLED && (
             <>
-              <Media key={2} content={image} />
-              <Media key={3} content={image} />
-              <Media key={4} content={image} />
+              <Media key={2} content={mediaContent} />
+              <Media key={3} content={mediaContent} />
+              <Media key={4} content={mediaContent} />
             </>
           )}
         </Carousel>

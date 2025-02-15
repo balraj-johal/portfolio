@@ -1,7 +1,11 @@
-import { Entry, EntrySkeletonType } from "contentful";
-import { Node } from "@contentful/rich-text-types";
+import type { Entry, EntrySkeletonType } from "contentful";
+import type { Node } from "@contentful/rich-text-types";
 
-import {
+import type {
+  IProfessionalWorkFields,
+  IVideoFields,
+} from "@/types/generated/contentful";
+import type {
   ContentfulResponse,
   ContentfulImage,
   ImageInfo,
@@ -54,3 +58,18 @@ export const getFields = <T>(
 export const getEmbedItem = (node: Node) => {
   return node.data.target;
 };
+
+export function getMediaContent(fields: IProfessionalWorkFields) {
+  const imageFields = fields.image?.fields;
+
+  const heroVideoFields = fields.heroVideo?.fields as unknown as IVideoFields;
+  const videoFields = heroVideoFields
+    ? {
+        width: heroVideoFields.width,
+        height: heroVideoFields.height,
+        ...heroVideoFields.file.fields,
+      }
+    : null;
+
+  return videoFields ?? imageFields;
+}
