@@ -1,8 +1,8 @@
 .MediaPlaceholder {
   position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
+  inset: 1px;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
 
   border: 1px solid black;
   border-radius: calc(var(--border-radius) + 1px);
