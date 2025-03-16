@@ -16,6 +16,10 @@
     }
   }
 
+  .DefaultLabel {
+    color: var(--color-black);
+  }
+
   @media (pointer: fine) {
     &:hover {
       cursor: pointer;
