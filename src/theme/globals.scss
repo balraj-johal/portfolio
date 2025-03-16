@@ -45,6 +45,11 @@ h4 {
   letter-spacing: var(--proto-mono-letter-spacing);
 }
 
+// set default and override apple user agent blue color
+button > span {
+  color: var(--color-black);
+}
+
 .visually-hidden {
   visibility: hidden;
   position: absolute;
