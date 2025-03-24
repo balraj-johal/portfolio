@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "web dev",
     "creative developer",
     "phantom studios",
+    "balraj singh johal",
+    "professional",
+    "phantom studios",
     "phantom agency",
   ],
   openGraph: {
@@ -32,13 +35,17 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
   },
+  alternates: {
+    canonical: "https://www.balraj.cool"
+  }
 };
+
+interface Props {
+  children: React.ReactNode;}
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Props) {
   return (
     <html lang="en">
       <link
