@@ -2,7 +2,7 @@
 
 import { MutableRefObject, useRef } from "react";
 
-import { useAnimationFrame } from "framer-motion";
+import { useAnimationFrame } from "motion/react";
 
 import { ClipPath } from "../HeroMedia";
 import { HeroTitleElement, HeroTitleWrapper } from "./styles";

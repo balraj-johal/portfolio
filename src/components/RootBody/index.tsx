@@ -1,8 +1,10 @@
 "use client";
 
-import { Lenis as ReactLenis } from "@studio-freight/react-lenis";
+import { ReactLenis } from "lenis/react";
 
 import { RootBodyElement } from "./styles";
+
+// const LENIS_OPTIONS =
 
 interface Props {
   children: React.ReactNode;

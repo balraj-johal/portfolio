@@ -2,7 +2,7 @@
 
 import { MutableRefObject, useEffect, useRef } from "react";
 
-import { useAnimationFrame } from "framer-motion";
+import { useAnimationFrame } from "motion/react";
 
 import { ImageInfo } from "@/types/contentful";
 

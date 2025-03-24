@@ -3,7 +3,7 @@
 import { useRef } from "react";
 
 import { useMediaQuery } from "usehooks-ts";
-import { useLenis } from "@studio-freight/react-lenis";
+import { useLenis } from "lenis/react";
 
 import { ImageInfo } from "@/types/contentful";
 import { revealDown } from "@/theme/framer-configs";

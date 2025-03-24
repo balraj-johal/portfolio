@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { useLenis } from "lenis/react";
 import { gsap } from "gsap";
-import { useLenis } from "@studio-freight/react-lenis";
 
 import { extendedStyle } from "@/utils/css";
 import { ContentfulResponse } from "@/types/contentful";
@@ -24,7 +24,7 @@ type ContainerData = {
 
 const ProfessionalWork = ({ content }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const containerDataRef = useRef<ContainerData | undefined>();
+  const containerDataRef = useRef<ContainerData>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
