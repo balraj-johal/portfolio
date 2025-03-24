@@ -23,11 +23,11 @@ import css from "./page.module.scss";
 
 // TODO: fix bad type assertions in this file
 
-export default async function Main({
-  searchParams,
-}: {
+interface Props {
   searchParams: SearchParams;
-}) {
+}
+
+export default async function Main({ searchParams }: Props) {
   const selectedWorkEntries = (
     await getContentByType("selectedWorks")
   )[0] as ISelectedWorks;
@@ -55,7 +55,7 @@ export default async function Main({
               </span>
               <span>Johal</span>
             </h1>
-            <p className={css.Subheading}>{"[WIP] Portfolio"}</p>
+            <p className={css.Subheading}>{"[2025] Portfolio"}</p>
             <ul className={css.ContactMe}>
               <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
               <li>
