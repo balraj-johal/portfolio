@@ -8,7 +8,7 @@ export const FaviconSwitcher = () => {
   const [visibleIcon, setVisibleIcon] = useState<FaviconLinkPath>(
     FaviconLinkPath.DEFAULT,
   );
-  const faviconRef = useRef<HTMLElement>();
+  const faviconRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const element = document.querySelector<HTMLLinkElement>("#favicon-svg");
