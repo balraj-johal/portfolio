@@ -36,16 +36,15 @@ export const metadata: Metadata = {
     locale: "en_GB",
   },
   alternates: {
-    canonical: "https://www.balraj.cool"
-  }
+    canonical: "https://www.balraj.cool",
+  },
 };
 
 interface Props {
-  children: React.ReactNode;}
+  children: React.ReactNode;
+}
 
-export default function RootLayout({
-  children,
-}: Props) {
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <link
