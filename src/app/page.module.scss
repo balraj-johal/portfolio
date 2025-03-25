@@ -254,6 +254,8 @@
           .Oneliner {
             grid-column: span 2;
             opacity: 0;
+
+            max-width: 52ch;
           }
 
           h3 {
