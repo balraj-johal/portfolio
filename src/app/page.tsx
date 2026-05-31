@@ -55,7 +55,7 @@ export default async function Main({ searchParams }: Props) {
               </span>
               <span>Johal</span>
             </h1>
-            <p className={css.Subheading}>{"[2025] Portfolio"}</p>
+            <p className={css.Subheading}>{"[2026] Portfolio"}</p>
             <ul className={css.ContactMe}>
               <h2 className={cssUtils.ScreenReaderOnly}>Contact Me</h2>
               <li>

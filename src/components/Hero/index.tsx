@@ -19,8 +19,8 @@ const Hero = async () => {
       <HeroMedia images={images} />
       <HeroTitle>Balraj Johal</HeroTitle>
       <HeroSubContent>
-        <HeroContentLeft></HeroContentLeft>
-        <HeroContentRight></HeroContentRight>
+        <HeroContentLeft />
+        <HeroContentRight />
       </HeroSubContent>
     </HeroWrapper>
   );
