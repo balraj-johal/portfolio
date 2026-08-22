@@ -103,22 +103,24 @@ export default async function Main({ searchParams }: Props) {
             <p>
               Currently&nbsp;
               <a
-                className={`${css.PhantomLink} ${css.InvertOnHover}`}
-                href="https://phantom.land"
+                className={`${css.AgencyLink} ${css.InvertOnHover}`}
+                href="https://activetheory.net"
                 target="_blank"
               >
-                @PHANTOM
+                @ACTIVETHEORY
               </a>
             </p>
-            <p>Based in London</p>
+            <p>Based in the UK</p>
           </section>
 
           <section className={css.AccoladesSection}>
             <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
-            <p>1x FWA Site of the Day</p>
+            <p>3x FWA Site of the Day</p>
             <p>1x Lovie People&apos;s Choice</p>
             <p>1x Lovie Silver</p>
+            <p>1x Awwwards Site of the Day</p>
             <p>3x Awwwards Honorable Mention</p>
+            <p>1x CSSDA Website of the Day</p>
           </section>
         </div>
 

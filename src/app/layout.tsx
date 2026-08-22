@@ -18,11 +18,10 @@ export const metadata: Metadata = {
     "developer",
     "web dev",
     "creative developer",
-    "phantom studios",
+    "active theory",
     "balraj singh johal",
     "professional",
-    "phantom studios",
-    "phantom agency",
+    "creative technology",
   ],
   openGraph: {
     images: [

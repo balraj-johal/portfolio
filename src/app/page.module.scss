@@ -341,7 +341,7 @@
   align-items: flex-end;
 }
 
-.PhantomLink {
+.AgencyLink {
   position: relative;
 
   &::after {
@@ -363,7 +363,7 @@
       opacity 50ms ease-out,
       transform 50ms ease-out;
 
-    background-image: url("../../public/assets/images/phntm-logo.svg");
+    background-image: url("../../public/assets/images/at-logo.svg");
     background-size: contain;
     background-repeat: no-repeat;
   }
