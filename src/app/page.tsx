@@ -115,12 +115,13 @@ export default async function Main({ searchParams }: Props) {
 
           <section className={css.AccoladesSection}>
             <h2 className={cssUtils.ScreenReaderOnly}>Accolades</h2>
+            <p>1x Webby</p>
+            <p>1x Awwwards Site of the Day</p>
             <p>3x FWA Site of the Day</p>
             <p>1x Lovie People&apos;s Choice</p>
             <p>1x Lovie Silver</p>
-            <p>1x Awwwards Site of the Day</p>
-            <p>3x Awwwards Honorable Mention</p>
             <p>1x CSSDA Website of the Day</p>
+            <p>3x Awwwards Honorable Mention</p>
           </section>
         </div>
 
